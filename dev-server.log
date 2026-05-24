@@ -1,0 +1,14 @@
+
+> finora@0.1.0 dev
+> next dev --hostname 0.0.0.0
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3000
+  - Network:      http://0.0.0.0:3000
+
+ ✓ Starting...
+ ✓ Ready in 1830ms
+ ○ Compiling / ...
+ ✓ Compiled / in 3.1s (571 modules)
+ GET / 200 in 3247ms
+ GET / 200 in 51ms
