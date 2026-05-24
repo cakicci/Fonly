@@ -1,0 +1,115 @@
+
+> finora@0.1.0 dev
+> next dev --hostname 0.0.0.0
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3000
+  - Network:      http://0.0.0.0:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 2.9s
+ ○ Compiling / ...
+ ✓ Compiled / in 5s (854 modules)
+ GET / 200 in 5375ms
+ GET / 200 in 76ms
+ ✓ Compiled /login in 431ms (872 modules)
+ ✓ Compiled /register in 207ms (869 modules)
+ GET /?_rsc=1h9g0 200 in 82ms
+ GET / 200 in 127ms
+ GET / 200 in 58ms
+ GET / 200 in 49ms
+ GET / 200 in 49ms
+ GET / 200 in 37ms
+ GET / 200 in 36ms
+ GET / 200 in 51ms
+ GET / 200 in 36ms
+ ✓ Compiled in 159ms (297 modules)
+ GET /?_rsc=r3yhw 200 in 19ms
+ GET / 200 in 38ms
+ GET / 200 in 38ms
+ GET / 200 in 39ms
+ ✓ Compiled /_not-found in 260ms (872 modules)
+ GET / 404 in 362ms
+ GET /_next/static/css/app/layout.css?v=1779649900219 404 in 68ms
+ GET / 200 in 133ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 56ms
+ GET / 200 in 61ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 80ms
+ GET / 200 in 61ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 66ms
+ GET / 200 in 45ms
+ GET / 200 in 62ms
+ GET / 200 in 38ms
+ GET / 200 in 49ms
+ GET / 200 in 42ms
+ GET / 200 in 41ms
+ GET / 200 in 46ms
+ GET / 200 in 38ms
+ GET / 200 in 38ms
+ GET / 200 in 44ms
+ GET / 200 in 39ms
+ GET / 200 in 67ms
+ GET / 200 in 49ms
+ ✓ Compiled in 264ms (601 modules)
+ ✓ Compiled in 491ms (624 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: EPERM: operation not permitted, rename 'C:\Users\efeca\OneDrive\Desktop\Fonly\.next\cache\webpack\server-development\0.pack.gz_' -> 'C:\Users\efeca\OneDrive\Desktop\Fonly\.next\cache\webpack\server-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'C:\Users\efeca\OneDrive\Desktop\Fonly\.next\server\app\_not-found'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/_not-found/page' in C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'C:\Users\efeca\OneDrive\Desktop\Fonly\.next\server\app\_not-found\page.js', but to 'Error: Can't resolve '../../../../.next/server/app/_not-found/page' in 'C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/_not-found/page (expected C:\Users\efeca\OneDrive\Desktop\Fonly\.next\server\app\_not-found\page.js)
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\server\require.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\server\load-components.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\utils.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\entries.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\entries.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\plugins\next-types-plugin\index.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\plugins\next-types-plugin\index.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack-config.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack-config.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\swc\index.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\loaders\next-barrel-loader.js
+<w>  at file C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\loaders\next-barrel-loader.js
+<w>  at resolve commonjs C:\Users\efeca\OneDrive\Desktop\Fonly\node_modules\next\dist\build\webpack\loaders\next-barrel-loader.js
+ ✓ Compiled in 408ms (883 modules)
+ ✓ Compiled in 192ms (601 modules)
+ ✓ Compiled in 523ms (860 modules)
+ ✓ Compiled in 430ms (869 modules)
+ GET / 200 in 158ms
+ GET / 200 in 45ms
+ GET / 200 in 30ms
+ ✓ Compiled in 888ms (883 modules)
+ GET / 200 in 76ms
+ GET / 200 in 43ms
+ GET /?_rsc=1h9g0 200 in 20ms
+ GET / 200 in 46ms
+ GET / 200 in 47ms
+ GET / 200 in 51ms
+ GET / 200 in 37ms
+ GET / 200 in 57ms
+ GET / 200 in 51ms
+ GET / 200 in 29ms
+ GET / 200 in 28ms
+ GET / 200 in 29ms
+ GET / 200 in 46ms
+ GET / 200 in 30ms
+ GET / 200 in 29ms
+ GET / 200 in 43ms
+ GET / 200 in 33ms
+ GET / 200 in 29ms
+ GET / 200 in 49ms

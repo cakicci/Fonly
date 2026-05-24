@@ -1,4 +1,4 @@
-import {
+﻿import {
   BadgeHelp,
   BarChart4,
   Calculator,
@@ -15,6 +15,7 @@ import {
   Waves
 } from "lucide-react";
 import Image from "next/image";
+import { AuthNav } from "@/components/AuthNav";
 import { CategoryCard } from "@/components/CategoryCard";
 import { FundCard } from "@/components/FundCard";
 import { GuideCard } from "@/components/GuideCard";
@@ -127,7 +128,7 @@ const financialParameters = [
 export default function Home() {
   return (
     <main className="min-h-screen px-4 py-5 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl items-center justify-between pb-5">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 pb-5">
         <a href="#" className="flex items-center gap-3" aria-label="Fonly ana sayfa">
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/8 p-1 shadow-glow">
             <Image
@@ -141,17 +142,20 @@ export default function Home() {
           </span>
           <span className="text-xl font-semibold text-white">Fonly</span>
         </a>
-        <nav className="hidden items-center gap-6 text-sm text-mist/62 md:flex">
-          <a className="transition hover:text-white" href="#categories">
-            Kategoriler
-          </a>
-          <a className="transition hover:text-white" href="#funds">
-            Fonlar
-          </a>
-          <a className="transition hover:text-white" href="#guide">
-            Rehber
-          </a>
-        </nav>
+        <div className="flex items-center gap-4">
+          <nav className="hidden items-center gap-6 text-sm text-mist/62 lg:flex">
+            <a className="transition hover:text-white" href="#categories">
+              Kategoriler
+            </a>
+            <a className="transition hover:text-white" href="#funds">
+              Fonlar
+            </a>
+            <a className="transition hover:text-white" href="#guide">
+              Rehber
+            </a>
+          </nav>
+          <AuthNav />
+        </div>
       </div>
 
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
