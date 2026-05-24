@@ -1,77 +1,71 @@
-﻿# Fonly
+﻿# Fonly Nedir?
 
-Fonly is a modern fintech web application built for users with low or zero financial literacy. It explains investment funds, stocks, risk levels, and basic financial concepts in plain Turkish.
+Fonly, yatırım dünyasına yeni adım atanlar için hazırlanmış sade ve güven veren bir finans rehberidir. Kafa karıştıran ekranlar yerine sade bir yol haritası düşün: Fonly tam olarak bunu yapar.
 
-## Tech Stack
+Fonlar, hisseler, risk seviyeleri ve getiriler çoğu zaman karmaşık kelimelerle anlatılır. Fonly bu dili yumuşatır, sadeleştirir ve günlük hayata yaklaştırır. Amaç sana ne alacağını söylemek değil, neye baktığını anlamanı sağlamaktır.
 
-- Next.js 14
-- TypeScript
-- TailwindCSS
-- App Router
-- Lucide React icons
+Fonly, sayıların arkasındaki anlamı görünür hale getirir. Bir yatırım aracının sadece yükselip yükselmediğini değil, bu yükselişin senin için ne ifade edebileceğini de daha anlaşılır hale getirir.
 
-## Features
+## Fonly Kimler İçin Var?
 
-- Premium dark fintech UI with a midnight blue background
-- Fonly logo and branding
-- Beginner-friendly Turkish explanations
-- Market overview sidebar
-- Investment category cards
-- Popular fund cards with simple risk explanations
-- Stock cards focused on historical performance and gold comparison
-- Financial guide cards that explain basic terms
-- Risk and income planner for beginner users
+Fonly özellikle finans dünyasına dışarıdan bakan ama nereden başlayacağını bilemeyen kişiler için tasarlandı.
 
-## Getting Started
+- Yatırıma başlamak istiyor ama terimlerden çekiniyorsan
+- Fon, hisse, risk ve getiri gibi kavramları sade dille öğrenmek istiyorsan
+- Finans ekranlarında gördüğün yüzdelerin ne anlama geldiğini merak ediyorsan
+- Paranı değerlendirirken acele etmek yerine önce anlamak istiyorsan
+- Gelirine göre ne kadar para ayırmanın mantıklı olabileceğini düşünüyorsan
 
-Install dependencies:
+Fonly sana daha sakin bir başlangıç alanı açar. Yoğun tablolar, sert finans dili ve karmaşık grafikler yerine; kısa, net ve anlaşılır açıklamalar sunar.
 
-```bash
-npm install
-```
+## Fonly ile Neyi Daha Kolay Anlarsın?
 
-Start the development server:
+Fonly, yatırım araçlarını herkesin anlayabileceği bir dille açıklar. Bir fonun risk seviyesi ne demek, bir hissenin geçmiş getirisi nasıl yorumlanır, günlük değişim neden tek başına yeterli değildir gibi sorulara sade cevaplar verir.
 
-```bash
-npm run dev
-```
+Risk, Fonly’de soyut bir kelime olarak kalmaz. Basitçe anlatılır: Risk, paran kısa sürede ne kadar inip çıkabilir sorusunun cevabıdır. Eğer bir yatırım aracı çok hızlı yükselip düşebiliyorsa, bu daha fazla sabır ve daha dikkatli bütçe yönetimi ister.
 
-On Windows PowerShell, use:
+Getiri de aynı şekilde sadeleşir. Yüzdeler sadece ekrandaki rakamlar olmaktan çıkar. Fonly, bu rakamların neye benzediğini ve hangi karşılaştırmalarla daha anlamlı hale gelebileceğini gösterir.
 
-```powershell
-npm.cmd run dev
-```
+## Altın Kıyaslaması Neden Önemli?
 
-Open the app:
+Bir hissenin geçmişte yüzde kaç arttığını görmek tek başına yeterli olmayabilir. Çünkü kullanıcı haklı olarak şunu sorabilir: Bu artış gerçekten güçlü mü, yoksa aynı dönemde her şey zaten yükseldi mi?
 
-```text
-http://127.0.0.1:3000
-```
+Fonly bu noktada daha tanıdık bir ölçü kullanır: altın.
 
-## Validation
+Gram altın, Türkiye’de birçok kişinin bildiği ve takip ettiği bir değerdir. Fonly, hissenin geçmiş artışını altınla kıyaslayarak kullanıcının tabloyu daha rahat okumasına yardımcı olur.
 
-Run lint:
+Örneğin bir hisse beş yılda ciddi yükselmiş olabilir. Ama aynı dönemde altın da benzer şekilde artmışsa, bu bilgi farklı yorumlanır. Eğer hisse altından daha fazla artmışsa, bu geçmişte daha güçlü performans göstermiş olabilir. Fakat bu yine de gelecekte aynı şeyin olacağı anlamına gelmez.
 
-```bash
-npm run lint
-```
+Fonly burada karar vermez; sadece kıyaslamayı daha anlaşılır hale getirir.
 
-Run production build:
+## Risk ve Bütçe Rehberi Ne İşe Yarar?
 
-```bash
-npm run build
-```
+Yatırım sadece hangi fonu veya hisseyi seçtiğinle ilgili değildir. Asıl önemli sorulardan biri şudur: Bu iş için gerçekten ne kadar para ayırabilirsin?
 
-## Project Structure
+Fonly, kullanıcının gelirini ve risk grubunu düşünerek daha mantıklı bir çerçeve kurmasına yardımcı olur. Kira, fatura, borç, temel ihtiyaçlar ve acil durum parası hesaba katılmadan yatırım yapmak sağlıklı olmayabilir.
 
-```text
-app/          App Router pages and global styles
-components/   Reusable UI components
-data/         Mock fund and stock data
-public/       Static assets, including the Fonly logo
-styles/       Reserved theme styles
-```
+Bu yüzden Fonly, önce kullanıcının kendi durumunu düşünmesini ister:
 
-## Notes
+- Gelirim ne kadar?
+- Her ay kenara zorlanmadan ne kadar ayırabilirim?
+- Bu paraya kısa zamanda ihtiyacım olur mu?
+- Param düşerse panikler miyim?
+- Uzun vadeli bekleyebilir miyim?
 
-The app currently uses mock data only. It does not connect to a backend or live market data provider yet.
+Bu sorular yatırım kararını daha sakin hale getirir. Düşük risk, orta risk ve yüksek risk seçenekleri de bu yüzden sade biçimde açıklanır. Kullanıcı kendi dayanıklılığını daha iyi görür.
+
+## Fonly Ne Değildir?
+
+Fonly bir yatırım tavsiyesi uygulaması değildir. Sana kesin olarak şu fonu al, bu hisseyi sat, buradan kazanç gelir demez.
+
+Garanti kazanç vaat etmez. Geçmişte yükselmiş bir yatırım aracının gelecekte de aynı şekilde yükseleceğini söylemez. Çünkü yatırım dünyasında kesinlik yoktur; sadece daha iyi anlamaya yardımcı olan bilgiler vardır.
+
+Fonly’nin işi karar vermek değil, karar vermeden önce zemini aydınlatmaktır. Kullanıcının gördüğü sayıları, riskleri, getirileri ve kıyaslamaları daha sade bir dile çevirir.
+
+## Fonly’nin Amacı
+
+Fonly’nin amacı, finansal okuryazarlığı düşük kullanıcıların yatırım dünyasına daha güvenli bir başlangıç yapmasına yardımcı olmaktır.
+
+Karmaşık finans dilini sadeleştirir. Riskleri daha görünür hale getirir. Hisse ve fonları günlük hayata yakın örneklerle anlatır. Gelire göre yatırım bütçesi düşünmeyi teşvik eder.
+
+Kısacası Fonly, yatırım yapmadan önce anlamak isteyenler için tasarlanmış başlangıç dostu bir finans rehberidir. Daha az karmaşa, daha fazla netlik, daha sakin kararlar.
