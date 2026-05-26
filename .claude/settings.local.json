@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://query1.finance.yahoo.com/v7/finance/quote?symbols=XU100.IS,USDTRY=X,EURTRY=X,GC=F&fields=regularMarketPrice,regularMarketChange,regularMarketChangePercent\" -H \"User-Agent: Mozilla/5.0\")",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(q['symbol'], q.get\\('regularMarketPrice','?'\\)\\) for q in data['quoteResponse']['result']]\")",
+      "Bash(curl -s \"https://query1.finance.yahoo.com/v7/finance/quote?symbols=USDTRY=X\" -H \"User-Agent: Mozilla/5.0\" -H \"Accept: application/json\")",
+      "Bash(curl -s \"https://query2.finance.yahoo.com/v8/finance/quote?symbols=USDTRY%3DX%2CGC%3DF%2CXU100.IS%2CEURTRY%3DX\" -H \"User-Agent: Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" -H \"Accept: application/json\" -H \"Referer: https://finance.yahoo.com\")",
+      "Bash(curl -s \"https://api.frankfurter.app/latest?from=USD&to=TRY,EUR\")",
+      "Bash(curl -sL \"https://api.frankfurter.app/latest?from=USD&to=TRY,EUR\")",
+      "Bash(curl -sL \"https://data-asg.goldprice.org/dbXRates/USD\" -H \"User-Agent: Mozilla/5.0\")",
+      "Bash(curl -sL \"https://api.gold-api.com/price/XAU\" -H \"User-Agent: Mozilla/5.0\")",
+      "Bash(curl -sL \"https://query1.finance.yahoo.com/v8/finance/chart/XU100.IS?interval=1d&range=1d\" -H \"User-Agent: Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36\")",
+      "Bash(curl -sL \"http://localhost:3000/api/market\")",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\alier\\\\Masa�st�\\\\Fonly\\\\app\\\\api\\\\bist\")"
+    ]
+  }
+}
