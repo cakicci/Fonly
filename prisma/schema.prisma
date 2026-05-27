@@ -8,18 +8,51 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   passwordHash  String?
-  riskProfile   String?   // "low" | "medium" | "high"
+  riskProfile   String?       // "low" | "medium" | "high"
   monthlyIncome Int?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   accounts      Account[]
   sessions      Session[]
+  watchlist     Watchlist[]
+  priceAlerts   PriceAlert[]
+}
+
+/// Kullanıcının takip listesi. slug formatı "hisse-THYAO", "doviz-USD", vb.
+model Watchlist {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  slug      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, slug])
+  @@index([userId])
+}
+
+/// Fiyat alarmı. Eşik aşıldığında triggeredAt set edilir.
+model PriceAlert {
+  id          Int       @id @default(autoincrement())
+  userId      String
+  slug        String
+  condition   String    // "above" | "below"
+  threshold   Float
+  active      Boolean   @default(true)
+  triggeredAt DateTime?
+  acknowledged Boolean  @default(false)
+  createdAt   DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([active, triggeredAt])
 }
 
 model Account {

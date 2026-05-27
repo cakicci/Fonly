@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
 import { CURRENCIES } from "@/data/currencies";
 import { GOLD_TYPES, type GoldCategory } from "@/data/gold-types";
 import {
@@ -7,6 +8,7 @@ import {
   getTruncgilAsset,
   fmt,
 } from "@/lib/market-data";
+import { checkAlertsForUser } from "@/lib/chart/alerts";
 
 // ── Tipler ──────────────────────────────────────────────────────────────────
 
@@ -211,6 +213,18 @@ export async function GET() {
       ? new Date(truncgil.Update_Date.replace(" ", "T") + "+03:00").toISOString()
       : new Date().toISOString()
   };
+
+  // ── Lazy alert check — auth'lu user için arka planda kontrol et ──────────
+  // await etmiyoruz: response gecikmesin. Hatalı çalışırsa sessizce geçer.
+  try {
+    const session = await auth();
+    if (session?.user?.id) {
+      // intentionally not awaited
+      void checkAlertsForUser(session.user.id, body);
+    }
+  } catch {
+    /* sessiz */
+  }
 
   return NextResponse.json(body, {
     headers: { "Cache-Control": "no-store" }

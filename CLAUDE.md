@@ -44,18 +44,21 @@ Required `.env` variables (see `.env.example`):
 | `GET /api/bist` | Fetches all ~300 BIST tickers in batches of 20 from Yahoo Finance v8 chart. 60s `revalidate`. Slow on first call (~10s). |
 | `GET /api/fonlar` | All TEFAS investment funds (~2100) with risk + multi-period returns. Calls `fonGetiriBazliBilgiGetir`. 3600s `revalidate`. |
 | `GET /api/fon/[kod]` | Single fund detail — price, fund size, investor count + period returns from cached list. |
-| `GET /api/history/[slug]?range=` | Historical time-series for charts. `slug` format: `doviz-USD`, `altin-gram`, `hisse-THYAO`, `fon-AAK`. `range`: `1h` \| `3a` \| `1y` \| `5y`. Returns 260 daily points + gram altın comparison. 300s `revalidate`. For `fon-*`, range maps to TEFAS `periyod` enum (13/3/12/60); date-range filtering not supported by TEFAS. |
+| `GET /api/history/[slug]?range=` | Historical time-series for charts. `slug` format: `doviz-USD`, `altin-gram`, `hisse-THYAO`, `fon-AAK`. `range`: `1h` \| `3a` \| `1y` \| `5y`. Returns 260 daily points + gram altın comparison. 300s `revalidate`. **For `fon-*`** maps to TEFAS `periyod` enum (13/3/12/60). Used by `PriceChart` (alt grafik). |
+| `GET /api/ohlc/[slug]?tf=` | **YENİ — TradingView için OHLC candle verisi.** Yahoo Finance'tan open/high/low/close/volume çeker; fonlarda TEFAS NAV serisini line-only Candle olarak döner. `tf`: `1G` (5dk intraday) \| `1H` (30dk × 5g) \| `1A` \| `3A` \| `1Y` \| `5Y` \| `MAX` (10y haftalık). 60s `revalidate`. Yanıt `OhlcResponse`: `{slug, name, timeframe, candles, isLineOnly}`. |
+| `GET/POST/DELETE /api/watchlist` | Auth'lu kullanıcının izleme listesi. Prisma `Watchlist` modeli. POST body `{slug}`, DELETE `?slug=`. Anonim 401 alır. |
+| `GET/POST/DELETE/PATCH /api/alerts` | Fiyat alarmları. POST `{slug, condition: "above"|"below", threshold}`. PATCH `?id=` ile acknowledge. Lazy check `/api/market` her çağrıda auth'lu user için `lib/chart/alerts.ts` üzerinden yapılır — eşik aşıldığında `triggeredAt` set edilir. Cron yok. |
 
 ### Detail pages (server components)
 | Route | Purpose |
 |---|---|
 | `/doviz` | Döviz listesi — sekme: "Yaygın 8" / "Diğer Dövizler" (22). Arama + 5sn polling. |
-| `/doviz/[code]` | Currency detail: current price + alış/satış + makas + günlük değişim + Recharts chart + analysis card |
+| `/doviz/[code]` | Currency detail: AssetHeader + AdvancedChart (TradingView candle) + alış/satış/makas + alt tab'lar (Karşılaştırma/Analiz) |
 | `/altin` | Altın listesi — sekme: "Standart" / "Antika" / "Ayar" / "Gümüş". Arama + 30sn polling. |
-| `/altin/[type]` | Gold type detail: alış/satış + makas + günlük değişim. Grafik yalnızca standart 4 için (Yahoo'da ticker yok). |
-| `/hisse/[symbol]` | BIST stock detail: price + change + chart vs gram altın + analysis |
+| `/altin/[type]` | Gold type detail: AssetHeader + alış/satış/makas + AdvancedChart (standart 4 için). Antika/ayar/gümüş Yahoo'da yok — sadece anlık fiyat. |
+| `/hisse/[symbol]` | BIST stock detail: AssetHeader + AdvancedChart + alt tab'lar (Karşılaştırma/Analiz/Bilgi) |
 | `/fonlar` | All TEFAS funds list page (client). Search (Turkish-normalized), category filter, sort by 1y/YTD/1m/code. |
-| `/fon/[kod]` | Fund detail: price + daily change + portfolio size + investor count + category rank + 7-period returns + chart vs gram altın + analysis |
+| `/fon/[kod]` | Fund detail: AssetHeader + AdvancedChart (line-only, candle disabled — TEFAS sadece NAV) + 4'lü stat satırı + 7 dönem getirisi + alt tab'lar |
 
 All detail pages are server components that fetch current price directly from truncgil (döviz/altın), Yahoo Finance (hisse), or TEFAS (fon). `PriceChart` and `AnalysisCard` are imported as `"use client"` components.
 
@@ -70,8 +73,32 @@ All detail pages are server components that fetch current price directly from tr
 
 Turkish gold coin weights (`data/gold-types.ts:weightG`): çeyrek = 1.748g, yarım = 3.496g, tam = 6.992g. Bunlar sadece `/api/history` grafiği için kullanılır (Yahoo GC=F oz fiyatını × USDTRY × weight ile coin'e dönüştürür). Anlık fiyat truncgil'den direkt TL olarak gelir; ağırlık çevirisi yapılmaz.
 
+### Advanced chart system (TradingView-style)
+Tüm detay sayfalarının üst kısmında `components/chart/AdvancedChart.tsx` — Lightweight Charts v5 ile candle/line/area + volume + crosshair + custom OHLC tooltip. Alt kısımda eski `PriceChart` (gram altın karşılaştırması) `Tabs` içinde "Karşılaştırma" sekmesinde duruyor.
+
+**Pipeline:**
+- `/api/ohlc/[slug]?tf=` → Yahoo OHLC (`lib/chart/ohlc.ts`) veya TEFAS line (`fetchFundHistory`)
+- `types/chart.ts` → `Candle`, `Timeframe`, `ChartType`, `IndicatorKey`, `OhlcResponse`
+- `lib/chart/timeframe.ts` → `1G|1H|1A|3A|1Y|5Y|MAX` → Yahoo `range`/`interval`, TEFAS `periyod`. `parseAssetSlug` ve `supportsCandles` helper'ları
+- `lib/chart/indicators.ts` → SMA/EMA/RSI/MACD/Bollinger pure functions (Candle[] → IndicatorPoint[])
+- `components/chart/ChartToolbar.tsx` → timeframe sekmeleri, chart type (candle/line/area), volume toggle, indicator menüsü, fullscreen
+- `components/chart/ChartSection.tsx` → fetch + state orkestratörü
+- `components/chart/AssetHeader.tsx` + `AssetHeaderActions.tsx` → fiyat, değişim badge'i, watchlist + alarm butonları
+- `components/chart/Tabs.tsx` → alt section sekme yapısı
+
+**Fon kısıtı:** TEFAS sadece günlük NAV verir → `isLineOnly: true` döner → candle/volume disabled, line zorla.
+
+### Watchlist & Alerts
+- **Watchlist** (Prisma `Watchlist` model): `userId + slug` unique. `lib/store/watchlistStore.ts` (Zustand, in-memory) + `/api/watchlist`. AssetHeader yıldız butonu optimistic update.
+- **Alerts** (Prisma `PriceAlert` model): `userId + slug + condition("above"|"below") + threshold`. Lazy check: `/api/market` her çağrıda auth'lu user için `lib/chart/alerts.ts` aktif alarmları kontrol eder (cron yok, response geciktirmez — `void`). Tetiklenince `triggeredAt` set + `active=false`.
+- **Bildirim:** `components/chart/AlertBadge.tsx` (layout'ta sabit) — dakikada bir `/api/alerts` polling, tetiklenen ve onaylanmamışları sayar. Modal'dan "Tamam" → PATCH `acknowledged=true`.
+
+### Zustand stores
+- `lib/store/chartStore.ts` — timeframe/chartType/indicators/showVolume (persist) + drawerOpen (volatile)
+- `lib/store/watchlistStore.ts` — slug Set, load/add/remove API senkronu (persist edilmez, mount'ta yüklenir)
+
 ### Database
-Single `User` model with `riskProfile` (string: `"low"|"medium"|"high"|null`) and `monthlyIncome` (Int?). Uses `prisma db push` (no migration files). `lib/prisma.ts` uses the global singleton pattern for dev hot-reload safety.
+Single `User` model with `riskProfile` (string: `"low"|"medium"|"high"|null`) and `monthlyIncome` (Int?), plus `Watchlist` and `PriceAlert` relations. Uses `prisma db push` (no migration files). `lib/prisma.ts` uses the global singleton pattern for dev hot-reload safety.
 
 ### Client-side market polling
 `MarketSidebar` and `LiveMarketPanels` are `"use client"` components that poll `/api/market` every **5 seconds** via `setInterval`. `BistPanel` polls `/api/bist` every **60 seconds** (batch fetch is expensive). The API routes themselves cache external calls for 60s via `next: { revalidate: 60 }`, so external APIs are not hit on every client poll.
