@@ -1,6 +1,4 @@
 ﻿import { Target } from "lucide-react";
-import Image from "next/image";
-import { AuthNav } from "@/components/AuthNav";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { FundCard } from "@/components/FundCard";
 import { StockCard } from "@/components/StockCard";
@@ -18,37 +16,7 @@ import { stocks } from "@/data/stocks";
 
 export default function Home() {
   return (
-    <main className="min-h-screen px-4 py-5 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 pb-5">
-        <a href="#" className="flex items-center gap-3" aria-label="Fonly ana sayfa">
-          <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/8 p-1 shadow-glow">
-            <Image
-              src="/fonly-logo.png"
-              alt="Fonly logosu"
-              width={32}
-              height={32}
-              className="h-8 w-8 object-contain"
-              priority
-            />
-          </span>
-          <span className="text-xl font-semibold text-white">Fonly</span>
-        </a>
-        <div className="flex items-center gap-4">
-          <nav className="hidden items-center gap-6 text-sm text-mist/62 lg:flex">
-            <a className="transition hover:text-white" href="#categories">
-              Kategoriler
-            </a>
-            <a className="transition hover:text-white" href="#funds">
-              Fonlar
-            </a>
-            <a className="transition hover:text-white" href="#guide">
-              Rehber
-            </a>
-          </nav>
-          <AuthNav />
-        </div>
-      </div>
-
+    <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-[1600px] gap-6 lg:grid-cols-[256px_minmax(0,1fr)_300px]">
         <BistPanel />
         <div className="space-y-6">

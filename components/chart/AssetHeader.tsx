@@ -1,13 +1,12 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { fmt } from "@/lib/market-data";
+import { fmtAsset, fmtPercent, kindFromSlug, type AssetKind } from "@/lib/format";
 import { useLivePriceStore } from "@/lib/store/livePriceStore";
+import { useFlashClass } from "@/lib/hooks/useFlashOnChange";
 import { parseAssetSlug } from "@/lib/chart/timeframe";
-import type { MarketResponse } from "@/app/api/market/route";
-
-const HEADER_POLL_MS = 60_000;
 
 export interface AssetHeaderProps {
   /** Tag — küçük etikette gösterilir (örn. "THYAO", "TEFAS", "USD"). */
@@ -29,10 +28,9 @@ export interface AssetHeaderProps {
   /** Sağ üstte client-side aksiyon butonları (watchlist/alarm) slot'u. */
   actions?:  ReactNode;
   /**
-   * Asset slug — verilirse canlı fiyat polling devreye girer.
-   *  - doviz/altin: kendi içinde /api/market (truncgil) 60sn polling
-   *  - hisse:       livePriceStore subscription (ChartSection yazıyor)
-   *  - fon:         polling yok, initial değerler
+   * Asset slug — verilirse livePriceStore aboneliği üzerinden canlı fiyat
+   * gelir (ChartSection 60sn'de bir yazar). Tüm asset tipleri (hisse/döviz/
+   * altın/fon) aynı store'u kullanır — chart ile header anlık eşleşir.
    */
   slug?:     string;
   /**
@@ -46,56 +44,24 @@ export function AssetHeader({
   tag, market, name, price, unit,
   changePct, badges, subtitle, actions, slug, displayPer = 1,
 }: AssetHeaderProps) {
-  const { type, code } = slug ? parseAssetSlug(slug) : { type: null, code: "" };
+  const { type } = slug ? parseAssetSlug(slug) : { type: null };
 
-  // Hisse: ChartSection livePriceStore'a yazıyor — orayı okuyalım
+  // Tüm asset tipleri için tek kaynak: livePriceStore.
+  // ChartSection canlı fiyatı yazar (hisse/döviz/altın 60sn polling, fon ilk yük).
+  // Header burada subscribe olur → chart son barı ile header tam senkron.
+  // Döviz için displayPer (JPY=100 gibi) skalası uygulanır.
   const storeLive = useLivePriceStore((s) => (slug ? s.prices[slug] : undefined));
-
-  // Sadece altın için kendi polling — chart Yahoo GC=F (USD/oz) gösteriyor,
-  // header TL gram göstermeli, farklı birimler. Döviz/hisse için chart'la
-  // tutarlılık adına Yahoo (livePriceStore üzerinden) kullanıyoruz.
-  const [truncgilLive, setTruncgilLive] =
-    useState<{ price: number; changePct: number | null } | null>(null);
-
-  useEffect(() => {
-    if (type !== "altin") return;
-
-    const poll = async () => {
-      try {
-        const res = await fetch("/api/market", { cache: "no-store" });
-        if (!res.ok) return;
-        const json = (await res.json()) as MarketResponse;
-        const item = json.tumAltin.find(g => g.type === code.toLowerCase());
-        if (item && item.rawValue > 0) {
-          setTruncgilLive({
-            price:     item.rawValue,
-            changePct: item.isPositive !== undefined
-              ? parseFloat(item.changePercent.replace(/[%+]/g, "").replace(",", "."))
-                * (item.isPositive ? 1 : -1)
-              : null,
-          });
-        }
-      } catch { /* sessiz */ }
-    };
-    poll();
-    const id = setInterval(poll, HEADER_POLL_MS);
-    return () => clearInterval(id);
-  }, [type, code]);
-
-  // Önceliklendirme:
-  //  - hisse → storeLive (ChartSection Yahoo close yazıyor)
-  //  - doviz → storeLive * displayPer (Yahoo ham/raw, JPY gibi displayPer'lı için skala)
-  //  - altin → truncgilLive (chart USD/oz, header TL gram → farklı birim)
-  //  - fon ya da slugsız → initial server props
-  const live =
-    type === "hisse" ? storeLive ?? null
-    : type === "doviz" && storeLive
-        ? { price: storeLive.price * displayPer, changePct: storeLive.changePct }
-    : type === "altin" ? truncgilLive
+  const live = storeLive
+    ? type === "doviz"
+      ? { price: storeLive.price * displayPer, changePct: storeLive.changePct }
+      : storeLive
     : null;
 
   const displayPrice     = live?.price     ?? price;
   const displayChangePct = live?.changePct ?? changePct;
+
+  // Investing.com tarzı yeşil/kırmızı flash — fiyat değiştiği anda 600ms.
+  const flashCls = useFlashClass(displayPrice);
 
   return (
     <div className="rounded-[1.75rem] border border-white/10 bg-[linear-gradient(135deg,rgba(45,227,168,0.06),rgba(11,16,38,0.95))] p-6">
@@ -115,7 +81,7 @@ export function AssetHeader({
                 {displayChangePct >= 0
                   ? <TrendingUp className="h-3 w-3" />
                   : <TrendingDown className="h-3 w-3" />}
-                {displayChangePct >= 0 ? "+" : "-"}{fmt(Math.abs(displayChangePct), 2)}%
+                {displayChangePct >= 0 ? "+" : "-"}{fmtPercent(Math.abs(displayChangePct))}%
               </span>
             )}
             {badges}
@@ -125,7 +91,11 @@ export function AssetHeader({
 
           <div className="mt-4 flex items-end gap-3">
             <p className="text-4xl font-semibold text-white">
-              {fmtPrice(displayPrice)}
+              <span
+                className={`inline-block rounded-md px-1.5 transition-colors duration-500 ${flashCls}`}
+              >
+                {fmtPrice(displayPrice, slug)}
+              </span>
               <span className="ml-2 text-xl font-normal text-mist/45">{unit}</span>
             </p>
           </div>
@@ -141,7 +111,13 @@ export function AssetHeader({
   );
 }
 
-function fmtPrice(v: number): string {
+/**
+ * Slug verilirse varlık tipine göre hassasiyet (FX=4, hisse/altın=2, fon=4).
+ * Slug yoksa eski büyüklük-tabanlı auto davranış (landing card mock'ları için).
+ */
+function fmtPrice(v: number, slug?: string): string {
+  const kind: AssetKind | null = slug ? kindFromSlug(slug) : null;
+  if (kind) return fmtAsset(v, kind);
   if (v >= 1000) return fmt(v, 0);
   if (v >= 10)   return fmt(v, 2);
   return fmt(v, 4);

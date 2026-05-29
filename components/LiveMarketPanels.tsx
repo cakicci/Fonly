@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BarChart2, Coins, ExternalLink, Gem, TrendingDown, TrendingUp } from "lucide-react";
 import type { MarketResponse } from "@/app/api/market/route";
 import { isMarketResponseFresh } from "@/lib/market-helpers";
+import { FlashPrice, parseTrPrice } from "./FlashPrice";
 
 const POLL_MS = 5_000;
 
@@ -87,10 +88,10 @@ function DovizPanel({ data, loading }: { data: MarketResponse | null; loading: b
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-semibold text-white">
+                  <FlashPrice value={item.rawValue} className="text-sm font-semibold text-white">
                     {item.value}
                     <span className="ml-1 text-xs font-normal text-mist/40">TL</span>
-                  </span>
+                  </FlashPrice>
                   <span
                     className={`ml-2 text-xs font-medium ${
                       item.isPositive ? "text-emerald-300" : "text-rose-300"
@@ -133,7 +134,12 @@ function AltinPanel({ data, loading }: { data: MarketResponse | null; loading: b
         <div className="space-y-3">
           <Link href="/altin/gram" className="block rounded-xl px-2 py-1 transition hover:bg-white/[0.04]">
             <p className="text-xs text-mist/50">Gram altın</p>
-            <p className="mt-1 text-3xl font-semibold text-amber-200">{data.altin.gram}</p>
+            <FlashPrice
+              value={data.altin.gramRaw}
+              className="mt-1 text-3xl font-semibold text-amber-200"
+            >
+              {data.altin.gram}
+            </FlashPrice>
           </Link>
 
           <div className="grid grid-cols-3 gap-2 pt-1">
@@ -149,14 +155,18 @@ function AltinPanel({ data, loading }: { data: MarketResponse | null; loading: b
                            transition hover:border-amber-200/20 hover:bg-white/[0.07]"
               >
                 <p className="text-[10px] text-mist/48">{label}</p>
-                <p className="mt-1 text-xs font-semibold text-white">{value}</p>
+                <FlashPrice value={parseTrPrice(value)} className="mt-1 text-xs font-semibold text-white">
+                  {value}
+                </FlashPrice>
               </Link>
             ))}
           </div>
 
           <div className="px-2">
             <p className="text-xs text-mist/50">Ons (USD)</p>
-            <p className="mt-0.5 text-sm font-semibold text-white">{data.altin.oz}</p>
+            <FlashPrice value={parseTrPrice(data.altin.oz)} className="mt-0.5 text-sm font-semibold text-white">
+              {data.altin.oz}
+            </FlashPrice>
           </div>
         </div>
       )}
@@ -199,7 +209,12 @@ function BorsaPanel({ data, loading }: { data: MarketResponse | null; loading: b
           {endeks && (
             <div>
               <p className="text-xs text-mist/50">{endeks.name}</p>
-              <p className="mt-1 text-3xl font-semibold text-white">{endeks.value}</p>
+              <FlashPrice
+                value={parseTrPrice(endeks.value)}
+                className="mt-1 text-3xl font-semibold text-white"
+              >
+                {endeks.value}
+              </FlashPrice>
               <div
                 className={`mt-2 flex items-center gap-1 text-sm font-semibold ${
                   endeks.isPositive ? "text-emerald-200" : "text-rose-200"
@@ -230,7 +245,9 @@ function BorsaPanel({ data, loading }: { data: MarketResponse | null; loading: b
                     <p className="text-[10px] text-mist/45">{item.name}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-semibold text-white">{item.value}</p>
+                    <FlashPrice value={parseTrPrice(item.value)} className="text-xs font-semibold text-white">
+                      {item.value}
+                    </FlashPrice>
                     <p
                       className={`text-[10px] font-medium ${
                         item.isPositive ? "text-emerald-300" : "text-rose-300"

@@ -21,7 +21,13 @@ export const YAHOO_PARAMS: Record<Timeframe, YahooParams> = {
   "5dk":  { range: "5d",  interval: "5m"  },
   "15dk": { range: "5d",  interval: "15m" },
   "30dk": { range: "1mo", interval: "30m" },
-  // Günlük ve üstü
+  // Bar-süresi tabanlı (investing.com tarzı teknik analiz)
+  "1S":   { range: "1mo", interval: "60m" },          // saatlik
+  "5S":   { range: "3mo", interval: "60m" },          // 5 saatlik (60m fetched, 5× aggregated)
+  "1D":   { range: "1y",  interval: "1d"  },          // günlük
+  "1W":   { range: "5y",  interval: "1wk" },          // haftalık
+  "1Mo":  { range: "10y", interval: "1mo" },          // aylık
+  // Günlük ve üstü (eski range-tabanlı — grafik sayfasında hâlâ kullanılıyor)
   "1G":   { range: "1d",  interval: "5m"  },
   "1H":   { range: "5d",  interval: "30m" },
   "1A":   { range: "1mo", interval: "1d"  },
@@ -29,6 +35,15 @@ export const YAHOO_PARAMS: Record<Timeframe, YahooParams> = {
   "1Y":   { range: "1y",  interval: "1d"  },
   "5Y":   { range: "5y",  interval: "1wk" },
   "MAX":  { range: "10y", interval: "1wk" },
+}
+
+/**
+ * Yahoo'dan çekildikten sonra kaç barı tek bara birleştir.
+ * 5S için: 60m bar'ları 5'er gruplayıp 5 saatlik bar üretiyoruz (Yahoo
+ * 5h interval'ı doğrudan desteklemiyor).
+ */
+export const YAHOO_BUCKET_BY: Partial<Record<Timeframe, number>> = {
+  "5S": 5,
 }
 
 /**
@@ -45,6 +60,11 @@ export const TEFAS_PERIYOD: Record<Timeframe, number> = {
   "5dk":  13,
   "15dk": 13,
   "30dk": 13,
+  "1S":   13,
+  "5S":   13,
+  "1D":   12,
+  "1W":   60,
+  "1Mo":  60,
   "1G":   13,
   "1H":   13,
   "1A":   1,
@@ -56,6 +76,7 @@ export const TEFAS_PERIYOD: Record<Timeframe, number> = {
 
 export const ALL_TIMEFRAMES: Timeframe[] = [
   "1dk", "5dk", "15dk", "30dk",
+  "1S", "5S", "1D", "1W", "1Mo",
   "1G", "1H", "1A", "3A", "1Y", "5Y", "MAX",
 ]
 
@@ -64,6 +85,11 @@ export const TIMEFRAME_LABELS: Record<Timeframe, string> = {
   "5dk":  "5dk",
   "15dk": "15dk",
   "30dk": "30dk",
+  "1S":   "Saatlik",
+  "5S":   "5 Saatlik",
+  "1D":   "Günlük",
+  "1W":   "Haftalık",
+  "1Mo":  "Aylık",
   "1G":   "1G",
   "1H":   "1H",
   "1A":   "1A",

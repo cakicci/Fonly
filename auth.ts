@@ -5,6 +5,12 @@ import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { isPremium } from "@/lib/auth/premium";
+
+// Premium durumu JWT'de cache'lenir; her istekte DB'ye gitmemek için 5dk'lık
+// bir refresh aralığı uygulanır. Abonelik başladığında/bittiğinde kullanıcı
+// en geç 5dk içinde doğru duruma geçer.
+const PREMIUM_REFRESH_MS = 5 * 60 * 1000;
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -67,9 +73,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login"
   },
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.premiumCheckedAt = 0; // ilk girişte premium check zorla
+      }
+
+      const userId = token.id as string | undefined;
+      if (userId) {
+        const lastCheck = token.premiumCheckedAt ?? 0;
+        if (Date.now() - lastCheck > PREMIUM_REFRESH_MS) {
+          token.isPremium = await isPremium(userId);
+          token.premiumCheckedAt = Date.now();
+        }
       }
 
       return token;
@@ -77,6 +93,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string;
+        session.user.isPremium = token.isPremium === true;
       }
 
       return session;

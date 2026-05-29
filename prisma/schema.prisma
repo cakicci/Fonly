@@ -22,6 +22,29 @@ model User {
   sessions      Session[]
   watchlist     Watchlist[]
   priceAlerts   PriceAlert[]
+  subscription  Subscription?
+}
+
+/// Premium abonelik. AI özellikleri ve gelecekteki premium-only feature'lar için.
+/// Faz 11.5'te Iyzico/PayTR/Stripe entegrasyonu ile providerSubscriptionId doldurulur.
+/// `status = "active" | "trialing"` ve `currentPeriodEnd > now()` ise kullanıcı premium.
+model Subscription {
+  id                     String    @id @default(cuid())
+  userId                 String    @unique
+  plan                   String    // "monthly" | "yearly" | "trial"
+  status                 String    // "active" | "trialing" | "past_due" | "canceled" | "incomplete"
+  currentPeriodStart     DateTime
+  currentPeriodEnd       DateTime
+  cancelAtPeriodEnd      Boolean   @default(false)
+  trialEnd               DateTime?
+  providerSubscriptionId String?
+  providerCustomerId     String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, currentPeriodEnd])
 }
 
 /// Kullanıcının takip listesi. slug formatı "hisse-THYAO", "doviz-USD", vb.
@@ -88,4 +111,27 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+/// AI tarafından risk/vade kategorisine atanmış BIST hisseleri.
+/// Batch script (`scripts/analyze-stocks.ts`) günlük çalışır ve bu tabloyu doldurur.
+/// `/kategori/[key]` sayfası bu tabloyu okur:
+///   - Free kullanıcılar: yalnızca `isWellKnown = true` (BIST 30) — top 5
+///   - Premium kullanıcılar: tüm satırlar, aiScore sırasıyla
+/// `modelVersion = "seed"` AI'sız ilk seed; gerçek model ID (örn. "claude-opus-4-7") AI run'larından gelir.
+model StockAnalysis {
+  symbol         String   @id              // "BIMAS"
+  name           String                    // "BİM Mağazalar"
+  risk           String                    // "low" | "medium" | "high"
+  horizon        String                    // "short" | "long"
+  isWellKnown    Boolean  @default(false)  // BIST 30 üyesi mi
+  aiScore        Float    @default(50)     // 0-100, premium sıralama
+  aiSummary      String?  @db.Text         // tek cümle özet — kart üstü
+  aiExplanation  String?  @db.Text         // daha uzun açıklama — kart altı
+  analyzedAt     DateTime @default(now())
+  modelVersion   String   @default("seed")
+
+  @@index([risk, isWellKnown])
+  @@index([horizon, isWellKnown])
+  @@index([aiScore])
 }

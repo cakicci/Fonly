@@ -3,13 +3,18 @@ import Link from "next/link";
 import { ArrowLeft, Scale, Shield, Sprout, TimerReset, Waves } from "lucide-react";
 import type { Metadata } from "next";
 import type { LucideIcon } from "lucide-react";
-import { StockCard } from "@/components/StockCard";
-import { stocks } from "@/data/stocks";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { isPremium } from "@/lib/auth/premium";
+import { AnalyzedStockCard, type AnalyzedStock } from "@/components/AnalyzedStockCard";
+import { BlurredStockCard } from "@/components/billing/BlurredStockCard";
 import { CATEGORIES, CATEGORY_FILTER } from "@/components/CategoryFilter";
+import type { RiskLevel, Horizon } from "@/data/stocks";
 
 type Params = { key: string };
 
-// Geçerli key'ler
+const FREE_LIMIT = 2;
+
 const VALID_KEYS = Object.keys(CATEGORY_FILTER) as (keyof typeof CATEGORY_FILTER)[];
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -20,7 +25,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
   "kisa-vadeli":   TimerReset,
 };
 
-// Accent renkleri her kategori için
 const ACCENT: Record<string, { border: string; bg: string; text: string; iconBg: string }> = {
   "dusuk-riskli":  { border: "border-emerald-200/16", bg: "bg-[linear-gradient(135deg,rgba(45,227,168,0.07),rgba(12,24,22,0.97))]", text: "text-emerald-200", iconBg: "bg-emerald-300/12" },
   "orta-riskli":   { border: "border-amber-200/16",   bg: "bg-[linear-gradient(135deg,rgba(251,191,36,0.07),rgba(12,24,22,0.97))]",  text: "text-amber-200",   iconBg: "bg-amber-300/12"   },
@@ -35,21 +39,51 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return { title: `${cat.title} Hisseler — Fonly` };
 }
 
-export default function KategoriPage({ params }: { params: Params }) {
+export default async function KategoriPage({ params }: { params: Params }) {
   const key = params.key;
   if (!VALID_KEYS.includes(key as keyof typeof CATEGORY_FILTER)) notFound();
 
-  const filter  = CATEGORY_FILTER[key as keyof typeof CATEGORY_FILTER];
-  const cat     = CATEGORIES.find(c => c.key === key)!;
-  const Icon    = ICON_MAP[key];
-  const accent  = ACCENT[key];
+  const filter = CATEGORY_FILTER[key as keyof typeof CATEGORY_FILTER];
+  const cat    = CATEGORIES.find(c => c.key === key)!;
+  const Icon   = ICON_MAP[key];
+  const accent = ACCENT[key];
 
-  // Hisseleri filtrele
-  const filtered = stocks.filter(s =>
-    filter.field === "risk"
-      ? s.risk    === filter.value
-      : s.horizon === filter.value
-  );
+  const session = await auth();
+  const premium = await isPremium(session?.user?.id);
+
+  const baseWhere = filter.field === "risk"
+    ? { risk:    filter.value }
+    : { horizon: filter.value };
+
+  // Free: yalnızca BIST 30'dan en yüksek aiScore'lu 2 hisse.
+  // Premium: hepsi, aiScore sırasıyla.
+  // ÖNEMLİ: free için sadece isWellKnown=true + take 2 satır çekiyoruz —
+  // geri kalan TÜM hisse sembolleri (BIST 30 fazlası + non-BIST 30) free
+  // kullanıcının HTML'ine HİÇ sızmıyor. Sadece kaç tane olduğu sayı olarak gelir.
+  const stocks = await prisma.stockAnalysis.findMany({
+    where:   premium ? baseWhere : { ...baseWhere, isWellKnown: true },
+    orderBy: [{ aiScore: "desc" }, { symbol: "asc" }],
+    take:    premium ? undefined : FREE_LIMIT,
+  });
+
+  // Free için: kaç hisse "gizli" (BIST 30 fazlası + non-BIST 30 hepsi)?
+  let hiddenCount = 0;
+  if (!premium) {
+    const totalInCategory = await prisma.stockAnalysis.count({ where: baseWhere });
+    hiddenCount = Math.max(0, totalInCategory - stocks.length);
+  }
+
+  const stocksTyped: AnalyzedStock[] = stocks.map(s => ({
+    symbol:        s.symbol,
+    name:          s.name,
+    risk:          s.risk as RiskLevel,
+    horizon:       s.horizon as Horizon,
+    isWellKnown:   s.isWellKnown,
+    aiSummary:     s.aiSummary,
+    aiExplanation: s.aiExplanation,
+    analyzedAt:    s.analyzedAt,
+    modelVersion:  s.modelVersion,
+  }));
 
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
@@ -75,7 +109,9 @@ export default function KategoriPage({ params }: { params: Params }) {
               <h1 className="mt-1 text-3xl font-semibold text-white sm:text-4xl">{cat.title}</h1>
               <p className="mt-3 max-w-2xl text-base leading-7 text-mist/65">{cat.description}</p>
               <p className={`mt-4 text-sm font-medium ${accent.text}`}>
-                {filtered.length} hisse listeleniyor
+                {premium
+                  ? `${stocksTyped.length} hisse listeleniyor`
+                  : `${stocksTyped.length} blue chip hisse · ${hiddenCount > 0 ? `+${hiddenCount} Premium'da` : "tümü"}`}
               </p>
             </div>
           </div>
@@ -96,17 +132,30 @@ export default function KategoriPage({ params }: { params: Params }) {
         </div>
 
         {/* Hisse listesi */}
-        {filtered.length === 0 ? (
+        {stocksTyped.length === 0 && hiddenCount === 0 ? (
           <div className="rounded-2xl border border-white/8 bg-white/[0.03] py-16 text-center">
             <p className="text-sm text-mist/45">Bu kategoride henüz hisse eklenmemiş.</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map(stock => (
-              <StockCard key={stock.symbol} stock={stock} />
+            {stocksTyped.map(stock => (
+              <AnalyzedStockCard key={stock.symbol} stock={stock} />
+            ))}
+            {!premium && Array.from({ length: hiddenCount }).map((_, i) => (
+              <BlurredStockCard
+                key={`blurred-${i}`}
+                index={i}
+                categoryTitle={cat.title}
+              />
             ))}
           </div>
         )}
+
+        {/* Disclaimer */}
+        <p className="px-2 text-xs leading-5 text-mist/35">
+          Bu liste algoritmik kategorilemeye dayanır ve yatırım tavsiyesi değildir.
+          Tüm yatırım kararları kullanıcının sorumluluğundadır.
+        </p>
 
         {/* Geri butonu */}
         <div className="pt-2">

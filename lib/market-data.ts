@@ -11,7 +11,7 @@
 
 export async function fetchYahooChart(
   ticker: string
-): Promise<{ price: number; changePercent: number } | null> {
+): Promise<{ price: number; prev: number; changePercent: number } | null> {
   try {
     const res = await fetch(
       `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=2d`,
@@ -26,7 +26,7 @@ export async function fetchYahooChart(
     if (!meta?.regularMarketPrice) return null
     const price: number = meta.regularMarketPrice
     const prev: number = meta.chartPreviousClose ?? price
-    return { price, changePercent: prev ? ((price - prev) / prev) * 100 : 0 }
+    return { price, prev, changePercent: prev ? ((price - prev) / prev) * 100 : 0 }
   } catch {
     return null
   }
@@ -100,18 +100,41 @@ export interface TruncgilResponse {
 }
 
 export async function fetchTruncgilToday(): Promise<TruncgilResponse | null> {
-  try {
-    const res = await fetch("https://finans.truncgil.com/v4/today.json", {
-      headers: { "User-Agent": "Mozilla/5.0" },
-      next: { revalidate: 60 }, // dakikalık tazelik yeterli
-    })
-    if (!res.ok) return null
-    const json = (await res.json()) as TruncgilResponse
-    if (!json || typeof json !== "object" || !json.Update_Date) return null
-    return json
-  } catch {
-    return null
+  // Truncgil sometimes closes the TLS connection mid-handshake
+  // ("UND_ERR_SOCKET: other side closed"). Without retry, a single hiccup
+  // wipes every exotic currency (RUB/SAR/KWD/…) from the response since they
+  // have no Yahoo `<CODE>TRY=X` pair to fall back to. 3 attempts with backoff.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch("https://finans.truncgil.com/v4/today.json", {
+        headers: { "User-Agent": "Mozilla/5.0" },
+        next: { revalidate: 60 }, // dakikalık tazelik yeterli
+      })
+      if (!res.ok) {
+        if (attempt < 2) {
+          await new Promise(r => setTimeout(r, 250 * (attempt + 1)))
+          continue
+        }
+        return null
+      }
+      const json = (await res.json()) as TruncgilResponse
+      if (!json || typeof json !== "object" || !json.Update_Date) {
+        if (attempt < 2) {
+          await new Promise(r => setTimeout(r, 250 * (attempt + 1)))
+          continue
+        }
+        return null
+      }
+      return json
+    } catch {
+      if (attempt < 2) {
+        await new Promise(r => setTimeout(r, 250 * (attempt + 1)))
+        continue
+      }
+      return null
+    }
   }
+  return null
 }
 
 /**

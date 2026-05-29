@@ -27,6 +27,8 @@ export interface ChartToolbarProps {
   candleDisabled: boolean;
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
+  /** Gösterilecek timeframe seti — verilmezse ALL_TIMEFRAMES. */
+  timeframes?:  Timeframe[];
 }
 
 const INDICATORS: { key: IndicatorKey; label: string; group: "MA" | "Volatility" }[] = [
@@ -45,6 +47,7 @@ export function ChartToolbar({
   indicators, onToggleIndicator,
   candleDisabled,
   isFullscreen, onToggleFullscreen,
+  timeframes = ALL_TIMEFRAMES,
 }: ChartToolbarProps) {
   const [indMenuOpen, setIndMenuOpen] = useState(false);
 
@@ -52,7 +55,7 @@ export function ChartToolbar({
     <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.025] p-2">
       {/* Timeframe sekmeleri */}
       <div className="flex items-center gap-0.5 rounded-xl border border-white/8 bg-white/[0.02] p-0.5">
-        {ALL_TIMEFRAMES.map(tf => (
+        {timeframes.map(tf => (
           <button
             key={tf}
             onClick={() => onTimeframe(tf)}

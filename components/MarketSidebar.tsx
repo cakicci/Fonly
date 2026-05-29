@@ -7,12 +7,12 @@ import {
   CircleDollarSign,
   Gem,
   Lightbulb,
-  RefreshCw,
   TrendingDown,
   TrendingUp
 } from "lucide-react";
 import type { MarketResponse } from "@/app/api/market/route";
 import { isMarketResponseFresh } from "@/lib/market-helpers";
+import { FlashPrice, parseTrPrice } from "./FlashPrice";
 
 const REFRESH_INTERVAL = 5_000;
 
@@ -60,6 +60,7 @@ function GroupLabel({ icon: Icon, label, color }: { icon: React.ElementType; lab
 function Row({
   label,
   value,
+  rawValue,
   flag,
   badge,
   isPositive,
@@ -68,6 +69,8 @@ function Row({
 }: {
   label: string;
   value: string;
+  /** Numeric raw price for flash-on-change. Undefined → no flash. */
+  rawValue?: number;
   flag?: string;
   badge?: string;
   isPositive?: boolean;
@@ -89,7 +92,9 @@ function Row({
             {badge}
           </span>
         )}
-        <span className="text-sm font-semibold text-white">{value}</span>
+        <FlashPrice value={rawValue} className="text-sm font-semibold text-white">
+          {value}
+        </FlashPrice>
       </div>
     </>
   );
@@ -109,12 +114,10 @@ function Row({
 export function MarketSidebar() {
   const [data, setData] = useState<MarketResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [tipIndex] = useState(() => Math.floor(Math.random() * TIPS.length));
 
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setIsLoading(true);
-    else setIsRefreshing(true);
     try {
       const res = await fetch("/api/market", { cache: "no-store" });
       if (res.ok) {
@@ -123,7 +126,6 @@ export function MarketSidebar() {
       }
     } catch { /* sessiz */ } finally {
       setIsLoading(false);
-      setIsRefreshing(false);
     }
   }, []);
 
@@ -149,14 +151,6 @@ export function MarketSidebar() {
           </div>
           <h2 className="mt-1 text-xl font-semibold text-white">Bugün ne oluyor?</h2>
         </div>
-        <button
-          onClick={() => fetchData(true)}
-          disabled={isRefreshing}
-          aria-label="Yenile"
-          className="mt-1 rounded-xl p-2 text-mist/40 transition hover:bg-white/8 hover:text-mist/80 disabled:opacity-40"
-        >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
-        </button>
       </div>
 
       {/* ── Döviz ── */}
@@ -170,6 +164,7 @@ export function MarketSidebar() {
                   key={item.code}
                   label={item.shortName}
                   value={`${item.value} TL`}
+                  rawValue={item.rawValue}
                   flag={item.flag}
                   href={`/doviz/${item.code.toLowerCase()}`}
                 />
@@ -193,13 +188,21 @@ export function MarketSidebar() {
             Array.from({ length: 4 }).map((_, i) => <SkeletonRow key={i} />)
           ) : (
             <>
-              <Row label="Gram"   value={data?.altin.gram   ?? "—"} highlight href="/altin/gram"   />
-              <Row label="Çeyrek" value={data?.altin.ceyrek ?? "—"} href="/altin/ceyrek" />
-              <Row label="Yarım"  value={data?.altin.yarim  ?? "—"} href="/altin/yarim"  />
-              <Row label="Tam"    value={data?.altin.tam    ?? "—"} href="/altin/tam"    />
+              <Row label="Gram"   value={data?.altin.gram   ?? "—"} rawValue={data?.altin.gramRaw}            highlight href="/altin/gram"   />
+              <Row label="Çeyrek" value={data?.altin.ceyrek ?? "—"} rawValue={parseTrPrice(data?.altin.ceyrek)} href="/altin/ceyrek" />
+              <Row label="Yarım"  value={data?.altin.yarim  ?? "—"} rawValue={parseTrPrice(data?.altin.yarim)}  href="/altin/yarim"  />
+              <Row label="Tam"    value={data?.altin.tam    ?? "—"} rawValue={parseTrPrice(data?.altin.tam)}    href="/altin/tam"    />
             </>
           )}
         </div>
+        {!isLoading && (
+          <Link
+            href="/altin"
+            className="mt-2 block text-center text-[11px] text-amber-200/60 transition hover:text-amber-200"
+          >
+            Tüm altın türleri →
+          </Link>
+        )}
       </div>
 
       {/* ── Borsa — Endeks ── */}
@@ -212,6 +215,7 @@ export function MarketSidebar() {
             <Row
               label={endeks.name}
               value={endeks.value}
+              rawValue={parseTrPrice(endeks.value)}
               badge={endeks.changePercent}
               isPositive={endeks.isPositive}
               highlight
@@ -233,6 +237,7 @@ export function MarketSidebar() {
                       key={item.symbol}
                       label={`${item.symbol} · ${item.name}`}
                       value={item.value}
+                      rawValue={parseTrPrice(item.value)}
                       badge={item.changePercent}
                       isPositive={item.isPositive}
                       href={`/hisse/${item.symbol.toLowerCase()}`}
@@ -240,6 +245,14 @@ export function MarketSidebar() {
                   ))}
             </div>
           </>
+        )}
+        {!isLoading && (
+          <Link
+            href="/hisseler"
+            className="mt-2 block text-center text-[11px] text-emerald-200/60 transition hover:text-emerald-200"
+          >
+            Tüm hisseler →
+          </Link>
         )}
       </div>
 

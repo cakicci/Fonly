@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { BIST_TICKERS } from "@/data/bist-tickers";
+import { fmtAsset, fmtPercent } from "@/lib/format";
 
 export interface BistStock {
   symbol: string;
@@ -33,10 +34,6 @@ async function fetchOne(symbol: string): Promise<{ price: number; changePercent:
   }
 }
 
-function fmt(v: number, d = 2) {
-  return new Intl.NumberFormat("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d }).format(v);
-}
-
 export async function GET() {
   const stocks: BistStock[] = [];
 
@@ -53,8 +50,8 @@ export async function GET() {
       stocks.push({
         symbol: ticker.symbol,
         name: ticker.name,
-        price: `${fmt(result.price, 2)} ₺`,
-        change: `${result.changePercent >= 0 ? "+" : ""}${fmt(result.changePercent, 2)}%`,
+        price: `${fmtAsset(result.price, "stock")} ₺`,
+        change: `${result.changePercent >= 0 ? "+" : ""}${fmtPercent(result.changePercent)}%`,
         isPositive: result.changePercent >= 0,
         raw: result.price
       });

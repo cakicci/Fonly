@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AdvancedChart } from "./AdvancedChart";
 import { ChartToolbar } from "./ChartToolbar";
+import { ALL_TIMEFRAMES, parseAssetSlug } from "@/lib/chart/timeframe";
+import { kindFromSlug } from "@/lib/format";
 import { useLivePriceStore } from "@/lib/store/livePriceStore";
 import type {
   Candle,
@@ -28,6 +30,12 @@ export interface ChartSectionProps {
   supportsCandle: boolean;
   /** UI hint — tooltip fiyat birimi (örn. "₺", "$"). */
   unit?:          string;
+  /** Açık başlayacak indikatörler — Grafik sayfasında daha zengin set kullanılır. */
+  defaultIndicators?: IndicatorKey[];
+  /** Hacim panelini varsayılan açık aç. */
+  defaultShowVolume?: boolean;
+  /** Pikseldeki minimum chart yüksekliği (varsayılan 480). */
+  chartHeight?:       number;
 }
 
 export function ChartSection({
@@ -36,13 +44,16 @@ export function ChartSection({
   defaultType = "candle",
   supportsCandle,
   unit = "",
+  defaultIndicators = [],
+  defaultShowVolume = false,
+  chartHeight = 480,
 }: ChartSectionProps) {
   const [timeframe,  setTimeframe]   = useState<Timeframe>(defaultTf);
   const [chartType,  setChartType]   = useState<ChartType>(
     supportsCandle ? defaultType : "line"
   );
-  const [showVolume, setShowVolume]  = useState(false);
-  const [indicators, setIndicators]  = useState<IndicatorKey[]>([]);
+  const [showVolume, setShowVolume]  = useState(defaultShowVolume);
+  const [indicators, setIndicators]  = useState<IndicatorKey[]>(defaultIndicators);
   const [isFullscreen, setFullscreen] = useState(false);
   const [resp,       setResp]        = useState<OhlcResponse | null>(null);
   const [loading,    setLoading]     = useState(true);
@@ -64,10 +75,13 @@ export function ChartSection({
       const json: OhlcResponse = await res.json();
       setResp(json);
 
-      // İlk yüklemede de livePriceStore'a yaz — AssetHeader hemen senkronlansın
-      // (yoksa 60sn ilk polling tick'i gelene kadar server-render değeri
-      // gösterir ve chart ile uyuşmaz).
-      if (!json.isLineOnly && json.candles.length >= 2) {
+      // İlk yüklemede de livePriceStore'a yaz — AssetHeader hemen senkronlansın.
+      // ÖNEMLİ: candles[last].close yerine `latest.price` kullanıyoruz çünkü
+      // Yahoo uzun range sorgularında son tam günlük mum bir gün geride
+      // kalabiliyor (örn. BIST hisselerinde range=1y).
+      if (json.latest) {
+        setLivePrice(slug, json.latest.price, json.latest.changePct);
+      } else if (!json.isLineOnly && json.candles.length >= 2) {
         const last = json.candles[json.candles.length - 1];
         const prev = json.candles[json.candles.length - 2];
         const changePct = prev.close ? ((last.close - prev.close) / prev.close) * 100 : null;
@@ -100,10 +114,15 @@ export function ChartSection({
         const last = candles[candles.length - 1];
         setTick(last);
 
-        // Live price store'a yaz — AssetHeader subscribe ediyor
-        const prevClose = candles[candles.length - 2].close;
-        const changePct = prevClose ? ((last.close - prevClose) / prevClose) * 100 : null;
-        setLivePrice(slug, last.close, changePct);
+        // Live price store'a yaz — Yahoo'nun meta.regularMarketPrice'ı
+        // candles'ın son closeundan daha güncel olabiliyor.
+        if (json.latest) {
+          setLivePrice(slug, json.latest.price, json.latest.changePct);
+        } else {
+          const prevClose = candles[candles.length - 2].close;
+          const changePct = prevClose ? ((last.close - prevClose) / prevClose) * 100 : null;
+          setLivePrice(slug, last.close, changePct);
+        }
       } catch { /* sessiz */ }
     };
 
@@ -135,6 +154,12 @@ export function ChartSection({
   const isLineOnly = resp?.isLineOnly ?? !supportsCandle;
   const candleDisabled = isLineOnly;
 
+  const assetType = parseAssetSlug(slug).type;
+  const timeframes =
+    assetType === "hisse"
+      ? ALL_TIMEFRAMES.filter(tf => tf !== "1dk")
+      : ALL_TIMEFRAMES;
+
   return (
     <div
       ref={wrapRef}
@@ -156,17 +181,18 @@ export function ChartSection({
         candleDisabled={candleDisabled}
         isFullscreen={isFullscreen}
         onToggleFullscreen={() => setFullscreen(v => !v)}
+        timeframes={timeframes}
       />
 
       <div className={`relative rounded-2xl border border-white/8 bg-white/[0.02] p-4 ${
         isFullscreen ? "flex-1" : ""
       }`}>
         {loading ? (
-          <div className="flex h-[480px] items-center justify-center">
+          <div className="flex items-center justify-center" style={{ height: chartHeight }}>
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-300/30 border-t-emerald-300" />
           </div>
         ) : error ? (
-          <div className="flex h-[480px] flex-col items-center justify-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2" style={{ height: chartHeight }}>
             <p className="text-sm text-mist/50">{error}</p>
             <button
               onClick={fetchData}
@@ -182,12 +208,13 @@ export function ChartSection({
             showVolume={showVolume}
             indicators={indicators}
             isLineOnly={isLineOnly}
-            height={isFullscreen ? window.innerHeight - 160 : 480}
+            height={isFullscreen ? window.innerHeight - 160 : chartHeight}
             unit={unit}
+            assetKind={kindFromSlug(slug) ?? undefined}
             tickUpdate={tick}
           />
         ) : (
-          <div className="flex h-[480px] items-center justify-center">
+          <div className="flex items-center justify-center" style={{ height: chartHeight }}>
             <p className="text-sm text-mist/40">Veri yok</p>
           </div>
         )}

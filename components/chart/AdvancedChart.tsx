@@ -18,6 +18,7 @@ import {
 } from "lightweight-charts";
 import type { Candle, ChartType, IndicatorKey } from "@/types/chart";
 import { sma, ema, rsi, macd, bollinger } from "@/lib/chart/indicators";
+import { fmtAsset, priceFormatFor, type AssetKind } from "@/lib/format";
 
 export interface AdvancedChartProps {
   data:       Candle[];
@@ -29,6 +30,11 @@ export interface AdvancedChartProps {
   height?:    number;
   /** OHLC görselleştirmesinde formatlama için ipucu (örn. "₺", "$"). */
   unit?:      string;
+  /**
+   * Varlık tipi — y-ekseni hassasiyeti ve tooltip ondalık sayısı için.
+   * Verilmezse büyüklüğe göre auto (geriye dönük).
+   */
+  assetKind?: AssetKind;
   /**
    * Polling sonucu son mum güncellemesi — chart yeniden oluşturulmadan
    * `mainSeries.update(...)` çağrılır. null = no-op.
@@ -74,6 +80,7 @@ export function AdvancedChart({
   isLineOnly,
   height = 480,
   unit = "",
+  assetKind,
   tickUpdate,
 }: AdvancedChartProps) {
   const containerRef    = useRef<HTMLDivElement>(null);
@@ -143,6 +150,12 @@ export function AdvancedChart({
     chartRef.current = chart;
 
     // ── Ana seri ───────────────────────────────────────────────────────────
+    // Y-ekseni hassasiyeti: kind verilirse (FX=4, hisse=2, fon=4, altın=2);
+    // verilmezse büyüklüğe göre auto (geriye dönük).
+    const priceFormat = assetKind
+      ? { type: "price" as const, ...priceFormatFor(assetKind) }
+      : autoPriceFormat(data);
+
     let mainSeries: ISeriesApi<SeriesType>;
     if (effectiveType === "candle") {
       mainSeries = chart.addSeries(CandlestickSeries, {
@@ -152,6 +165,7 @@ export function AdvancedChart({
         borderDownColor: COLORS.downBorder,
         wickUpColor:     COLORS.upWick,
         wickDownColor:   COLORS.downWick,
+        priceFormat,
       });
       const candleData: CandlestickData<Time>[] = data.map(c => ({
         time:  c.time as Time,
@@ -167,6 +181,7 @@ export function AdvancedChart({
         topColor:     COLORS.areaTopMain,
         bottomColor:  COLORS.areaBotMain,
         lineWidth:    2,
+        priceFormat,
       });
       const lineData: LineData<Time>[] = data.map(c => ({
         time:  c.time as Time,
@@ -177,6 +192,7 @@ export function AdvancedChart({
       mainSeries = chart.addSeries(LineSeries, {
         color:     COLORS.lineMain,
         lineWidth: 2,
+        priceFormat,
       });
       const lineData: LineData<Time>[] = data.map(c => ({
         time:  c.time as Time,
@@ -328,13 +344,13 @@ export function AdvancedChart({
       {hoverOhlc && (
         <div className="pointer-events-none absolute left-2 top-2 z-10 rounded-lg border border-white/10 bg-ink/85 px-3 py-1.5 text-xs font-mono backdrop-blur-sm">
           <span className="text-mist/50">O</span>{" "}
-          <span className="text-white">{fmtNum(hoverOhlc.open)}</span>
+          <span className="text-white">{fmtTooltip(hoverOhlc.open, assetKind)}</span>
           <span className="ml-2 text-mist/50">H</span>{" "}
-          <span className="text-emerald-300">{fmtNum(hoverOhlc.high)}</span>
+          <span className="text-emerald-300">{fmtTooltip(hoverOhlc.high, assetKind)}</span>
           <span className="ml-2 text-mist/50">L</span>{" "}
-          <span className="text-rose-300">{fmtNum(hoverOhlc.low)}</span>
+          <span className="text-rose-300">{fmtTooltip(hoverOhlc.low, assetKind)}</span>
           <span className="ml-2 text-mist/50">C</span>{" "}
-          <span className="text-white">{fmtNum(hoverOhlc.close)}{unit}</span>
+          <span className="text-white">{fmtTooltip(hoverOhlc.close, assetKind)}{unit}</span>
         </div>
       )}
       <div ref={containerRef} className="w-full" style={{ height }} />
@@ -342,8 +358,22 @@ export function AdvancedChart({
   );
 }
 
-function fmtNum(v: number): string {
+function fmtTooltip(v: number, kind: AssetKind | undefined): string {
+  if (kind) return fmtAsset(v, kind);
+  // Fallback (kind verilmediyse) — eski büyüklük-tabanlı davranış.
   if (v >= 1000) return v.toLocaleString("tr-TR", { maximumFractionDigits: 2 });
   if (v >= 10)   return v.toFixed(2);
   return v.toFixed(4);
+}
+
+/**
+ * `assetKind` verilmediyse veri büyüklüğüne bakıp Lightweight Charts'a
+ * uygun precision/minMove döner. Eskiden Y-ekseni varsayılan 2 ondalıkta
+ * sabitti — bu en azından küçük fiyatlarda 4 hanyi açar.
+ */
+function autoPriceFormat(data: Candle[]): { type: "price"; precision: number; minMove: number } {
+  const sample = data[Math.floor(data.length / 2)]?.close ?? 0;
+  if (sample >= 1000) return { type: "price", precision: 2, minMove: 0.01 };
+  if (sample >= 10)   return { type: "price", precision: 2, minMove: 0.01 };
+  return { type: "price", precision: 4, minMove: 0.0001 };
 }

@@ -1,8 +1,10 @@
 import type {
+  AdxResult,
   BollingerResult,
   Candle,
   IndicatorPoint,
   MacdResult,
+  StochasticResult,
 } from "@/types/chart"
 
 /**
@@ -163,4 +165,196 @@ export function bollinger(
     lower.push({  time: t, value: mean - stdMultiplier * sigma })
   }
   return { middle, upper, lower }
+}
+
+// ── Stochastic Oscillator ───────────────────────────────────────────────────
+
+/**
+ * %K = 100 × (close - lowest(low, period)) / (highest(high, period) - lowest(low, period))
+ * %D = SMA(%K, smoothing)
+ *
+ * Standart: period=14, smoothing=3 (yavaş stokastik).
+ */
+export function stochastic(
+  candles: Candle[],
+  period = 14,
+  smoothing = 3,
+): StochasticResult {
+  if (candles.length < period) return { k: [], d: [] }
+  const k: IndicatorPoint[] = []
+
+  for (let i = period - 1; i < candles.length; i++) {
+    let hh = candles[i].high
+    let ll = candles[i].low
+    for (let j = i - period + 1; j <= i; j++) {
+      if (candles[j].high > hh) hh = candles[j].high
+      if (candles[j].low  < ll) ll = candles[j].low
+    }
+    const range = hh - ll
+    const val   = range === 0 ? 50 : ((candles[i].close - ll) / range) * 100
+    k.push({ time: candles[i].time, value: val })
+  }
+
+  // %D = SMA of %K
+  const d: IndicatorPoint[] = []
+  if (k.length >= smoothing) {
+    let sum = 0
+    for (let i = 0; i < smoothing; i++) sum += k[i].value
+    d.push({ time: k[smoothing - 1].time, value: sum / smoothing })
+    for (let i = smoothing; i < k.length; i++) {
+      sum += k[i].value - k[i - smoothing].value
+      d.push({ time: k[i].time, value: sum / smoothing })
+    }
+  }
+  return { k, d }
+}
+
+// ── Williams %R ──────────────────────────────────────────────────────────────
+
+/**
+ * %R = -100 × (highest(high) - close) / (highest(high) - lowest(low))
+ * Stochastic'in -100..0 ölçeğindeki ters versiyonu. < -80 aşırı satım, > -20 aşırı alım.
+ */
+export function williamsR(candles: Candle[], period = 14): IndicatorPoint[] {
+  if (candles.length < period) return []
+  const out: IndicatorPoint[] = []
+  for (let i = period - 1; i < candles.length; i++) {
+    let hh = candles[i].high
+    let ll = candles[i].low
+    for (let j = i - period + 1; j <= i; j++) {
+      if (candles[j].high > hh) hh = candles[j].high
+      if (candles[j].low  < ll) ll = candles[j].low
+    }
+    const range = hh - ll
+    const val   = range === 0 ? -50 : ((hh - candles[i].close) / range) * -100
+    out.push({ time: candles[i].time, value: val })
+  }
+  return out
+}
+
+// ── CCI — Commodity Channel Index ────────────────────────────────────────────
+
+/**
+ * Typical Price = (high + low + close) / 3
+ * CCI = (TP - SMA(TP, 20)) / (0.015 × meanDeviation)
+ * > +100 aşırı alım, < -100 aşırı satım.
+ */
+export function cci(candles: Candle[], period = 20): IndicatorPoint[] {
+  if (candles.length < period) return []
+  const out: IndicatorPoint[] = []
+  const tp = candles.map(c => (c.high + c.low + c.close) / 3)
+
+  for (let i = period - 1; i < tp.length; i++) {
+    let sum = 0
+    for (let j = i - period + 1; j <= i; j++) sum += tp[j]
+    const sma = sum / period
+
+    let md = 0
+    for (let j = i - period + 1; j <= i; j++) md += Math.abs(tp[j] - sma)
+    md /= period
+
+    const val = md === 0 ? 0 : (tp[i] - sma) / (0.015 * md)
+    out.push({ time: candles[i].time, value: val })
+  }
+  return out
+}
+
+// ── ATR — Average True Range (Wilder smoothing) ──────────────────────────────
+
+/**
+ * True Range = max(high-low, |high-prevClose|, |low-prevClose|)
+ * ATR = Wilder-smoothed TR (ilk değer = TR'nin period SMA'sı, sonrası
+ *   ATR = ((prev × (period-1)) + TR) / period )
+ */
+export function atr(candles: Candle[], period = 14): IndicatorPoint[] {
+  if (candles.length < period + 1) return []
+  const tr: number[] = [0] // index 0 — kullanılmaz
+  for (let i = 1; i < candles.length; i++) {
+    const c = candles[i], p = candles[i - 1]
+    tr.push(Math.max(
+      c.high - c.low,
+      Math.abs(c.high - p.close),
+      Math.abs(c.low  - p.close),
+    ))
+  }
+
+  let sum = 0
+  for (let i = 1; i <= period; i++) sum += tr[i]
+  let prev = sum / period
+  const out: IndicatorPoint[] = [{ time: candles[period].time, value: prev }]
+
+  for (let i = period + 1; i < candles.length; i++) {
+    prev = (prev * (period - 1) + tr[i]) / period
+    out.push({ time: candles[i].time, value: prev })
+  }
+  return out
+}
+
+// ── ADX — Average Directional Index ──────────────────────────────────────────
+
+/**
+ * Wilder'in trend gücü göstergesi. ADX > 25 → güçlü trend.
+ * +DI > -DI → yukarı, +DI < -DI → aşağı. ADX yön söylemez, sadece güç.
+ */
+export function adx(candles: Candle[], period = 14): AdxResult {
+  if (candles.length < period * 2) return { adx: [], plusDi: [], minusDi: [] }
+
+  const tr: number[]      = [0]
+  const plusDm: number[]  = [0]
+  const minusDm: number[] = [0]
+
+  for (let i = 1; i < candles.length; i++) {
+    const c = candles[i], p = candles[i - 1]
+    tr.push(Math.max(
+      c.high - c.low,
+      Math.abs(c.high - p.close),
+      Math.abs(c.low  - p.close),
+    ))
+    const upMove   = c.high - p.high
+    const downMove = p.low  - c.low
+    plusDm.push( upMove   > downMove && upMove   > 0 ? upMove   : 0)
+    minusDm.push(downMove > upMove   && downMove > 0 ? downMove : 0)
+  }
+
+  // İlk smoothing'ler — period'luk toplamlar (Wilder yöntemi)
+  let trSum = 0, pSum = 0, mSum = 0
+  for (let i = 1; i <= period; i++) {
+    trSum += tr[i]; pSum += plusDm[i]; mSum += minusDm[i]
+  }
+
+  const plusDi:  IndicatorPoint[] = []
+  const minusDi: IndicatorPoint[] = []
+  const dx: number[] = []
+
+  // İlk DI'lar
+  let pdi = trSum === 0 ? 0 : (pSum / trSum) * 100
+  let mdi = trSum === 0 ? 0 : (mSum / trSum) * 100
+  plusDi.push({  time: candles[period].time, value: pdi })
+  minusDi.push({ time: candles[period].time, value: mdi })
+  dx.push(pdi + mdi === 0 ? 0 : (Math.abs(pdi - mdi) / (pdi + mdi)) * 100)
+
+  for (let i = period + 1; i < candles.length; i++) {
+    trSum = trSum - trSum / period + tr[i]
+    pSum  = pSum  - pSum  / period + plusDm[i]
+    mSum  = mSum  - mSum  / period + minusDm[i]
+    pdi   = trSum === 0 ? 0 : (pSum / trSum) * 100
+    mdi   = trSum === 0 ? 0 : (mSum / trSum) * 100
+    plusDi.push({  time: candles[i].time, value: pdi })
+    minusDi.push({ time: candles[i].time, value: mdi })
+    dx.push(pdi + mdi === 0 ? 0 : (Math.abs(pdi - mdi) / (pdi + mdi)) * 100)
+  }
+
+  // ADX = DX'in period-Wilder ortalaması (DX'in ilk period'unu SMA'la, sonrasını smooth'la)
+  if (dx.length < period) return { adx: [], plusDi, minusDi }
+  let adxSum = 0
+  for (let i = 0; i < period; i++) adxSum += dx[i]
+  let adxVal = adxSum / period
+  const adxOut: IndicatorPoint[] = [
+    { time: plusDi[period - 1].time, value: adxVal },
+  ]
+  for (let i = period; i < dx.length; i++) {
+    adxVal = (adxVal * (period - 1) + dx[i]) / period
+    adxOut.push({ time: plusDi[i].time, value: adxVal })
+  }
+  return { adx: adxOut, plusDi, minusDi }
 }

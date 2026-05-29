@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, RefreshCw, Search, TrendingDown, TrendingUp } from "lucide-react";
+import { ArrowLeft, Search, TrendingDown, TrendingUp } from "lucide-react";
 import type { BistStock } from "@/app/api/bist/route";
 import { stocks, RISK_LABELS, HORIZON_LABELS, RISK_COLORS, HORIZON_COLORS } from "@/data/stocks";
 
@@ -37,7 +37,6 @@ function SkeletonCard() {
 export default function HisselerPage() {
   const [allStocks, setAllStocks] = useState<BistStock[]>([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState("");
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
 
@@ -45,7 +44,6 @@ export default function HisselerPage() {
 
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
-    else setRefreshing(true);
     try {
       const res = await fetch("/api/bist", { cache: "no-store" });
       if (res.ok) {
@@ -57,7 +55,6 @@ export default function HisselerPage() {
       /* sessiz */
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, []);
 
@@ -104,14 +101,6 @@ export default function HisselerPage() {
                 </p>
               )}
             </div>
-            <button
-              onClick={() => fetchData(true)}
-              disabled={refreshing}
-              aria-label="Yenile"
-              className="mt-1 rounded-xl p-2 text-mist/40 transition hover:bg-white/8 hover:text-mist/80 disabled:opacity-40"
-            >
-              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
-            </button>
           </div>
 
           {/* Arama */}

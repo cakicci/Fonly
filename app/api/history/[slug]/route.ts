@@ -30,6 +30,16 @@ const FOREX_TICKER: Record<string, string> = {
   CAD: "CADTRY=X", AUD: "AUDTRY=X",
 };
 
+// Exotic currencies: USD/<CODE> rate on Yahoo. TRY/<CODE> = USDTRY ÷ USD<CODE>
+// (same pattern as gold `GC=F × USDTRY`). Built by buildExoticForexMap.
+const FOREX_CROSS_TICKER: Record<string, string> = {
+  RUB: "RUB=X", SAR: "SAR=X", AED: "AED=X", KWD: "KWD=X", BHD: "BHD=X",
+  LYD: "LYD=X", ILS: "ILS=X", IQD: "IQD=X", SEK: "SEK=X", NOK: "NOK=X",
+  DKK: "DKK=X", PLN: "PLN=X", CZK: "CZK=X", HUF: "HUF=X", RON: "RON=X",
+  ZAR: "ZAR=X", INR: "INR=X", IDR: "IDR=X", MXN: "MXN=X", BRL: "BRL=X",
+  ARS: "ARS=X", NZD: "NZD=X",
+};
+
 // ── Period → Yahoo Finance parametre eşlemesi ────────────────────────────────
 
 const RANGE_CFG: Record<string, { range: string; interval: string }> = {
@@ -93,6 +103,27 @@ function buildGramAltinMap(
   return result;
 }
 
+// Exotic forex: USDTRY ÷ USD<CODE> = TRY/<CODE> per gün.
+function buildExoticForexMap(
+  usdCodeMap: Map<string, number>,
+  usdtryMap: Map<string, number>
+): Map<string, number> {
+  const result = new Map<string, number>();
+  const fxSorted = [...usdtryMap.entries()].sort(([a], [b]) => a.localeCompare(b));
+  let fxIdx = 0;
+
+  for (const [date, usdCode] of [...usdCodeMap.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+    if (usdCode <= 0) continue;
+    while (fxIdx + 1 < fxSorted.length && fxSorted[fxIdx + 1][0] <= date) {
+      fxIdx++;
+    }
+    const usdtry = fxSorted[fxIdx]?.[1];
+    if (!usdtry) continue;
+    result.set(date, usdtry / usdCode);
+  }
+  return result;
+}
+
 // ── Handler ──────────────────────────────────────────────────────────────────
 
 export async function GET(
@@ -108,17 +139,20 @@ export async function GET(
   const type = slug.substring(0, dashIdx);       // "doviz" | "altin" | "hisse"
   const code = slug.substring(dashIdx + 1);      // "USD" | "gram" | "THYAO"
 
-  let mainTicker = "";
-  let assetName  = "";
-  let assetUnit  = "TL";
-  let goldWeight = 1;
-  let isGold     = false;
+  let mainTicker  = "";
+  let assetName   = "";
+  let assetUnit   = "TL";
+  let goldWeight  = 1;
+  let isGold      = false;
+  let crossTicker = "";  // exotic forex için USD/<CODE>
 
   if (type === "doviz") {
     const meta = CURRENCY_MAP[code.toUpperCase()];
     if (!meta) return NextResponse.json({ error: "not found" }, { status: 404 });
-    mainTicker = FOREX_TICKER[code.toUpperCase()] ?? "";
-    assetName  = meta.name;
+    const upper = code.toUpperCase();
+    mainTicker  = FOREX_TICKER[upper] ?? "";
+    crossTicker = mainTicker ? "" : (FOREX_CROSS_TICKER[upper] ?? "");
+    assetName   = meta.name;
 
   } else if (type === "altin") {
     const meta = GOLD_TYPE_MAP[code.toLowerCase()];
@@ -206,18 +240,26 @@ export async function GET(
     });
   }
 
-  if (!mainTicker) return NextResponse.json({ error: "not found" }, { status: 404 });
+  if (!mainTicker && !crossTicker) {
+    return NextResponse.json({ error: "not found" }, { status: 404 });
+  }
 
   // ── Veri çekme ────────────────────────────────────────────────────────────
-  const [mainMap, gcMap, usdtryMap] = await Promise.all([
-    isGold ? null : fetchYahooHistory(mainTicker, cfg.range, cfg.interval),
+  // Exotic doviz: mainMap, USDTRY ÷ USD<CODE> ile sentezlenir (buildExoticForexMap).
+  const [mainMapRaw, gcMap, usdtryMap, crossMap] = await Promise.all([
+    isGold || crossTicker ? null : fetchYahooHistory(mainTicker, cfg.range, cfg.interval),
     fetchYahooHistory("GC=F", cfg.range, cfg.interval),
     fetchYahooHistory("USDTRY=X", cfg.range, cfg.interval),
+    crossTicker ? fetchYahooHistory(crossTicker, cfg.range, cfg.interval) : null,
   ]);
 
   if (!gcMap || !usdtryMap) {
     return NextResponse.json({ error: "data unavailable" }, { status: 503 });
   }
+
+  const mainMap = crossTicker
+    ? (crossMap ? buildExoticForexMap(crossMap, usdtryMap) : null)
+    : mainMapRaw;
 
   // Gram altın TL değerleri
   const gramAltinMap = buildGramAltinMap(gcMap, usdtryMap);

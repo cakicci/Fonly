@@ -65,7 +65,7 @@ export function WatchlistDrawer({
             <EmptyState
               title="Giriş yapmalısın"
               hint="İzleme listesi kullanıcılara özel — listenin DB'de saklanması için giriş yap."
-              cta={{ href: "/login", label: "Giriş yap" }}
+              cta={{ href: "/login", label: "Giriş yap", onClick: onClose }}
             />
           ) : items.length === 0 ? (
             <EmptyState
@@ -114,7 +114,7 @@ function EmptyState({
 }: {
   title: string;
   hint: string;
-  cta?: { href: string; label: string };
+  cta?: { href: string; label: string; onClick?: () => void };
 }) {
   return (
     <div className="flex h-full flex-col items-center justify-center px-6 py-10 text-center">
@@ -124,6 +124,7 @@ function EmptyState({
       {cta && (
         <Link
           href={cta.href}
+          onClick={cta.onClick}
           className="mt-5 rounded-xl bg-emerald-300 px-4 py-2 text-sm font-semibold text-ink shadow-glow transition hover:bg-emerald-200"
         >
           {cta.label}

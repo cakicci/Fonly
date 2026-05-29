@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, RefreshCw, Search, TrendingDown, TrendingUp } from "lucide-react";
+import { ArrowLeft, Search, TrendingDown, TrendingUp } from "lucide-react";
 import type { CurrencyItem, MarketResponse } from "@/app/api/market/route";
 import { isMarketResponseFresh } from "@/lib/market-helpers";
 import { CURRENCY_MAP } from "@/data/currencies";
+import { FlashPrice } from "@/components/FlashPrice";
 
 const POLL_MS = 5_000;
 type Tab = "major" | "other";
@@ -54,10 +55,10 @@ function CurrencyCard({ item }: { item: CurrencyItem }) {
       </p>
       <p className="mt-0.5 truncate text-sm font-medium text-mist/70">{item.shortName}</p>
 
-      <p className="mt-4 text-2xl font-semibold text-white">
+      <FlashPrice value={item.rawValue} className="mt-4 text-2xl font-semibold text-white">
         {item.value}
         <span className="ml-1 text-sm font-normal text-mist/40">TL</span>
-      </p>
+      </FlashPrice>
     </Link>
   );
 }
@@ -77,15 +78,13 @@ function CardSkeleton() {
 }
 
 export default function DovizPage() {
-  const [data,       setData]       = useState<MarketResponse | null>(null);
-  const [loading,    setLoading]    = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [tab,        setTab]        = useState<Tab>("major");
-  const [query,      setQuery]      = useState("");
+  const [data,    setData]    = useState<MarketResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [tab,     setTab]     = useState<Tab>("major");
+  const [query,   setQuery]   = useState("");
 
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
-    else setRefreshing(true);
     try {
       const res = await fetch("/api/market", { cache: "no-store" });
       if (res.ok) {
@@ -98,7 +97,6 @@ export default function DovizPage() {
     } catch { /* sessiz */ }
     finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, []);
 
@@ -148,14 +146,6 @@ export default function DovizPage() {
           </div>
           <div className="mt-1 flex items-center gap-3">
             <LiveDot active={!loading} />
-            <button
-              onClick={() => fetchData(true)}
-              disabled={refreshing}
-              aria-label="Yenile"
-              className="rounded-xl border border-white/8 p-2 text-mist/40 transition hover:bg-white/8 hover:text-white disabled:opacity-40"
-            >
-              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
-            </button>
           </div>
         </div>
 

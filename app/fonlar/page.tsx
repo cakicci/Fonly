@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, RefreshCw, Search, TrendingDown, TrendingUp } from "lucide-react";
+import { ArrowLeft, Search, TrendingDown, TrendingUp } from "lucide-react";
 import type { FundListItem } from "@/app/api/fonlar/route";
 import { RISK_COLORS, RISK_LABELS } from "@/data/stocks";
 import { normalizeTurkish } from "@/lib/tefas";
+import { fmtPercent } from "@/lib/format";
 
 type SortKey = "kod" | "getiri1y" | "getiri1a" | "getiriyb";
 
@@ -40,14 +41,13 @@ function SkeletonCard() {
 function fmtPct(value: number | null): string {
   if (value === null) return "—";
   const sign = value >= 0 ? "+" : "";
-  return `${sign}${value.toFixed(2)}%`;
+  return `${sign}${fmtPercent(value)}%`;
 }
 
 export default function FonlarPage() {
   const [allFunds, setAllFunds] = useState<FundListItem[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortKey, setSortKey] = useState<SortKey>("getiri1y");
@@ -55,7 +55,6 @@ export default function FonlarPage() {
 
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
-    else setRefreshing(true);
     try {
       const res = await fetch("/api/fonlar", { cache: "no-store" });
       if (res.ok) {
@@ -68,7 +67,6 @@ export default function FonlarPage() {
       /* sessiz */
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, []);
 
@@ -139,14 +137,6 @@ export default function FonlarPage() {
                 </p>
               )}
             </div>
-            <button
-              onClick={() => fetchData(true)}
-              disabled={refreshing}
-              aria-label="Yenile"
-              className="mt-1 rounded-xl p-2 text-mist/40 transition hover:bg-white/8 hover:text-mist/80 disabled:opacity-40"
-            >
-              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
-            </button>
           </div>
 
           {/* Arama */}

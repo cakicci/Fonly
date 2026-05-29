@@ -61,6 +61,7 @@ export async function GET(
     timeframe,
     candles:    data.candles satisfies Candle[],
     isLineOnly: data.isLineOnly,
+    latest:     data.latest,
   }
 
   return NextResponse.json(body)
