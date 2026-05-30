@@ -20,7 +20,7 @@ export function FlashPrice({
   const flash = useFlashClass(value);
   return (
     <span
-      className={`inline-block rounded transition-colors duration-500 ${flash} ${className}`}
+      className={`inline-block rounded transition-colors duration-150 ${flash} ${className}`}
     >
       {children}
     </span>

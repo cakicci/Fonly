@@ -118,11 +118,18 @@ function AltinPanel({ data, loading }: { data: MarketResponse | null; loading: b
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-300/12 text-amber-200">
           <Gem className="h-4 w-4" />
         </div>
-        <div>
+        <div className="flex-1">
           <p className="text-xs text-mist/50">Anlık fiyat</p>
           <h3 className="text-base font-semibold text-white">Altın</h3>
         </div>
         <LiveDot active={!loading} />
+        <Link
+          href="/altin"
+          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist/40
+                     transition hover:bg-white/8 hover:text-amber-200"
+        >
+          Tümü <ExternalLink className="h-3 w-3" />
+        </Link>
       </div>
 
       {loading || !data ? (
@@ -189,11 +196,18 @@ function BorsaPanel({ data, loading }: { data: MarketResponse | null; loading: b
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-300/12 text-emerald-200">
           <BarChart2 className="h-4 w-4" />
         </div>
-        <div>
+        <div className="flex-1">
           <p className="text-xs text-mist/50">Anlık endeks</p>
           <h3 className="text-base font-semibold text-white">Borsa</h3>
         </div>
         <LiveDot active={!loading} />
+        <Link
+          href="/hisseler"
+          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist/40
+                     transition hover:bg-white/8 hover:text-emerald-200"
+        >
+          Tümü <ExternalLink className="h-3 w-3" />
+        </Link>
       </div>
 
       {loading || !data ? (

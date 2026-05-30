@@ -60,7 +60,6 @@ export function AssetHeader({
   const displayPrice     = live?.price     ?? price;
   const displayChangePct = live?.changePct ?? changePct;
 
-  // Investing.com tarzı yeşil/kırmızı flash — fiyat değiştiği anda 600ms.
   const flashCls = useFlashClass(displayPrice);
 
   return (
@@ -92,7 +91,7 @@ export function AssetHeader({
           <div className="mt-4 flex items-end gap-3">
             <p className="text-4xl font-semibold text-white">
               <span
-                className={`inline-block rounded-md px-1.5 transition-colors duration-500 ${flashCls}`}
+                className={`inline-block rounded-md px-1.5 transition-colors duration-150 ${flashCls}`}
               >
                 {fmtPrice(displayPrice, slug)}
               </span>
