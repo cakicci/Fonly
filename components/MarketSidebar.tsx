@@ -114,7 +114,17 @@ function Row({
 export function MarketSidebar() {
   const [data, setData] = useState<MarketResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [tipIndex] = useState(() => Math.floor(Math.random() * TIPS.length));
+  // Hydration güvenli: SSR + ilk render'da sabit (0), mount sonrası "günün"
+  // ipucu seçilir. Math.random()'u render sırasında çağırmak sunucu/istemci
+  // uyuşmazlığına (hydration error) yol açıyordu.
+  const [tipIndex, setTipIndex] = useState(0);
+  useEffect(() => {
+    const now = new Date();
+    const dayOfYear = Math.floor(
+      (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86_400_000
+    );
+    setTipIndex(dayOfYear % TIPS.length);
+  }, []);
 
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setIsLoading(true);

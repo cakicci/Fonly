@@ -16,6 +16,7 @@ model User {
   passwordHash  String?
   riskProfile   String?       // "low" | "medium" | "high"
   monthlyIncome Int?
+  dashboardLayout String?     // JSON: { order: WidgetKey[], hidden: WidgetKey[] } — panel özelleştirmesi
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   accounts      Account[]
@@ -23,6 +24,60 @@ model User {
   watchlist     Watchlist[]
   priceAlerts   PriceAlert[]
   subscription  Subscription?
+  portfolioLots PortfolioLot[]
+  goals         Goal[]
+  passwordResetTokens PasswordResetToken[]
+}
+
+/// Şifre sıfırlama token'ı. Kullanıcı "şifremi unuttum" derse üretilir.
+/// GÜVENLİK: ham token DEĞİL, SHA-256 hash'i saklanır (DB sızsa bile linkler
+/// kullanılamaz). Ham token yalnızca e-postadaki linkte gider. Tek kullanımlık
+/// (kullanılınca/yeni istek gelince silinir) ve `expires` ile süreli (1 saat).
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Birikim/yatırım hedefi. İlerleme, kullanıcının canlı portföy değerine göre
+/// hesaplanır (lib/portfolio/aggregate.ts → portfolioSummary.value). targetDate
+/// opsiyonel; verilirse kalan süre + aylık ayrılabilir tutara göre tempo gösterilir.
+model Goal {
+  id         String    @id @default(cuid())
+  userId     String
+  title      String
+  target     Int       // hedef tutar (TL)
+  targetDate DateTime?
+  createdAt  DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Portföy lot'u (tek alım kaydı). Kullanıcı bir varlığı birden çok kez alabilir;
+/// her satır bir alımdır. `/portfoy` sayfası slug'a göre gruplayıp ağırlıklı
+/// ortalama maliyet + canlı fiyatla kâr/zarar hesaplar (lib/portfolio/aggregate.ts).
+/// slug formatı watchlist/alert ile aynı: "hisse-THYAO", "doviz-USD", "altin-gram", "fon-AAK".
+model PortfolioLot {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  slug      String
+  quantity  Float           // adet / birim
+  unitCost  Float           // alış birim fiyatı (TL)
+  boughtAt  DateTime @default(now())
+  note      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 /// Premium abonelik. AI özellikleri ve gelecekteki premium-only feature'lar için.

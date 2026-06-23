@@ -8,6 +8,12 @@ import {
   TrendingUp,
   Shield,
 } from "lucide-react";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { isPremium } from "@/lib/auth/premium";
+import { PLANS, PLAN_MAP } from "@/lib/billing/plans";
+import { CheckoutButton } from "@/components/billing/CheckoutButton";
+import { ManageSubscription } from "@/components/billing/ManageSubscription";
 
 export const metadata = {
   title: "FonlyPro · Yapay zekâ destekli yatırım analizi",
@@ -48,26 +54,18 @@ const FEATURES = [
   },
 ];
 
-const PLANS = [
-  {
-    id:        "monthly",
-    name:      "Aylık",
-    price:     "99 ₺",
-    period:    "/ay",
-    sub:       "İstediğin zaman iptal et",
-    highlight: false,
-  },
-  {
-    id:        "yearly",
-    name:      "Yıllık",
-    price:     "990 ₺",
-    period:    "/yıl",
-    sub:       "Aylık 82,5 ₺ — 2 ay hediye",
-    highlight: true,
-  },
-];
+export default async function PremiumPage() {
+  const session = await auth();
+  const premium = session?.user?.id ? await isPremium(session.user.id) : false;
 
-export default function PremiumPage() {
+  const sub =
+    premium && session?.user?.id
+      ? await prisma.subscription.findUnique({
+          where: { userId: session.user.id },
+          select: { plan: true, currentPeriodEnd: true, cancelAtPeriodEnd: true },
+        })
+      : null;
+
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       {/* Hero */}
@@ -89,46 +87,45 @@ export default function PremiumPage() {
         </p>
       </section>
 
-      {/* Pricing */}
-      <section className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-2">
-        {PLANS.map(plan => (
-          <div
-            key={plan.id}
-            className={`glass-card relative overflow-hidden rounded-3xl p-6 ring-1 ${
-              plan.highlight
-                ? "bg-gradient-to-br from-fuchsia-300/12 via-purple-300/4 to-emerald-300/10 ring-fuchsia-300/30"
-                : "bg-white/[0.02] ring-white/8"
-            }`}
-          >
-            {plan.highlight && (
-              <span className="absolute right-4 top-4 rounded-full bg-fuchsia-300/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-fuchsia-100">
-                En popüler
-              </span>
-            )}
-            <p className="text-sm font-semibold text-mist/65">{plan.name}</p>
-            <div className="mt-2 flex items-baseline gap-1.5">
-              <span className="text-4xl font-semibold text-white">{plan.price}</span>
-              <span className="text-sm text-mist/45">{plan.period}</span>
-            </div>
-            <p className="mt-1 text-xs text-mist/45">{plan.sub}</p>
-
-            <button
-              type="button"
-              disabled
-              className={`mt-6 block w-full cursor-not-allowed rounded-2xl px-4 py-3 text-center text-sm font-semibold transition ${
+      {/* Pricing / Yönetim */}
+      {premium && sub ? (
+        <ManageSubscription
+          planName={PLAN_MAP[sub.plan as keyof typeof PLAN_MAP]?.name ?? sub.plan}
+          periodEnd={sub.currentPeriodEnd.toISOString()}
+          cancelAtPeriodEnd={sub.cancelAtPeriodEnd}
+        />
+      ) : (
+        <section className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-2">
+          {PLANS.map(plan => (
+            <div
+              key={plan.id}
+              className={`glass-card relative overflow-hidden rounded-3xl p-6 ring-1 ${
                 plan.highlight
-                  ? "bg-gradient-to-r from-fuchsia-300/40 to-emerald-300/40 text-white/60"
-                  : "border border-white/10 bg-white/[0.04] text-mist/50"
+                  ? "bg-gradient-to-br from-fuchsia-300/12 via-purple-300/4 to-emerald-300/10 ring-fuchsia-300/30"
+                  : "bg-white/[0.02] ring-white/8"
               }`}
             >
-              Yakında — Ödeme entegrasyonu
-            </button>
-            <p className="mt-2 text-center text-[10px] text-mist/35">
-              Iyzico / PayTR entegrasyonu hazırlanıyor
-            </p>
-          </div>
-        ))}
-      </section>
+              {plan.highlight && (
+                <span className="absolute right-4 top-4 rounded-full bg-fuchsia-300/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-fuchsia-100">
+                  En popüler
+                </span>
+              )}
+              <p className="text-sm font-semibold text-mist/65">{plan.name}</p>
+              <div className="mt-2 flex items-baseline gap-1.5">
+                <span className="text-4xl font-semibold text-white">{plan.priceLabel}</span>
+                <span className="text-sm text-mist/45">{plan.period}</span>
+              </div>
+              <p className="mt-1 text-xs text-mist/45">{plan.sub}</p>
+
+              <CheckoutButton
+                planId={plan.id}
+                highlight={plan.highlight}
+                label={`${plan.name} abone ol`}
+              />
+            </div>
+          ))}
+        </section>
+      )}
 
       {/* Features */}
       <section className="mx-auto mt-16 max-w-5xl">

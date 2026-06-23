@@ -51,6 +51,7 @@ export const MARKETS_MEGA: MarketsMegaItem[] = [
 export const MAIN_NAV_ITEMS: MainNavItem[] = [
   { label: "Piyasalar", mega: MARKETS_MEGA },
   { label: "İzleme Listem", href: "#watchlist" },
+  { label: "Portföyüm", href: "/portfoy" },
   { label: "Rehber", href: "/rehber" },
   { label: "Risk Testi", href: "/risk-test" },
   { label: "Premium", href: "/premium", highlight: true },

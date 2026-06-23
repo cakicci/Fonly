@@ -318,7 +318,7 @@ export function AdvancedChart({
       chartRef.current = null;
       mainSeriesRef.current = null;
     };
-  }, [data, effectiveType, effectiveVolume, indicators, height]);
+  }, [data, effectiveType, effectiveVolume, indicators, height, assetKind]);
 
   // ── Tick update — son mumu chart'ı yeniden oluşturmadan güncelle ──────────
   useEffect(() => {

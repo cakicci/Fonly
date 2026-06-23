@@ -4,9 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Loader2, LockKeyhole, Mail, UserRound } from "lucide-react";
+import { Chrome, Loader2, LockKeyhole, Mail, UserRound } from "lucide-react";
 
-export function RegisterForm() {
+interface RegisterFormProps {
+  /** Google provider env'i dolu mu — false ise buton gizlenir. */
+  googleEnabled?: boolean;
+}
+
+export function RegisterForm({ googleEnabled = false }: RegisterFormProps) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -122,6 +127,17 @@ export function RegisterForm() {
           Kayıt Ol
         </button>
       </form>
+
+      {googleEnabled ? (
+        <button
+          type="button"
+          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+          className="mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition hover:bg-white/10"
+        >
+          <Chrome className="h-4 w-4" />
+          Google ile kayıt ol
+        </button>
+      ) : null}
 
       <p className="mt-5 text-center text-sm text-mist/58">
         Zaten hesabın var mı?{" "}

@@ -1,4 +1,11 @@
-import { Layers3, Shield, TrendingUp, Waves } from "lucide-react";
+import Link from "next/link";
+import { Layers3, Shield, TrendingUp, Waves, ArrowUpRight } from "lucide-react";
+
+export interface RecommendedFund {
+  kod: string;
+  ad: string;
+  getiri1y: number;
+}
 
 const recommendations: Record<
   string,
@@ -54,11 +61,14 @@ const recommendations: Record<
 
 interface PersonalRecommendationsProps {
   riskProfile: "low" | "medium" | "high";
+  /** TEFAS'tan risk profiline uygun gerçek fonlar (1y getiriye göre). Boşsa statik kategoriler gösterilir. */
+  liveFunds?: RecommendedFund[];
 }
 
-export function PersonalRecommendations({ riskProfile }: PersonalRecommendationsProps) {
+export function PersonalRecommendations({ riskProfile, liveFunds = [] }: PersonalRecommendationsProps) {
   const rec = recommendations[riskProfile];
   const Icon = rec.icon;
+  const hasLive = liveFunds.length > 0;
 
   return (
     <div className="rounded-[1.75rem] border border-white/8 bg-white/[0.025] p-5 sm:p-6">
@@ -73,20 +83,58 @@ export function PersonalRecommendations({ riskProfile }: PersonalRecommendations
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        {rec.funds.map((fund) => (
-          <div
-            key={fund.name}
-            className="rounded-2xl border border-white/8 bg-white/[0.04] p-4"
-          >
-            <div className="mb-2 flex items-center gap-2">
-              <TrendingUp className={`h-4 w-4 ${rec.color}`} />
-              <span className="text-sm font-semibold text-white">{fund.name}</span>
-            </div>
-            <p className="text-xs leading-5 text-mist/58">{fund.reason}</p>
+      {hasLive ? (
+        <>
+          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-mist/40">
+            Risk profiline uygun fonlar · son 1 yıl getirisi
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {liveFunds.map((fund) => (
+              <Link
+                key={fund.kod}
+                href={`/fon/${fund.kod}`}
+                className="group flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/[0.04] p-4 transition hover:border-emerald-300/30"
+              >
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-white">{fund.kod}</span>
+                    <ArrowUpRight className="h-3.5 w-3.5 text-mist/30 transition group-hover:text-emerald-200" />
+                  </div>
+                  <p className="mt-1 truncate text-xs text-mist/55">{fund.ad}</p>
+                </div>
+                <span
+                  className={`shrink-0 rounded-lg px-2 py-1 text-sm font-semibold tabular-nums ${
+                    fund.getiri1y >= 0
+                      ? "bg-emerald-300/12 text-emerald-300"
+                      : "bg-rose-300/12 text-rose-300"
+                  }`}
+                >
+                  {fund.getiri1y >= 0 ? "+" : ""}
+                  {fund.getiri1y.toFixed(1)}%
+                </span>
+              </Link>
+            ))}
           </div>
-        ))}
-      </div>
+          <p className="mt-3 text-[11px] leading-5 text-mist/40">
+            Geçmiş getiri gelecekteki performansı garanti etmez. Yatırım tavsiyesi değildir.
+          </p>
+        </>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-3">
+          {rec.funds.map((fund) => (
+            <div
+              key={fund.name}
+              className="rounded-2xl border border-white/8 bg-white/[0.04] p-4"
+            >
+              <div className="mb-2 flex items-center gap-2">
+                <TrendingUp className={`h-4 w-4 ${rec.color}`} />
+                <span className="text-sm font-semibold text-white">{fund.name}</span>
+              </div>
+              <p className="text-xs leading-5 text-mist/58">{fund.reason}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="mt-4 rounded-2xl border border-amber-200/14 bg-amber-300/8 px-4 py-3 text-xs leading-5 text-amber-50/80">
         💡 {rec.tip}

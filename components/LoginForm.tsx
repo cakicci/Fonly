@@ -6,11 +6,34 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Chrome, Loader2, LockKeyhole, Mail } from "lucide-react";
 
-export function LoginForm() {
+interface LoginFormProps {
+  /** Google provider env'i dolu mu — false ise buton gizlenir. */
+  googleEnabled?: boolean;
+  /** NextAuth'un OAuth sonrası yönlendirdiği ?error= kodu. */
+  oauthError?: string;
+  /** Giriş sonrası dönülecek sayfa (middleware ?callbackUrl= ile ekler). */
+  callbackUrl?: string;
+}
+
+/** OAuth (Google) hata kodlarını kullanıcıya Türkçe mesaja çevirir. */
+function oauthErrorMessage(code: string | undefined): string {
+  if (!code) return "";
+  switch (code) {
+    case "OAuthAccountNotLinked":
+      return "Bu e-posta başka bir giriş yöntemiyle kayıtlı. Önce e-posta ve şifrenle giriş yap.";
+    case "AccessDenied":
+      return "Google girişine izin verilmedi.";
+    default:
+      return "Google ile giriş yapılamadı. Lütfen tekrar dene.";
+  }
+}
+
+export function LoginForm({ googleEnabled = false, oauthError, callbackUrl }: LoginFormProps) {
   const router = useRouter();
+  const target = callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(() => oauthErrorMessage(oauthError));
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -31,7 +54,7 @@ export function LoginForm() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push(target);
     router.refresh();
   }
 
@@ -77,6 +100,15 @@ export function LoginForm() {
           </span>
         </label>
 
+        <div className="flex justify-end">
+          <Link
+            href="/forgot-password"
+            className="text-xs font-medium text-mist/58 transition hover:text-emerald-200"
+          >
+            Şifreni mi unuttun?
+          </Link>
+        </div>
+
         {error ? (
           <p className="rounded-2xl border border-rose-200/14 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
             {error}
@@ -93,14 +125,16 @@ export function LoginForm() {
         </button>
       </form>
 
-      <button
-        type="button"
-        onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-        className="mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition hover:bg-white/10"
-      >
-        <Chrome className="h-4 w-4" />
-        Google ile giriş yap
-      </button>
+      {googleEnabled ? (
+        <button
+          type="button"
+          onClick={() => signIn("google", { callbackUrl: target })}
+          className="mt-3 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition hover:bg-white/10"
+        >
+          <Chrome className="h-4 w-4" />
+          Google ile giriş yap
+        </button>
+      ) : null}
 
       <p className="mt-5 text-center text-sm text-mist/58">
         Hesabın yok mu?{" "}

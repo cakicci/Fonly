@@ -59,10 +59,20 @@ if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
   providers.push(
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      // Aynı e-posta = aynı kişi varsayımı: kullanıcı önce e-posta/şifre ile
+      // kayıt olup sonra aynı e-postayla Google'a basarsa, bu olmadan NextAuth
+      // `OAuthAccountNotLinked` hatası verir. Linklemeyi açarak iki yöntemi
+      // tek hesapta birleştiriyoruz. (Google e-postayı doğruladığı için güvenli.)
+      allowDangerousEmailAccountLinking: true
     })
   );
 }
+
+/** Google provider'ı (env doluysa) aktif mi — UI'da butonu koşullu göstermek için. */
+export const googleAuthEnabled = Boolean(
+  process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET
+);
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
