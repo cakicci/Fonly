@@ -25,8 +25,14 @@ jobs:
           node-version: 24
           cache: npm
 
+      # npm install (npm ci değil): eslint-import-resolver-typescript → unrs-resolver
+      # opsiyonel native binding matrisi + wasm fallback'in @emnapi peer sürümü, npm'in
+      # bilinen optional-deps bug'ı yüzünden Windows (geliştirme) ile Linux (CI) arasında
+      # farklı çözülüyor. Lockfile hangi platformda üretilirse üretilsin diğerinde
+      # tutarsız görünür → `npm ci` (lock'u birebir doğrular) patlar. `npm install`
+      # drift'i uzlaştırarak kurar; lock yine commit'li ve referans olarak kalır.
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Generate Prisma client
         run: npx prisma generate
