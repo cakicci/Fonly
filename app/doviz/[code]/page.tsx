@@ -11,10 +11,10 @@ type Params = { code: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const currency = CURRENCY_MAP[params.code.toUpperCase()];
+  if (!currency) return { title: "Döviz Detayı" };
   return {
-    title: currency
-      ? `${currency.name} (${currency.code}) — Fonly`
-      : "Döviz Detayı — Fonly",
+    title: `${currency.name} (${currency.code}) Kuru — Canlı Alış Satış`,
+    description: `Canlı ${currency.name} kuru: anlık alış/satış, günlük değişim, geçmiş grafikler ve otomatik analiz.`,
   };
 }
 

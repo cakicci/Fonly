@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { RegisterForm } from "@/components/RegisterForm";
 import { googleAuthEnabled } from "@/auth";
+
+export const metadata: Metadata = {
+  title: "Kayıt Ol",
+  description: "Ücretsiz Fonly hesabı aç; risk profilini öğren, portföyünü takip et, fiyat alarmı kur.",
+};
 
 export default function RegisterPage() {
   return (

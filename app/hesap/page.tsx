@@ -13,7 +13,7 @@ import { DangerZone } from "@/components/account/DangerZone";
 import { ManageSubscription } from "@/components/billing/ManageSubscription";
 
 export const metadata: Metadata = {
-  title: "Hesabım — Fonly",
+  title: "Hesabım",
 };
 
 export default async function AccountPage() {

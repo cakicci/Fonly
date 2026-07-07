@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { PortfolioClient } from "@/components/portfolio/PortfolioClient";
 
 export const metadata: Metadata = {
-  title: "Portföyüm — Fonly",
+  title: "Portföyüm",
   description: "Yatırımlarını kaydet, canlı fiyatlarla kâr/zararını takip et.",
 };
 

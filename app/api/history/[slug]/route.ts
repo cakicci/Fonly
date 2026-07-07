@@ -3,7 +3,16 @@ import { CURRENCY_MAP } from "@/data/currencies";
 import { GOLD_TYPE_MAP } from "@/data/gold-types";
 import { BIST_TICKERS } from "@/data/bist-tickers";
 import { fetchYahooHistory } from "@/lib/market-data";
-import { fetchFundHistory, type TefasPeriyod } from "@/lib/tefas";
+import { fetchFundHistory } from "@/lib/tefas";
+import {
+  FOREX_TICKER,
+  FOREX_CROSS_TICKER,
+  RANGE_CFG,
+  FON_PERIYOD,
+  alignMaps,
+  buildGramAltinMap,
+  buildExoticForexMap,
+} from "@/lib/history/series";
 
 // ── Tipler ──────────────────────────────────────────────────────────────────
 
@@ -22,107 +31,8 @@ export interface HistoryResponse {
   }
 }
 
-// ── Yahoo Finance ticker eşlemeleri ─────────────────────────────────────────
-
-const FOREX_TICKER: Record<string, string> = {
-  USD: "USDTRY=X", EUR: "EURTRY=X", GBP: "GBPTRY=X",
-  CHF: "CHFTRY=X", JPY: "JPYTRY=X", CNY: "CNYTRY=X",
-  CAD: "CADTRY=X", AUD: "AUDTRY=X",
-};
-
-// Exotic currencies: USD/<CODE> rate on Yahoo. TRY/<CODE> = USDTRY ÷ USD<CODE>
-// (same pattern as gold `GC=F × USDTRY`). Built by buildExoticForexMap.
-const FOREX_CROSS_TICKER: Record<string, string> = {
-  RUB: "RUB=X", SAR: "SAR=X", AED: "AED=X", KWD: "KWD=X", BHD: "BHD=X",
-  LYD: "LYD=X", ILS: "ILS=X", IQD: "IQD=X", SEK: "SEK=X", NOK: "NOK=X",
-  DKK: "DKK=X", PLN: "PLN=X", CZK: "CZK=X", HUF: "HUF=X", RON: "RON=X",
-  ZAR: "ZAR=X", INR: "INR=X", IDR: "IDR=X", MXN: "MXN=X", BRL: "BRL=X",
-  ARS: "ARS=X", NZD: "NZD=X",
-};
-
-// ── Period → Yahoo Finance parametre eşlemesi ────────────────────────────────
-
-const RANGE_CFG: Record<string, { range: string; interval: string }> = {
-  "1h": { range: "5d",  interval: "1d"  },
-  "3a": { range: "3mo", interval: "1d"  },
-  "1y": { range: "1y",  interval: "1d"  },
-  "5y": { range: "5y",  interval: "1wk" },
-};
-
-// TEFAS periyod kodları — fon endpoint'i sabit enum bekliyor, gün sayısı kabul etmiyor.
-const FON_PERIYOD: Record<string, TefasPeriyod> = {
-  "1h": 13, // 1 hafta
-  "3a": 3,  // 3 ay
-  "1y": 12, // 1 yıl
-  "5y": 60, // 5 yıl (azami)
-};
-
-// ── Yardımcı: iki Map'i tarihe göre hizala ──────────────────────────────────
-
-function alignMaps(
-  main: Map<string, number>,
-  comp: Map<string, number>
-): Array<{ date: string; mainVal: number; compVal: number }> {
-  // Comp Map üzerinde önceki değeri taşıyan bir backward-fill uygula
-  const compSorted = [...comp.entries()].sort(([a], [b]) => a.localeCompare(b));
-
-  const result: Array<{ date: string; mainVal: number; compVal: number }> = [];
-  const mainSorted = [...main.entries()].sort(([a], [b]) => a.localeCompare(b));
-
-  let compIdx = 0;
-  for (const [date, mainVal] of mainSorted) {
-    // Comp'u ilerlet — date'i geçmemek kaydıyla
-    while (compIdx + 1 < compSorted.length && compSorted[compIdx + 1][0] <= date) {
-      compIdx++;
-    }
-    const compVal = compSorted[compIdx]?.[1];
-    if (compVal == null) continue;
-    result.push({ date, mainVal, compVal });
-  }
-  return result;
-}
-
-// ── Gram altın haritası oluştur (GC=F × USDTRY=X) ───────────────────────────
-
-function buildGramAltinMap(
-  gcMap: Map<string, number>,
-  usdtryMap: Map<string, number>
-): Map<string, number> {
-  const result = new Map<string, number>();
-  const usdSorted = [...usdtryMap.entries()].sort(([a], [b]) => a.localeCompare(b));
-  let usdIdx = 0;
-
-  for (const [date, gcPrice] of [...gcMap.entries()].sort(([a], [b]) => a.localeCompare(b))) {
-    while (usdIdx + 1 < usdSorted.length && usdSorted[usdIdx + 1][0] <= date) {
-      usdIdx++;
-    }
-    const usdtry = usdSorted[usdIdx]?.[1];
-    if (!usdtry) continue;
-    result.set(date, (gcPrice / 31.1035) * usdtry);
-  }
-  return result;
-}
-
-// Exotic forex: USDTRY ÷ USD<CODE> = TRY/<CODE> per gün.
-function buildExoticForexMap(
-  usdCodeMap: Map<string, number>,
-  usdtryMap: Map<string, number>
-): Map<string, number> {
-  const result = new Map<string, number>();
-  const fxSorted = [...usdtryMap.entries()].sort(([a], [b]) => a.localeCompare(b));
-  let fxIdx = 0;
-
-  for (const [date, usdCode] of [...usdCodeMap.entries()].sort(([a], [b]) => a.localeCompare(b))) {
-    if (usdCode <= 0) continue;
-    while (fxIdx + 1 < fxSorted.length && fxSorted[fxIdx + 1][0] <= date) {
-      fxIdx++;
-    }
-    const usdtry = fxSorted[fxIdx]?.[1];
-    if (!usdtry) continue;
-    result.set(date, usdtry / usdCode);
-  }
-  return result;
-}
+// Ticker eşlemeleri + Map yardımcıları lib/history/series.ts'e taşındı —
+// portföy değer grafiği (app/api/portfolio/history) ile ortak.
 
 // ── Handler ──────────────────────────────────────────────────────────────────
 

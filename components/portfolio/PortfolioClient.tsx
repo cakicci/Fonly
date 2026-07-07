@@ -6,10 +6,12 @@ import { Loader2, Trash2, TrendingUp, RefreshCw } from "lucide-react";
 import type { Position, PortfolioSummary } from "@/lib/portfolio/aggregate";
 import { assetDisplayName, assetHref, assetTypeOf, ASSET_TYPE_LABELS } from "@/lib/portfolio/asset";
 import { AddLotForm } from "./AddLotForm";
+import { PortfolioValueChart } from "./PortfolioValueChart";
 
 interface Lot {
   id: number;
   slug: string;
+  side: "buy" | "sell" | string;
   quantity: number;
   unitCost: number;
   boughtAt: string;
@@ -87,6 +89,11 @@ export function PortfolioClient() {
   const positions = data?.positions ?? [];
   const lots = data?.lots ?? [];
   const empty = lots.length === 0;
+  const openPositions = positions.filter((p) => p.quantity > 1e-9);
+  const closedPositions = positions.filter(
+    (p) => p.quantity <= 1e-9 && p.realizedPnl !== 0
+  );
+  const hasRealized = summary != null && summary.realizedPnl !== 0;
 
   return (
     <div className="space-y-6">
@@ -94,7 +101,7 @@ export function PortfolioClient() {
 
       {/* Özet */}
       {summary && !empty && (
-        <section className="grid gap-3 sm:grid-cols-3">
+        <section className={`grid gap-3 sm:grid-cols-2 ${hasRealized ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}>
           <SummaryCard label="Toplam maliyet" value={`${tl(summary.costTotal)} ₺`} />
           <SummaryCard label="Güncel değer" value={`${tl(summary.value)} ₺`} />
           <SummaryCard
@@ -103,8 +110,19 @@ export function PortfolioClient() {
             sub={pct(summary.pnlPct)}
             color={pnlColor(summary.pnl)}
           />
+          {hasRealized && (
+            <SummaryCard
+              label="Gerçekleşen K/Z"
+              value={`${tl(summary.realizedPnl)} ₺`}
+              sub="satışlardan"
+              color={pnlColor(summary.realizedPnl)}
+            />
+          )}
         </section>
       )}
+
+      {/* Değer grafiği */}
+      {!empty && <PortfolioValueChart />}
 
       {summary && summary.missingPrices > 0 && (
         <p className="text-xs text-amber-200/80">
@@ -143,7 +161,7 @@ export function PortfolioClient() {
               </tr>
             </thead>
             <tbody>
-              {positions.map((p) => (
+              {openPositions.map((p) => (
                 <tr key={p.slug} className="border-b border-white/5 last:border-0">
                   <td className="px-4 py-3">
                     <Link href={assetHref(p.slug)} className="font-medium text-white hover:text-emerald-200">
@@ -168,13 +186,35 @@ export function PortfolioClient() {
         </div>
       )}
 
-      {/* Alım ekle */}
+      {/* Kapanan pozisyonlar — gerçekleşen K/Z */}
+      {closedPositions.length > 0 && (
+        <section>
+          <h2 className="mb-3 text-lg font-semibold text-white">Kapanan pozisyonlar</h2>
+          <div className="space-y-2">
+            {closedPositions.map((p) => (
+              <div
+                key={p.slug}
+                className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.02] px-4 py-2.5 text-sm"
+              >
+                <Link href={assetHref(p.slug)} className="font-medium text-white hover:text-emerald-200">
+                  {assetDisplayName(p.slug)}
+                </Link>
+                <span className={`tabular-nums ${pnlColor(p.realizedPnl)}`}>
+                  {p.realizedPnl > 0 ? "+" : ""}{tl(p.realizedPnl)} ₺ gerçekleşen
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* İşlem ekle */}
       <AddLotForm onAdded={load} />
 
-      {/* Alım kayıtları */}
+      {/* İşlem kayıtları */}
       {!empty && (
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-white">Alım kayıtları</h2>
+          <h2 className="mb-3 text-lg font-semibold text-white">İşlem kayıtları</h2>
           <div className="space-y-2">
             {lots.map((lot) => (
               <div
@@ -182,6 +222,15 @@ export function PortfolioClient() {
                 className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.02] px-4 py-2.5 text-sm"
               >
                 <div className="min-w-0">
+                  <span
+                    className={`mr-2 rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase ${
+                      lot.side === "sell"
+                        ? "bg-rose-300/12 text-rose-200"
+                        : "bg-emerald-300/12 text-emerald-200"
+                    }`}
+                  >
+                    {lot.side === "sell" ? "Satış" : "Alış"}
+                  </span>
                   <span className="font-medium text-white">{assetDisplayName(lot.slug)}</span>
                   <span className="ml-2 text-mist/55">
                     {tl(lot.quantity)} × {tl(lot.unitCost)} ₺

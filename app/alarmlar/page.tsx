@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { AlertsManager } from "@/components/alerts/AlertsManager";
 
 export const metadata: Metadata = {
-  title: "Alarmlarım — Fonly",
+  title: "Alarmlarım",
 };
 
 export default async function AlertsPage() {

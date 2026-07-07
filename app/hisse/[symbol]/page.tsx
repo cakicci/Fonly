@@ -11,8 +11,10 @@ type Params = { symbol: string };
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const sym  = params.symbol.toUpperCase();
   const meta = BIST_TICKERS.find(t => t.symbol === sym);
+  if (!meta) return { title: sym };
   return {
-    title: meta ? `${sym} · ${meta.name} — Fonly` : `${sym} — Fonly`,
+    title: `${sym} · ${meta.name} Hisse Fiyatı`,
+    description: `${meta.name} (${sym}) canlı hisse fiyatı, grafik, teknik analiz, finansallar, temettü geçmişi ve haberler.`,
   };
 }
 

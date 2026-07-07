@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { GUIDE_CHAPTERS, TOTAL_READ_MIN } from "@/data/guide";
 
 export const metadata: Metadata = {
-  title: "Yatırım Rehberi — Fonly",
+  title: "Yatırım Rehberi",
   description:
     "Sıfırdan yatırıma: finansal okuryazarlığa yeni başlayanlar için 6 bölümlük Türkçe rehber.",
 };

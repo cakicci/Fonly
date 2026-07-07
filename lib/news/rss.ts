@@ -70,7 +70,8 @@ function parsePubDate(raw: string | null): string {
   return Number.isFinite(t) ? new Date(t).toISOString() : new Date(0).toISOString();
 }
 
-function parseItems(xml: string, source: string): FeedItem[] {
+/** Exported: testler örnek XML ile parser davranışını doğrular. */
+export function parseItems(xml: string, source: string): FeedItem[] {
   const items: FeedItem[] = [];
   const itemRe = /<item\b[^>]*>([\s\S]*?)<\/item>/gi;
   let m: RegExpExecArray | null;

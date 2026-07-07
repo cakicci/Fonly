@@ -53,10 +53,15 @@ export interface PaymentProvider {
    * geçersiz veya ilgisiz olay ise null (route 400/200 ile yanıtlar).
    */
   verifyWebhook(req: Request): Promise<SubscriptionEvent | null>;
+  /**
+   * (Opsiyonel) Sağlayıcı tarafında yenilemeyi durdurur — kullanıcı iptal
+   * edince çağrılır. Dönem sonuna kadar erişim mantığı bizde kalır.
+   */
+  cancelAtProvider?(providerSubscriptionId: string): Promise<void>;
 }
 
-// Lazy import — dev sağlayıcı dışındaki PSP modülleri (ileride) sadece seçildiğinde yüklenir.
 import { devProvider } from "./providers/dev";
+import { iyzicoProvider } from "./providers/iyzico";
 
 /**
  * Aktif sağlayıcıyı `PAYMENT_PROVIDER` env'ine göre döner. Varsayılan `dev`.
@@ -72,6 +77,7 @@ export function getProvider(id: ProviderId): PaymentProvider {
     case "dev":
       return devProvider;
     case "iyzico":
+      return iyzicoProvider;
     case "paytr":
     case "stripe":
       throw new Error(

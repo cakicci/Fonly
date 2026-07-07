@@ -26,7 +26,11 @@ export async function GET() {
   });
 
   const prices = await getPricesForSlugs(lots.map((l) => l.slug));
-  const positions = aggregatePositions(lots, prices);
+  // Satışların doğru ortalama maliyetten düşmesi için işlem tarihi `at` olarak geçer.
+  const positions = aggregatePositions(
+    lots.map((l) => ({ ...l, at: l.boughtAt })),
+    prices
+  );
   const summary = portfolioSummary(positions);
 
   return NextResponse.json({ lots, positions, summary });
@@ -34,8 +38,9 @@ export async function GET() {
 
 const lotSchema = z.object({
   slug: z.string().min(3).max(40),
+  side: z.enum(["buy", "sell"]).default("buy"),
   quantity: z.number().positive("Adet 0'dan büyük olmalı.").finite(),
-  unitCost: z.number().nonnegative("Maliyet negatif olamaz.").finite(),
+  unitCost: z.number().nonnegative("Fiyat negatif olamaz.").finite(),
   boughtAt: z.string().datetime().optional(),
   note: z.string().trim().max(200).optional(),
 });
@@ -60,10 +65,29 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Geçersiz veya bilinmeyen varlık." }, { status: 400 });
   }
 
+  // Satış: eldekinden fazlası satılamaz — mevcut net pozisyonu hesapla.
+  if (parsed.data.side === "sell") {
+    const existing = await prisma.portfolioLot.findMany({
+      where: { userId: session.user.id, slug },
+      select: { side: true, quantity: true },
+    });
+    const held = existing.reduce(
+      (acc, l) => acc + (l.side === "sell" ? -l.quantity : l.quantity),
+      0
+    );
+    if (parsed.data.quantity > held + 1e-9) {
+      return NextResponse.json(
+        { message: `Elinde ${held.toLocaleString("tr-TR")} adet var — daha fazlasını satamazsın.` },
+        { status: 400 }
+      );
+    }
+  }
+
   const lot = await prisma.portfolioLot.create({
     data: {
       userId: session.user.id,
       slug,
+      side: parsed.data.side,
       quantity: parsed.data.quantity,
       unitCost: parsed.data.unitCost,
       boughtAt: parsed.data.boughtAt ? new Date(parsed.data.boughtAt) : undefined,

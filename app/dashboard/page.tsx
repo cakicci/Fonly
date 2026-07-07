@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -40,6 +41,11 @@ import { OnboardingChecklist, type OnboardingStep } from "@/components/Onboardin
 import { GoalsCard } from "@/components/GoalsCard";
 import { DashboardCustomizer } from "@/components/DashboardCustomizer";
 import { parseDashboardLayout, widgetLabel, type WidgetKey } from "@/lib/dashboard/widgets";
+
+export const metadata: Metadata = {
+  title: "Genel Bakış",
+  robots: { index: false },
+};
 
 function formatLira(value: number, maximumFractionDigits = 0) {
   return new Intl.NumberFormat("tr-TR", {
@@ -108,7 +114,10 @@ export default async function DashboardPage() {
       where: { id: userId },
       select: { riskProfile: true, monthlyIncome: true, dashboardLayout: true },
     }),
-    prisma.portfolioLot.findMany({ where: { userId }, select: { slug: true, quantity: true, unitCost: true } }),
+    prisma.portfolioLot.findMany({
+      where: { userId },
+      select: { slug: true, side: true, quantity: true, unitCost: true, boughtAt: true },
+    }),
     prisma.watchlist.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, select: { slug: true } }),
     prisma.priceAlert.findMany({
       where: { userId, active: true },
@@ -157,7 +166,10 @@ export default async function DashboardPage() {
     changeMap.set(slug, q?.changePercent ?? null);
   }
 
-  const positions = aggregatePositions(lots, priceMap);
+  const positions = aggregatePositions(
+    lots.map((l) => ({ ...l, at: l.boughtAt })),
+    priceMap
+  );
   const summary = portfolioSummary(positions);
   const daily = portfolioDailyChange(positions, changeMap);
   const hasPortfolio = lots.length > 0;

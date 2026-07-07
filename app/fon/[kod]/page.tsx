@@ -10,7 +10,10 @@ type Params = { kod: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const kod = params.kod.toUpperCase();
-  return { title: `${kod} — Fonly` };
+  return {
+    title: `${kod} Fon Fiyatı ve Getirisi`,
+    description: `${kod} TEFAS fonu: güncel fiyat, fon büyüklüğü, yatırımcı sayısı ve dönemsel getiriler.`,
+  };
 }
 
 function fmtPct(v: number | null | undefined): string {

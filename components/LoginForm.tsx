@@ -50,7 +50,11 @@ export function LoginForm({ googleEnabled = false, oauthError, callbackUrl }: Lo
     setIsLoading(false);
 
     if (result?.error) {
-      setError("Email veya şifre hatalı. Bilgilerini kontrol edip tekrar dene.");
+      setError(
+        result.code === "rate_limited"
+          ? "Çok fazla giriş denemesi yaptın. Güvenlik için birkaç dakika bekleyip tekrar dene."
+          : "Email veya şifre hatalı. Bilgilerini kontrol edip tekrar dene."
+      );
       return;
     }
 

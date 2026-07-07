@@ -71,6 +71,10 @@ export function AIButton({
       >
         {!iconRight && <Sparkles className="h-3.5 w-3.5" />}
         <span>{label}</span>
+        {/* AI motoru bağlandığında bu rozet kaldırılacak (bkz. /api/ai stub). */}
+        <span className="rounded-full border border-amber-200/25 bg-amber-300/10 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wider text-amber-200">
+          Yakında
+        </span>
         {showLock && <Lock className="h-3 w-3 opacity-60" />}
         {iconRight && <Sparkles className="h-3.5 w-3.5" />}
       </button>

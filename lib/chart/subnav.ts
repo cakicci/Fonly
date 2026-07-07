@@ -44,12 +44,13 @@ export const ALTIN_SUBNAV: SubNavTab[] = [
   { href: "tarihsel", label: "Tarihsel" },
 ];
 
+// NOT: "Dağılım"/"Portföy" sekmeleri kaldırıldı — 2026-04 TEFAS geçişinden
+// sonra varlık dağılımı hiçbir JSON endpoint'inde yok; SSR sayfası Akamai bot
+// korumalı olduğundan sunucudan kazınamıyor (bkz. borsapy get_allocation).
 export const FON_SUBNAV: SubNavTab[] = [
   { href: "",          label: "Genel" },
   { href: "grafik",    label: "Grafik" },
   { href: "teknik",    label: "Teknik" },
-  { href: "dagitim",   label: "Dağılım" },
-  { href: "portfoy",   label: "Portföy" },
   { href: "getiriler", label: "Getiriler" },
   { href: "haberler",  label: "Haberler" },
   { href: "tarihsel",  label: "Tarihsel" },

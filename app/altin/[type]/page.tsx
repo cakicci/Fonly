@@ -10,8 +10,10 @@ type Params = { type: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const gold = GOLD_TYPE_MAP[params.type.toLowerCase()];
+  if (!gold) return { title: "Altın Detayı" };
   return {
-    title: gold ? `${gold.name} — Fonly` : "Altın Detayı — Fonly",
+    title: `${gold.name} Fiyatı — Canlı Alış Satış`,
+    description: `Canlı ${gold.name.toLowerCase()} fiyatı: anlık alış/satış, günlük değişim, geçmiş grafikler ve otomatik analiz.`,
   };
 }
 

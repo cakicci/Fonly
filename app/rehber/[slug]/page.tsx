@@ -8,9 +8,9 @@ type Params = { slug: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const chapter = GUIDE_CHAPTERS.find(c => c.slug === params.slug);
-  if (!chapter) return { title: "Rehber — Fonly" };
+  if (!chapter) return { title: "Rehber" };
   return {
-    title: `${chapter.num}. ${chapter.title} — Yatırım Rehberi — Fonly`,
+    title: `${chapter.num}. ${chapter.title} — Yatırım Rehberi`,
     description: chapter.subtitle,
   };
 }

@@ -70,5 +70,5 @@ export const SUB_NAV_ITEMS: SubNavItem[] = [
   { label: "TEFAS Fonları", href: "/fonlar" },
   { label: "Rehber", href: "/rehber" },
   { label: "Risk Testi", href: "/risk-test" },
-  { label: "Ekonomik Takvim", href: "#", comingSoon: true },
+  { label: "Ekonomik Takvim", href: "/takvim" },
 ];

@@ -1,4 +1,4 @@
-﻿import NextAuth, { type NextAuthConfig } from "next-auth";
+﻿import NextAuth, { CredentialsSignin, type NextAuthConfig } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
@@ -6,6 +6,16 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { isPremium } from "@/lib/auth/premium";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
+
+/**
+ * Brute-force koruması: aynı IP'den 10 dakikada 15'ten fazla giriş denemesi
+ * reddedilir. `code` client'a ulaşır (LoginForm bunu Türkçe mesaja çevirir).
+ * Limit, meşru "şifremi mi yanlış yazdım" denemelerine bol pay bırakır.
+ */
+class LoginRateLimited extends CredentialsSignin {
+  code = "rate_limited";
+}
 
 // Premium durumu JWT'de cache'lenir; her istekte DB'ye gitmemek için 5dk'lık
 // bir refresh aralığı uygulanır. Abonelik başladığında/bittiğinde kullanıcı
@@ -24,7 +34,13 @@ const providers: NextAuthConfig["providers"] = [
       email: { label: "Email", type: "email" },
       password: { label: "Şifre", type: "password" }
     },
-    async authorize(credentials) {
+    async authorize(credentials, request) {
+      const ip = getClientIp(request);
+      const { ok } = rateLimit(`login:${ip}`, { limit: 15, windowMs: 10 * 60_000 });
+      if (!ok) {
+        throw new LoginRateLimited();
+      }
+
       const parsed = credentialsSchema.safeParse(credentials);
 
       if (!parsed.success) {

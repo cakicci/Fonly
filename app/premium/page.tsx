@@ -16,16 +16,19 @@ import { CheckoutButton } from "@/components/billing/CheckoutButton";
 import { ManageSubscription } from "@/components/billing/ManageSubscription";
 
 export const metadata = {
-  title: "FonlyPro · Yapay zekâ destekli yatırım analizi",
+  title: { absolute: "FonlyPro · Yapay zekâ destekli yatırım analizi" },
   description:
     "FonlyPro ile her varlık için AI destekli teknik analiz, kısa vadeli zaman dilimleri, şirket özetleri ve daha fazlasına erişin.",
 };
 
+// `comingSoon: true` → AI motoru bağlanana kadar kartta "Yakında" rozeti
+// gösterilir. Motor devreye girdikçe ilgili bayraklar kaldırılacak.
 const FEATURES = [
   {
     icon: Brain,
     title: "AI destekli teknik analiz",
     desc:  "Hareketli ortalama, momentum ve trend göstergelerinin birleşimini Türkçe yorumlu özet halinde sunar.",
+    comingSoon: true,
   },
   {
     icon: LineChart,
@@ -36,21 +39,25 @@ const FEATURES = [
     icon: TrendingUp,
     title: "Şirket profili ve büyüme özeti",
     desc:  "Bir hissenin temel finansallarını ve büyüme görünümünü saniyeler içinde anla.",
+    comingSoon: true,
   },
   {
     icon: Newspaper,
     title: "AI haber özetleri",
     desc:  "İlgili varlıkların haber akışını tek paragrafta toparlayan AI özetler.",
+    comingSoon: true,
   },
   {
     icon: MessageSquare,
     title: "Anlık soru-cevap (chat)",
     desc:  "Her varlık için yapay zekâ asistanına sorular sor, yorum iste.",
+    comingSoon: true,
   },
   {
     icon: Shield,
     title: "Temettü sürdürülebilirliği",
     desc:  "Bir hissenin temettü politikası ve karşılama oranını AI ile değerlendir.",
+    comingSoon: true,
   },
 ];
 
@@ -133,7 +140,8 @@ export default async function PremiumPage() {
           FonlyPro ile gelen özellikler
         </h2>
         <p className="mt-2 text-center text-sm text-mist/55">
-          Tüm AI özellikleri tek abonelikle, tüm varlıklarda kullanılabilir.
+          Tek abonelik, tüm varlıklar. &quot;Yakında&quot; işaretli AI özellikleri kademeli olarak
+          devreye alınıyor — aktifleştiklerinde ek ücret olmadan aboneliğine dahil.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -142,8 +150,13 @@ export default async function PremiumPage() {
             return (
               <div
                 key={f.title}
-                className="glass-card rounded-2xl bg-white/[0.02] p-5 ring-1 ring-white/8"
+                className="glass-card relative rounded-2xl bg-white/[0.02] p-5 ring-1 ring-white/8"
               >
+                {f.comingSoon && (
+                  <span className="absolute right-4 top-4 rounded-full border border-amber-200/25 bg-amber-300/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-200">
+                    Yakında
+                  </span>
+                )}
                 <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia-300/20 to-emerald-300/15">
                   <Icon className="h-4 w-4 text-fuchsia-200" />
                 </div>

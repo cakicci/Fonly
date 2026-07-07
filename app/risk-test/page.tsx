@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { RiskTestForm } from "@/components/RiskTestForm";
+
+export const metadata: Metadata = {
+  title: "Risk Profili Testi",
+  description: "Kısa bir testle yatırımcı risk profilini öğren; sana uygun varlık önerileri al.",
+};
 
 export default async function RiskTestPage() {
   const session = await auth();

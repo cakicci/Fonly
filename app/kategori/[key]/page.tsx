@@ -35,8 +35,11 @@ const ACCENT: Record<string, { border: string; bg: string; text: string; iconBg:
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const cat = CATEGORIES.find(c => c.key === params.key);
-  if (!cat) return { title: "Kategori — Fonly" };
-  return { title: `${cat.title} Hisseler — Fonly` };
+  if (!cat) return { title: "Kategori" };
+  return {
+    title: `${cat.title} Hisseler`,
+    description: `${cat.title} BIST hisseleri — yapay zekâ destekli risk ve vade sınıflandırmasıyla.`,
+  };
 }
 
 export default async function KategoriPage({ params }: { params: Params }) {

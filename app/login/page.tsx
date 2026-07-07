@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { LoginForm } from "@/components/LoginForm";
 import { googleAuthEnabled } from "@/auth";
+
+export const metadata: Metadata = {
+  title: "Giriş Yap",
+  description: "Fonly hesabına giriş yap; portföyünü, izleme listeni ve alarmlarını yönet.",
+};
 
 export default function LoginPage({
   searchParams

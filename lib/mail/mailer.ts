@@ -35,6 +35,59 @@ export function resetPasswordUrl(token: string): string {
   return `${appUrl()}/reset-password?token=${encodeURIComponent(token)}`;
 }
 
+export interface PriceAlertMail {
+  /** Varlık görünen adı (örn. "Türk Hava Yolları"). */
+  assetName: string;
+  /** Detay sayfası path'i (örn. "/hisse/THYAO") — mutlak URL burada üretilir. */
+  href: string;
+  condition: "above" | "below" | string;
+  threshold: number;
+  /** Tetiklenme anındaki fiyat. */
+  price: number;
+}
+
+const fmtTL = (v: number) =>
+  new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 4 }).format(v);
+
+/**
+ * Fiyat alarmı e-postası. Şifre sıfırlama ile aynı sözleşme: hata fırlatmaz,
+ * RESEND_API_KEY yoksa konsola basar (dev).
+ */
+export async function sendPriceAlertEmail(to: string, alert: PriceAlertMail): Promise<void> {
+  const url = `${appUrl()}${alert.href}`;
+  const direction = alert.condition === "above" ? "üzerine çıktı" : "altına indi";
+  const subject = `Fonly Alarm — ${alert.assetName} ${fmtTL(alert.threshold)} TL eşiğini geçti`;
+  const line =
+    `${alert.assetName}, belirlediğin ${fmtTL(alert.threshold)} TL eşiğinin ${direction}. ` +
+    `Güncel fiyat: ${fmtTL(alert.price)} TL.`;
+
+  const resend = getClient();
+  if (!resend) {
+    console.log(`[mail:dev] Fiyat alarmı → ${to}\n${line}\n${url}`);
+    return;
+  }
+
+  try {
+    await resend.emails.send({
+      from: from(),
+      to,
+      subject,
+      text: `Merhaba,\n\n${line}\n\nDetay: ${url}\n\nBu alarmı Fonly'de sen kurdun; alarmlarını ${appUrl()}/alarmlar adresinden yönetebilirsin.\n\nFonly`,
+      html:
+        `<div style="font-family:system-ui,Arial,sans-serif;max-width:480px;margin:0 auto;color:#0b1026">` +
+        `<h2 style="margin:0 0 12px">Fiyat alarmı tetiklendi</h2>` +
+        `<p style="margin:0 0 16px;line-height:1.5;color:#374151">${line}</p>` +
+        `<p style="margin:0 0 24px"><a href="${url}" ` +
+        `style="display:inline-block;background:#34d399;color:#0b1026;text-decoration:none;` +
+        `padding:12px 20px;border-radius:12px;font-weight:600">${alert.assetName} detayına git</a></p>` +
+        `<p style="margin:0;font-size:12px;color:#6b7280;line-height:1.5">` +
+        `Bu alarmı Fonly'de sen kurdun. Alarmlarını <a href="${appUrl()}/alarmlar">buradan</a> yönetebilirsin.</p></div>`,
+    });
+  } catch (err) {
+    console.error("[mail] Fiyat alarmı e-postası gönderilemedi:", err);
+  }
+}
+
 /**
  * Şifre sıfırlama e-postası gönderir. Hata fırlatmaz — gönderim başarısız olsa
  * bile çağıran route kullanıcıya aynı nötr yanıtı döner (e-posta varlığını sızdırmamak için).

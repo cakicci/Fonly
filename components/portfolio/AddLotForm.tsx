@@ -14,6 +14,7 @@ interface AddLotFormProps {
 const TYPES: AssetType[] = ["hisse", "doviz", "altin", "fon"];
 
 export function AddLotForm({ onAdded }: AddLotFormProps) {
+  const [side, setSide] = useState<"buy" | "sell">("buy");
   const [type, setType] = useState<AssetType>("hisse");
   const [code, setCode] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -35,7 +36,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
     const cost = Number(unitCost.replace(",", "."));
     if (!code.trim()) return setError("Varlık seç.");
     if (!Number.isFinite(qty) || qty <= 0) return setError("Geçerli bir adet gir.");
-    if (!Number.isFinite(cost) || cost < 0) return setError("Geçerli bir maliyet gir.");
+    if (!Number.isFinite(cost) || cost < 0) return setError("Geçerli bir fiyat gir.");
 
     const slug = `${type}-${code.trim()}`;
     setSubmitting(true);
@@ -43,7 +44,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
       const res = await fetch("/api/portfolio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, quantity: qty, unitCost: cost }),
+        body: JSON.stringify({ slug, side, quantity: qty, unitCost: cost }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -63,7 +64,29 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
 
   return (
     <form onSubmit={submit} className="glass-card rounded-2xl p-5 ring-1 ring-white/8">
-      <h2 className="text-sm font-semibold text-white">Alım ekle</h2>
+      <div className="flex items-center justify-between gap-4">
+        <h2 className="text-sm font-semibold text-white">İşlem ekle</h2>
+        <div className="flex rounded-xl border border-white/10 p-0.5" role="group" aria-label="İşlem yönü">
+          <button
+            type="button"
+            onClick={() => setSide("buy")}
+            className={`rounded-[10px] px-3 py-1 text-xs font-semibold transition ${
+              side === "buy" ? "bg-emerald-300/85 text-ink" : "text-mist/55 hover:text-white"
+            }`}
+          >
+            Alış
+          </button>
+          <button
+            type="button"
+            onClick={() => setSide("sell")}
+            className={`rounded-[10px] px-3 py-1 text-xs font-semibold transition ${
+              side === "sell" ? "bg-rose-300/85 text-ink" : "text-mist/55 hover:text-white"
+            }`}
+          >
+            Satış
+          </button>
+        </div>
+      </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {/* Tip */}
@@ -141,9 +164,9 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
           />
         </label>
 
-        {/* Birim maliyet */}
+        {/* Birim fiyat */}
         <label className="text-xs text-mist/55">
-          Alış fiyatı (₺)
+          {side === "buy" ? "Alış fiyatı (₺)" : "Satış fiyatı (₺)"}
           <input
             value={unitCost}
             onChange={(e) => setUnitCost(e.target.value)}
@@ -159,10 +182,14 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
       <button
         type="submit"
         disabled={submitting}
-        className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-300/85 px-4 py-2 text-sm font-semibold text-ink transition hover:bg-emerald-200 disabled:opacity-60"
+        className={`mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-ink transition disabled:opacity-60 ${
+          side === "buy"
+            ? "bg-emerald-300/85 hover:bg-emerald-200"
+            : "bg-rose-300/85 hover:bg-rose-200"
+        }`}
       >
         {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-        Ekle
+        {side === "buy" ? "Alış ekle" : "Satış ekle"}
       </button>
     </form>
   );
