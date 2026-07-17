@@ -22,7 +22,7 @@ export default function TakvimPage() {
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
-        <nav className="mb-6 flex items-center gap-2 text-sm text-mist/45">
+        <nav className="mb-6 flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <span className="text-white">Ekonomik Takvim</span>
@@ -36,14 +36,14 @@ export default function TakvimPage() {
           <h1 className="mt-2 text-3xl font-semibold text-white">
             Bu hafta piyasaları ne bekliyor?
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-mist/64">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-mist-2">
             Türkiye, ABD ve Euro Bölgesi&apos;nin önemli ekonomik açıklamaları: enflasyon,
             faiz kararları, işsizlik ve büyüme verileri — gerçekleşen, beklenti ve önceki
             değerlerle birlikte.
           </p>
         </div>
 
-        <div className="glass-card overflow-hidden rounded-[1.75rem] p-2 sm:p-3">
+        <div className="glass-card overflow-hidden rounded-section p-2 sm:p-3">
           <iframe
             src={src}
             title="Ekonomik Takvim"
@@ -53,14 +53,14 @@ export default function TakvimPage() {
         </div>
 
         <div className="mt-4 flex items-start gap-2 rounded-2xl border border-white/6 bg-white/[0.015] p-4">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-mist/35" />
-          <p className="text-xs leading-5 text-mist/40">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-mist-3" />
+          <p className="text-xs leading-5 text-mist-3">
             Takvim verileri{" "}
             <a
               href="https://tr.investing.com/economic-calendar/"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-mist/25 underline-offset-2 transition hover:text-mist/70"
+              className="underline decoration-mist/25 underline-offset-2 transition hover:text-mist-2"
             >
               Investing.com
             </a>{" "}

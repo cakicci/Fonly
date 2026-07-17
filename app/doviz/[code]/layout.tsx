@@ -41,7 +41,7 @@ export default async function DovizLayout({
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <Link href="/doviz" className="transition hover:text-white">Döviz</Link>
@@ -79,7 +79,7 @@ export default async function DovizLayout({
                 Alış
               </p>
               <p className="mt-0.5 text-base font-semibold text-white">
-                {fmtAsset(displayBuying, "currency")} <span className="text-xs font-normal text-mist/45">TL</span>
+                {fmtAsset(displayBuying, "currency")} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
             <div className="rounded-xl border border-rose-200/14 bg-rose-300/[0.04] px-4 py-3">
@@ -88,12 +88,12 @@ export default async function DovizLayout({
                 Satış
               </p>
               <p className="mt-0.5 text-base font-semibold text-white">
-                {fmtAsset(displaySelling, "currency")} <span className="text-xs font-normal text-mist/45">TL</span>
+                {fmtAsset(displaySelling, "currency")} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
             {spreadPct != null && (
               <div className="rounded-xl border border-white/8 bg-white/[0.025] px-4 py-3">
-                <p className="text-[10px] font-medium uppercase tracking-wider text-mist/40">Makas</p>
+                <p className="text-[10px] font-medium uppercase tracking-wider text-mist-3">Makas</p>
                 <p className="mt-0.5 text-base font-semibold text-white">%{fmtPercent(spreadPct)}</p>
               </div>
             )}

@@ -71,7 +71,7 @@ export function AssetHeaderActions({
           className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-medium transition disabled:opacity-50 ${
             inWatchlist
               ? "border-amber-300/35 bg-amber-300/12 text-amber-100"
-              : "border-white/10 bg-white/[0.04] text-mist/65 hover:bg-white/[0.07] hover:text-white"
+              : "border-white/10 bg-white/[0.04] text-mist-2 hover:bg-white/[0.07] hover:text-white"
           }`}
         >
           <Star className={`h-3.5 w-3.5 ${inWatchlist ? "fill-amber-300" : ""}`} />
@@ -81,7 +81,7 @@ export function AssetHeaderActions({
         <button
           onClick={onAlertClick}
           aria-label="Fiyat alarmı kur"
-          className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-mist/65 transition hover:bg-white/[0.07] hover:text-white"
+          className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.07] hover:text-white"
         >
           <Bell className="h-3.5 w-3.5" />
           Alarm
@@ -90,7 +90,7 @@ export function AssetHeaderActions({
         <button
           onClick={() => openDrawer(true)}
           aria-label="İzleme listesini aç"
-          className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-mist/65 transition hover:bg-white/[0.07] hover:text-white"
+          className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-mist-2 transition hover:bg-white/[0.07] hover:text-white"
           title="İzleme listesini aç"
         >
           <Star className="h-3.5 w-3.5" />

@@ -9,7 +9,7 @@ export default function AltinTeknikPage({ params }: { params: Params }) {
   if (!goldType) notFound();
   if (!goldType.weightG) {
     return (
-      <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 text-sm text-mist/55">
+      <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 text-sm text-mist-3">
         Antika / ayar / gümüş türleri için teknik analiz mevcut değil; geçmiş OHLC verisi olmadan
         indikatör hesaplanamıyor.
       </div>

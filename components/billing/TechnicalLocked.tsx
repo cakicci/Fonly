@@ -46,13 +46,13 @@ export function TechnicalLocked({ assetName }: TechnicalLockedProps) {
             <h2 className="text-xl font-semibold text-white">
               Teknik analiz Premium aboneliğe özel
             </h2>
-            <p className="mt-2 text-sm text-mist/60">
+            <p className="mt-2 text-sm text-mist-3">
               Hareketli ortalamalar, RSI, MACD, Bollinger ve AI destekli yorumların
               tamamı Premium üyelerle paylaşılır.
             </p>
           </div>
 
-          <ul className="mt-1 grid w-full max-w-md gap-2 text-left text-sm text-mist/75">
+          <ul className="mt-1 grid w-full max-w-md gap-2 text-left text-sm text-mist-2">
             <li className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 shrink-0 text-emerald-300" />
               SMA & EMA (5/10/20/50/100/200) sinyalleri
@@ -70,7 +70,7 @@ export function TechnicalLocked({ assetName }: TechnicalLockedProps) {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="mt-2 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-300 to-emerald-300 px-5 py-2.5 text-sm font-semibold text-ink transition hover:from-fuchsia-200 hover:to-emerald-200"
+            className="btn btn-sm btn-premium mt-2 px-5"
           >
             <Sparkles className="h-4 w-4" />
             Premium&apos;a yükselt

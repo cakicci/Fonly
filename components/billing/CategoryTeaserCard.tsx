@@ -30,7 +30,7 @@ export function CategoryTeaserCard({ hiddenCount, categoryTitle }: CategoryTease
         onClick={() => setModalOpen(true)}
         className="group block h-full w-full text-left"
       >
-        <article className="relative h-full overflow-hidden rounded-[1.25rem] border border-fuchsia-300/20 bg-gradient-to-br from-fuchsia-300/8 via-purple-300/4 to-emerald-300/8 p-5 transition group-hover:-translate-y-0.5 group-hover:border-fuchsia-300/35">
+        <article className="relative h-full overflow-hidden rounded-card border border-fuchsia-300/20 bg-gradient-to-br from-fuchsia-300/8 via-purple-300/4 to-emerald-300/8 p-5 transition group-hover:-translate-y-0.5 group-hover:border-fuchsia-300/35">
 
           {/* Silüet arka plan — gerçek hisselerin yerini hayal ettirir */}
           <div className="pointer-events-none absolute inset-0 opacity-30">
@@ -54,7 +54,7 @@ export function CategoryTeaserCard({ hiddenCount, categoryTitle }: CategoryTease
             <h3 className="mt-3 text-xl font-semibold text-white">
               +{hiddenCount} hisse daha
             </h3>
-            <p className="mt-2 text-sm leading-6 text-mist/65">
+            <p className="mt-2 text-sm leading-6 text-mist-2">
               {categoryTitle} kategorisinde AI&apos;ın seçtiği {hiddenCount} ek hisse
               FonlyPro üyeleri için açık. Tümüne erişmek için yükselt.
             </p>

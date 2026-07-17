@@ -38,7 +38,7 @@ export function BlurredStockCard({ categoryTitle, index }: BlurredStockCardProps
         className="group block h-full w-full text-left"
         aria-label="Premium ile kilitli hisseyi gör"
       >
-        <article className="relative h-full overflow-hidden rounded-[1.25rem] border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-300/5 via-purple-300/3 to-emerald-300/5 p-5 transition group-hover:-translate-y-0.5 group-hover:border-fuchsia-300/35">
+        <article className="relative h-full overflow-hidden rounded-card border border-fuchsia-300/15 bg-gradient-to-br from-fuchsia-300/5 via-purple-300/3 to-emerald-300/5 p-5 transition group-hover:-translate-y-0.5 group-hover:border-fuchsia-300/35">
 
           {/* Blur'lu sahte içerik — okunmasın diye blur, kopyalanmasın diye select-none */}
           <div className="pointer-events-none select-none blur-md opacity-50">

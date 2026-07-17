@@ -53,11 +53,7 @@ export function CheckoutButton({ planId, label, highlight }: CheckoutButtonProps
         type="button"
         onClick={start}
         disabled={loading}
-        className={`mt-6 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3 text-center text-sm font-semibold transition disabled:opacity-60 ${
-          highlight
-            ? "bg-gradient-to-r from-fuchsia-300/80 to-emerald-300/80 text-ink hover:from-fuchsia-200 hover:to-emerald-200"
-            : "border border-white/12 bg-white/[0.06] text-white hover:bg-white/[0.1]"
-        }`}
+        className={`btn btn-lg mt-6 w-full ${highlight ? "btn-premium" : "btn-secondary"}`}
       >
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         {loading ? "Yönlendiriliyor…" : label}

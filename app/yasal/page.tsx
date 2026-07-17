@@ -13,7 +13,7 @@ export default function LegalIndexPage() {
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
-        <nav className="mb-6 flex items-center gap-2 text-sm text-mist/45">
+        <nav className="mb-6 flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <span className="text-white">Yasal</span>
@@ -25,7 +25,7 @@ export default function LegalIndexPage() {
             Yasal Bilgiler
           </p>
           <h1 className="mt-2 text-3xl font-semibold text-white">Politikalar ve sözleşmeler</h1>
-          <p className="mt-3 text-sm leading-6 text-mist/64">
+          <p className="mt-3 text-sm leading-6 text-mist-2">
             Fonly&apos;yi kullanırken haklarını ve yükümlülüklerini düzenleyen tüm belgeler.
           </p>
         </div>
@@ -35,13 +35,13 @@ export default function LegalIndexPage() {
             <Link
               key={page.slug}
               href={`/yasal/${page.slug}`}
-              className="glass-card flex items-center justify-between gap-4 rounded-2xl p-5 transition hover:border-emerald-200/25"
+              className="glass-card glass-card-interactive flex items-center justify-between gap-4 rounded-2xl p-5"
             >
               <div>
                 <p className="text-base font-semibold text-white">{page.title}</p>
-                <p className="mt-1 text-sm text-mist/55">{page.description}</p>
+                <p className="mt-1 text-sm text-mist-3">{page.description}</p>
               </div>
-              <ChevronRight className="h-5 w-5 shrink-0 text-mist/40" />
+              <ChevronRight className="h-5 w-5 shrink-0 text-mist-3" />
             </Link>
           ))}
         </div>

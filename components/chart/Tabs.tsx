@@ -36,7 +36,7 @@ export function Tabs({
             className={`shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition ${
               t.key === current.key
                 ? "bg-emerald-300/15 text-emerald-100"
-                : "text-mist/55 hover:bg-white/[0.04] hover:text-white"
+                : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
             }`}
           >
             {t.label}

@@ -38,7 +38,7 @@ export function SubNav({ basePath, tabs }: SubNavProps) {
               className={`shrink-0 whitespace-nowrap rounded-xl px-3 py-1.5 text-xs font-medium transition ${
                 active
                   ? "bg-emerald-300/15 text-emerald-100"
-                  : "text-mist/55 hover:bg-white/[0.04] hover:text-white"
+                  : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
               }`}
             >
               <span className="inline-flex items-center gap-1">

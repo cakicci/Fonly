@@ -40,7 +40,7 @@ export function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
         <button
           onClick={onClose}
           aria-label="Kapat"
-          className="absolute right-3 top-3 z-10 rounded-lg p-1.5 text-mist/55 transition hover:bg-white/5 hover:text-white"
+          className="absolute right-3 top-3 z-10 rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
         >
           <X className="h-4 w-4" />
         </button>
@@ -51,7 +51,7 @@ export function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
             Premium özellik
           </div>
           <h2 className="text-xl font-semibold text-white">{feature}</h2>
-          <p className="mt-1 text-sm text-mist/55">
+          <p className="mt-1 text-sm text-mist-3">
             Yapay zekâ destekli analizler Premium aboneliğe özeldir.
           </p>
         </div>
@@ -60,7 +60,7 @@ export function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
           {PREMIUM_FEATURES.map(f => (
             <div key={f} className="flex items-center gap-2">
               <Check className="h-4 w-4 shrink-0 text-emerald-300" />
-              <p className="text-sm text-mist/75">{f}</p>
+              <p className="text-sm text-mist-2">{f}</p>
             </div>
           ))}
         </div>
@@ -68,13 +68,13 @@ export function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
         <div className="border-t border-white/8 px-6 py-4">
           <Link
             href="/premium"
-            className="block w-full rounded-xl bg-gradient-to-r from-fuchsia-300 to-emerald-300 px-4 py-3 text-center text-sm font-semibold text-ink transition hover:from-fuchsia-200 hover:to-emerald-200"
+            className="btn btn-lg btn-premium w-full"
           >
             Premium&apos;a yükselt
           </Link>
           <button
             onClick={onClose}
-            className="mt-2 block w-full text-center text-xs text-mist/45 transition hover:text-mist/70"
+            className="mt-2 block w-full text-center text-xs text-mist-3 transition hover:text-mist-2"
           >
             Belki sonra
           </button>

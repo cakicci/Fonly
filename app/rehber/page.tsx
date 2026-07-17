@@ -25,14 +25,14 @@ export default function RehberPage() {
       <div className="mx-auto max-w-3xl space-y-6">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <span className="text-white">Yatırım Rehberi</span>
         </nav>
 
         {/* Hero */}
-        <div className="rounded-[1.75rem] border border-cyan-200/14
+        <div className="rounded-section border border-cyan-200/14
                         bg-[linear-gradient(135deg,rgba(165,243,252,0.07),rgba(11,16,38,0.98))] p-6 sm:p-8">
           <div className="flex items-start gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cyan-300/12 text-cyan-200">
@@ -43,20 +43,20 @@ export default function RehberPage() {
               <h1 className="mt-1 text-3xl font-semibold text-white sm:text-4xl">
                 Yatırım Rehberi
               </h1>
-              <p className="mt-3 max-w-xl text-base leading-7 text-mist/64">
+              <p className="mt-3 max-w-xl text-base leading-7 text-mist-2">
                 Finansal okuryazarlığa yeni başlayanlar için sade Türkçe ile yazılmış,
                 adım adım yatırım izlencesi. Teknik jargon yok, abartılı vaat yok.
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
-                <span className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-mist/55">
+                <span className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-mist-3">
                   <BookOpen className="h-3.5 w-3.5" />
                   6 bölüm
                 </span>
-                <span className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-mist/55">
+                <span className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-mist-3">
                   <Clock className="h-3.5 w-3.5" />
                   ~{TOTAL_READ_MIN} dk toplam
                 </span>
-                <span className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-mist/55">
+                <span className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-mist-3">
                   Türkiye&apos;ye özgü örnekler
                 </span>
               </div>
@@ -90,21 +90,21 @@ export default function RehberPage() {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="text-base font-semibold text-white">{chapter.title}</p>
-                      <p className="mt-0.5 text-sm text-mist/55">{chapter.subtitle}</p>
+                      <p className="mt-0.5 text-sm text-mist-3">{chapter.subtitle}</p>
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
-                      <span className="flex items-center gap-1 text-xs text-mist/35">
+                      <span className="flex items-center gap-1 text-xs text-mist-3">
                         <Clock className="h-3 w-3" />
                         {chapter.readingMin} dk
                       </span>
-                      <ArrowRight className="h-4 w-4 text-mist/25 transition group-hover:translate-x-0.5 group-hover:text-mist/60" />
+                      <ArrowRight className="h-4 w-4 text-mist-3 transition group-hover:translate-x-0.5 group-hover:text-mist-3" />
                     </div>
                   </div>
 
                   {/* Öğrenilecekler */}
                   <ul className="mt-3 space-y-1">
                     {chapter.objectives.map((obj) => (
-                      <li key={obj} className="flex items-start gap-2 text-xs text-mist/45">
+                      <li key={obj} className="flex items-start gap-2 text-xs text-mist-3">
                         <span className={`mt-1.5 h-1 w-1 shrink-0 rounded-full ${accent.dot}`} />
                         {obj}
                       </li>
@@ -118,7 +118,7 @@ export default function RehberPage() {
 
         {/* Alt not */}
         <div className="rounded-2xl border border-white/6 bg-white/[0.02] p-5 text-center">
-          <p className="text-sm leading-6 text-mist/45">
+          <p className="text-sm leading-6 text-mist-3">
             Bu rehber eğitim amaçlıdır. Yatırım tavsiyesi değildir.
             Kararlarınızı vermeden önce mali danışmanlık almanız önerilir.
           </p>

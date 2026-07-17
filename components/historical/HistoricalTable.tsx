@@ -120,7 +120,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
                   className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-medium transition ${
                     active
                       ? "bg-emerald-300/15 text-emerald-100"
-                      : "text-mist/55 hover:bg-white/[0.04] hover:text-white"
+                      : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
                   }`}
                 >
                   {t.label}
@@ -133,7 +133,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
         <button
           onClick={downloadCsv}
           disabled={!resp || candlesDesc.length === 0}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-1.5 text-xs font-medium text-mist/70 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-1.5 text-xs font-medium text-mist-2 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Download className="h-3.5 w-3.5" />
           CSV İndir
@@ -148,16 +148,16 @@ export function HistoricalTable({ slug, assetName }: Props) {
       ) : error ? (
         <div className="glass-card rounded-2xl p-6 text-center text-sm text-rose-200">{error}</div>
       ) : candlesDesc.length === 0 ? (
-        <div className="glass-card rounded-2xl p-6 text-center text-sm text-mist/45">Bu dönem için veri yok.</div>
+        <div className="glass-card rounded-2xl p-6 text-center text-sm text-mist-3">Bu dönem için veri yok.</div>
       ) : (
         <div className="glass-card rounded-2xl p-5">
-          <div className="mb-3 text-xs text-mist/45">
+          <div className="mb-3 text-xs text-mist-3">
             Toplam {candlesDesc.length} kayıt · Sayfa {page + 1} / {totalPages}
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+                <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
                   <th className="pb-3 pr-4 font-medium">Tarih</th>
                   <th className="pb-3 pr-4 font-medium text-right">Açılış</th>
                   <th className="pb-3 pr-4 font-medium text-right">Yüksek</th>
@@ -171,18 +171,18 @@ export function HistoricalTable({ slug, assetName }: Props) {
                 {pageRows.map((c, i) => {
                   const prev = candlesDesc[page * PAGE_SIZE + i + 1]; // bir sonraki (eski) gün
                   const ch   = changeForRow(c, prev);
-                  const tone = ch == null ? "text-mist/55" : ch > 0 ? "text-emerald-300" : ch < 0 ? "text-rose-300" : "text-mist/55";
+                  const tone = ch == null ? "text-mist-3" : ch > 0 ? "text-emerald-300" : ch < 0 ? "text-rose-300" : "text-mist-3";
                   return (
                     <tr key={c.time}>
-                      <td className="py-2 pr-4 whitespace-nowrap text-mist/70">{fmtDate(c.time)}</td>
-                      <td className="py-2 pr-4 text-right tabular-nums text-mist/85">{fmtPrice(c.open)}</td>
-                      <td className="py-2 pr-4 text-right tabular-nums text-mist/85">{fmtPrice(c.high)}</td>
-                      <td className="py-2 pr-4 text-right tabular-nums text-mist/85">{fmtPrice(c.low)}</td>
+                      <td className="py-2 pr-4 whitespace-nowrap text-mist-2">{fmtDate(c.time)}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums text-mist-2">{fmtPrice(c.open)}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums text-mist-2">{fmtPrice(c.high)}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums text-mist-2">{fmtPrice(c.low)}</td>
                       <td className="py-2 pr-4 text-right tabular-nums font-medium text-white">{fmtPrice(c.close)}</td>
                       <td className={`py-2 pr-4 text-right tabular-nums ${tone}`}>
                         {ch == null ? "—" : `${ch > 0 ? "+" : ""}${ch.toFixed(2)}%`}
                       </td>
-                      <td className="py-2 text-right tabular-nums text-mist/60">{fmtVolume(c.volume)}</td>
+                      <td className="py-2 text-right tabular-nums text-mist-3">{fmtVolume(c.volume)}</td>
                     </tr>
                   );
                 })}
@@ -196,15 +196,15 @@ export function HistoricalTable({ slug, assetName }: Props) {
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className="rounded-lg border border-white/8 bg-white/[0.02] px-3 py-1.5 text-mist/70 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-lg border border-white/8 bg-white/[0.02] px-3 py-1.5 text-mist-2 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 ← Önceki
               </button>
-              <span className="text-mist/50">{page + 1} / {totalPages}</span>
+              <span className="text-mist-3">{page + 1} / {totalPages}</span>
               <button
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1}
-                className="rounded-lg border border-white/8 bg-white/[0.02] px-3 py-1.5 text-mist/70 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-lg border border-white/8 bg-white/[0.02] px-3 py-1.5 text-mist-2 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Sonraki →
               </button>
@@ -213,7 +213,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
         </div>
       )}
 
-      <p className="text-[11px] text-mist/35">
+      <p className="text-[11px] text-mist-3">
         Veri kaynağı: Yahoo Finance. Yaklaşık 15dk gecikmeli olabilir. Hacim
         forex/altın türlerinde her zaman raporlanmaz.
       </p>

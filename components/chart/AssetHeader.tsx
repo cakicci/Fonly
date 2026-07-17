@@ -63,14 +63,14 @@ export function AssetHeader({
   const flashCls = useFlashClass(displayPrice);
 
   return (
-    <div className="rounded-[1.75rem] border border-white/10 bg-[linear-gradient(135deg,rgba(45,227,168,0.06),rgba(11,16,38,0.95))] p-6">
+    <div className="rounded-section border border-white/10 bg-[linear-gradient(135deg,rgba(45,227,168,0.06),rgba(11,16,38,0.95))] p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-lg bg-emerald-300/12 px-2 py-0.5 text-xs font-bold text-emerald-300">
               {tag}
             </span>
-            <p className="text-xs text-mist/45">{market}</p>
+            <p className="text-xs text-mist-3">{market}</p>
             {displayChangePct != null && (
               <span className={`inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${
                 displayChangePct >= 0
@@ -91,15 +91,15 @@ export function AssetHeader({
           <div className="mt-4 flex items-end gap-3">
             <p className="text-4xl font-semibold text-white">
               <span
-                className={`inline-block rounded-md px-1.5 transition-colors duration-150 ${flashCls}`}
+                className={`inline-block rounded-md px-1.5 transition-colors duration-300 ${flashCls}`}
               >
                 {fmtPrice(displayPrice, slug)}
               </span>
-              <span className="ml-2 text-xl font-normal text-mist/45">{unit}</span>
+              <span className="ml-2 text-xl font-normal text-mist-3">{unit}</span>
             </p>
           </div>
           {subtitle && (
-            <p className="mt-1 text-xs text-mist/40">{subtitle}</p>
+            <p className="mt-1 text-xs text-mist-3">{subtitle}</p>
           )}
         </div>
 

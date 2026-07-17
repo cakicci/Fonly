@@ -43,9 +43,9 @@ export default function DovizGenelPage({ params }: { params: Params }) {
             key:   "comparison",
             label: "Altın Karşılaştırma",
             content: (
-              <div className="glass-card rounded-[1.75rem] p-6">
+              <div className="glass-card rounded-section p-6">
                 <h2 className="mb-1 text-lg font-semibold text-white">Gram Altına Göre Performans</h2>
-                <p className="mb-5 text-xs text-mist/45">
+                <p className="mb-5 text-xs text-mist-3">
                   Yüzdesel değişim — {currency.shortName} vs Gram Altın (dönem başı = 0%)
                 </p>
                 <PriceChart slug={slug} />

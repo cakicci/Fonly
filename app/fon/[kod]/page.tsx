@@ -55,16 +55,16 @@ export default async function FonGenelPage({ params }: { params: Params }) {
         unit="₺"
       />
 
-      <div className="glass-card rounded-[1.75rem] p-6">
+      <div className="glass-card rounded-section p-6">
         <h2 className="mb-4 text-lg font-semibold text-white">Dönem Getirileri</h2>
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-7">
           {periods.map((p) => {
             const positive = p.value != null && p.value >= 0;
             return (
               <div key={p.label} className="rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2.5">
-                <p className="text-[10px] font-medium uppercase tracking-wider text-mist/40">{p.label}</p>
+                <p className="text-[10px] font-medium uppercase tracking-wider text-mist-3">{p.label}</p>
                 <p className={`mt-1 text-sm font-semibold ${
-                  p.value == null ? "text-mist/40" :
+                  p.value == null ? "text-mist-3" :
                   positive ? "text-emerald-300" : "text-rose-300"
                 }`}>
                   {fmtPct(p.value)}
@@ -82,9 +82,9 @@ export default async function FonGenelPage({ params }: { params: Params }) {
             key:   "comparison",
             label: "Altın Karşılaştırma",
             content: (
-              <div className="glass-card rounded-[1.75rem] p-6">
+              <div className="glass-card rounded-section p-6">
                 <h2 className="mb-1 text-lg font-semibold text-white">Gram Altına Göre Performans</h2>
-                <p className="mb-5 text-xs text-mist/45">
+                <p className="mb-5 text-xs text-mist-3">
                   Yüzdesel değişim — {detail.fonUnvan} vs Gram Altın (dönem başı = 0%)
                 </p>
                 <PriceChart slug={slug} />
@@ -102,7 +102,7 @@ export default async function FonGenelPage({ params }: { params: Params }) {
             content: (
               <div className="rounded-2xl border border-rose-200/10 bg-rose-300/[0.03] p-5">
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-rose-200/60">Risk uyarısı</p>
-                <p className="text-sm leading-6 text-mist/55">
+                <p className="text-sm leading-6 text-mist-3">
                   Yatırım fonları kısa vadede dalgalı performans gösterebilir. Yönetim ücreti getiriyi
                   azaltır; risk değeri (1–7) fonun geçmişteki oynaklığını ifade eder.
                 </p>

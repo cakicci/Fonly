@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowLeft, Search, TrendingDown, TrendingUp } from "lucide-react";
 import type { BistStock } from "@/app/api/bist/route";
@@ -75,14 +75,14 @@ export default function HisselerPage() {
       <div className="mx-auto max-w-6xl space-y-6">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <span className="text-white">Tüm Hisseler</span>
         </nav>
 
         {/* Hero + arama */}
-        <div className="rounded-[1.75rem] border border-cyan-200/14 bg-[linear-gradient(135deg,rgba(165,243,252,0.07),rgba(11,16,38,0.98))] p-6 sm:p-8">
+        <div className="rounded-section border border-cyan-200/14 bg-[linear-gradient(135deg,rgba(165,243,252,0.07),rgba(11,16,38,0.98))] p-6 sm:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
@@ -91,10 +91,10 @@ export default function HisselerPage() {
               </div>
               <h1 className="mt-1 text-3xl font-semibold text-white sm:text-4xl">Tüm Hisseler</h1>
               {!loading && (
-                <p className="mt-1 text-sm text-mist/45">
+                <p className="mt-1 text-sm text-mist-3">
                   {filtered.length} hisse gösteriliyor
                   {updatedAt && (
-                    <span className="ml-2 text-mist/30">
+                    <span className="ml-2 text-mist-3">
                       · {new Date(updatedAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   )}
@@ -105,13 +105,13 @@ export default function HisselerPage() {
 
           {/* Arama */}
           <div className="mt-5 flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3">
-            <Search className="h-4 w-4 shrink-0 text-mist/40" />
+            <Search className="h-4 w-4 shrink-0 text-mist-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ara... (THYAO, BİM)"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist/35"
+              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
             />
           </div>
         </div>
@@ -122,21 +122,22 @@ export default function HisselerPage() {
             {Array.from({ length: 24 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : filtered.length === 0 ? (
-          <p className="py-16 text-center text-sm text-mist/40">Sonuç bulunamadı.</p>
+          <p className="py-16 text-center text-sm text-mist-3">Sonuç bulunamadı.</p>
         ) : (
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((stock) => {
+            {filtered.map((stock, i) => {
               const meta = metaMap.get(stock.symbol);
               return (
                 <Link
                   key={stock.symbol}
                   href={`/hisse/${stock.symbol.toLowerCase()}`}
-                  className="group flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 transition hover:border-white/16 hover:bg-white/[0.05]"
+                  className="animate-enter group flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 transition hover:border-white/16 hover:bg-white/[0.05]"
+                  style={{ "--enter-index": Math.min(i, 12) } as CSSProperties}
                 >
                   {/* Sol: sembol + isim + badge */}
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold text-white">{stock.symbol}</p>
-                    <p className="mt-0.5 truncate text-xs text-mist/50">{stock.name}</p>
+                    <p className="mt-0.5 truncate text-xs text-mist-3">{stock.name}</p>
                     {meta && (
                       <div className="mt-1.5 flex flex-wrap gap-1">
                         <span className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-medium ${RISK_COLORS[meta.risk]}`}>
@@ -171,7 +172,7 @@ export default function HisselerPage() {
         <div className="pt-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-2.5 text-sm text-mist/60 transition hover:bg-white/[0.06] hover:text-white"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-2.5 text-sm text-mist-3 transition hover:bg-white/[0.06] hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
             Ana sayfaya dön

@@ -29,15 +29,15 @@ export default function AltinGenelPage({ params }: { params: Params }) {
       key:   "comparison",
       label: "Altın Karşılaştırma",
       content: supportsCandle ? (
-        <div className="glass-card rounded-[1.75rem] p-6">
+        <div className="glass-card rounded-section p-6">
           <h2 className="mb-1 text-lg font-semibold text-white">Dolar/TL Karşılaştırması</h2>
-          <p className="mb-5 text-xs text-mist/45">
+          <p className="mb-5 text-xs text-mist-3">
             Yüzdesel değişim — {goldType.name} vs Dolar/TL kuru (dönem başı = 0%)
           </p>
           <PriceChart slug={slug} />
         </div>
       ) : (
-        <p className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 text-sm text-mist/45">
+        <p className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 text-sm text-mist-3">
           {goldType.name} için geçmiş veri kaynağı yok (Yahoo Finance ticker&apos;ı bulunmuyor).
           Sadece anlık fiyat görüntülenebiliyor.
         </p>
@@ -62,7 +62,7 @@ export default function AltinGenelPage({ params }: { params: Params }) {
         />
       ) : (
         <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6">
-          <p className="text-sm text-mist/55">
+          <p className="text-sm text-mist-3">
             Bu altın türü için profesyonel grafik mevcut değil (Yahoo Finance ticker&apos;ı yok).
             Yukarıdaki anlık fiyat ve günlük değişim güncel verilerdir.
           </p>

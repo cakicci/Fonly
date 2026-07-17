@@ -30,7 +30,7 @@ function statusBadge(a: Alert) {
     );
   }
   return (
-    <span className="rounded-full bg-white/[0.06] px-2 py-0.5 text-[10px] font-semibold text-mist/50">
+    <span className="rounded-full bg-white/[0.06] px-2 py-0.5 text-[10px] font-semibold text-mist-3">
       Pasif
     </span>
   );
@@ -72,7 +72,7 @@ export function AlertsManager() {
 
   if (items === null) {
     return (
-      <div className="flex items-center gap-2 py-12 text-sm text-mist/55">
+      <div className="flex items-center gap-2 py-12 text-sm text-mist-3">
         <Loader2 className="h-4 w-4 animate-spin" /> Yükleniyor…
       </div>
     );
@@ -84,15 +84,15 @@ export function AlertsManager() {
 
   if (items.length === 0) {
     return (
-      <div className="glass-card rounded-2xl p-10 text-center ring-1 ring-white/8">
-        <BellOff className="mx-auto h-8 w-8 text-mist/40" />
-        <p className="mt-3 text-sm text-mist/70">Henüz alarmın yok.</p>
-        <p className="text-xs text-mist/45">
+      <div className="glass-card rounded-2xl p-10 text-center">
+        <BellOff className="mx-auto h-8 w-8 text-mist-3" />
+        <p className="mt-3 text-sm text-mist-2">Henüz alarmın yok.</p>
+        <p className="text-xs text-mist-3">
           Bir varlık sayfasını açıp “Alarm kur” diyerek fiyat alarmı oluşturabilirsin.
         </p>
         <Link
           href="/doviz"
-          className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist/80 hover:bg-white/[0.08]"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist-2 hover:bg-white/[0.08]"
         >
           Piyasalara göz at →
         </Link>
@@ -101,7 +101,7 @@ export function AlertsManager() {
   }
 
   return (
-    <div className="glass-card divide-y divide-white/5 overflow-hidden rounded-2xl ring-1 ring-white/8">
+    <div className="glass-card divide-y divide-white/5 overflow-hidden rounded-2xl">
       {items.map((a) => (
         <div key={a.id} className="flex items-center gap-3 px-4 py-3">
           <BellRing className="h-4 w-4 shrink-0 text-cyan-200/70" />
@@ -112,16 +112,16 @@ export function AlertsManager() {
               </Link>
               {statusBadge(a)}
             </div>
-            <p className="mt-0.5 text-xs text-mist/55">
+            <p className="mt-0.5 text-xs text-mist-3">
               Fiyat {a.condition === "above" ? "şu değerin üzerine çıkınca" : "şu değerin altına inince"}:{" "}
-              <span className="tabular-nums text-mist/80">{a.threshold}</span>
+              <span className="tabular-nums text-mist-2">{a.threshold}</span>
             </p>
           </div>
           <button
             onClick={() => remove(a.id)}
             disabled={deletingId === a.id}
             aria-label="Alarmı sil"
-            className="shrink-0 rounded-lg p-1.5 text-mist/40 transition hover:bg-rose-300/10 hover:text-rose-300 disabled:opacity-50"
+            className="shrink-0 rounded-lg p-1.5 text-mist-3 transition hover:bg-rose-300/10 hover:text-rose-300 disabled:opacity-50"
           >
             {deletingId === a.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
           </button>

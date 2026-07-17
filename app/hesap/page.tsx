@@ -47,12 +47,12 @@ export default async function AccountPage() {
         cancelAtPeriodEnd={user.subscription.cancelAtPeriodEnd}
       />
     ) : (
-      <div className="glass-card rounded-2xl p-6 ring-1 ring-fuchsia-300/20">
+      <div className="glass-card rounded-2xl p-6">
         <div className="flex items-center gap-2 text-fuchsia-200">
           <Sparkles className="h-4 w-4" />
           <h2 className="text-sm font-semibold">Ücretsiz plan</h2>
         </div>
-        <p className="mt-2 text-sm text-mist/60">
+        <p className="mt-2 text-sm text-mist-3">
           FonlyPro ile AI destekli analiz, kısa vadeli zaman dilimleri ve daha fazlasına eriş.
         </p>
         <Link
@@ -69,14 +69,14 @@ export default async function AccountPage() {
       <div className="mx-auto max-w-3xl">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-xs text-mist/50 transition hover:text-mist/80"
+          className="inline-flex items-center gap-1.5 text-xs text-mist-3 transition hover:text-mist-2"
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Panele dön
         </Link>
 
         <header className="mb-6 mt-3">
           <h1 className="text-2xl font-semibold text-white sm:text-3xl">Hesabım</h1>
-          <p className="mt-1 text-sm text-mist/55">Profil, güvenlik ve abonelik ayarların.</p>
+          <p className="mt-1 text-sm text-mist-3">Profil, güvenlik ve abonelik ayarların.</p>
         </header>
 
         <Tabs

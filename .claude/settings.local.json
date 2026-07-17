@@ -52,7 +52,27 @@
       "Bash(curl -s -o /dev/null -w \"takvim: %{http_code}\\\\n\" http://localhost:3000/takvim)",
       "Bash(curl -s -o /dev/null -w \"manifest: %{http_code}\\\\n\" http://localhost:3000/manifest.webmanifest)",
       "Bash(curl -s http://localhost:3000/manifest.webmanifest)",
-      "Bash(curl -s --max-time 60 \"http://localhost:3000/hisse/THYAO/haberler\")"
+      "Bash(curl -s --max-time 60 \"http://localhost:3000/hisse/THYAO/haberler\")",
+      "Read(//c/Users/alier/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.6.2/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"fintech investment tracking finance dashboard dark mode turkish\" --design-system -p \"Fonly\")",
+      "Bash(python scripts/search.py \"glassmorphism dark fintech\" --domain style -n 3)",
+      "Bash(python scripts/search.py \"financial trustworthy modern turkish\" --domain typography -n 3)",
+      "Bash(python \"C:\\\\Users\\\\alier\\\\.claude\\\\plugins\\\\cache\\\\ui-ux-pro-max-skill\\\\ui-ux-pro-max\\\\2.6.2\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"fintech investment tracking finance dark mode\" --design-system --persist -p \"Fonly\")",
+      "PowerShell(npm run *)",
+      "Bash(python *)",
+      "PowerShell(npm test *)",
+      "Bash(npx tailwindcss *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 5 http://localhost:3000)",
+      "Bash(curl -s --max-time 10 http://localhost:3000)",
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1; if \\($conn\\) { $p = Get-Process -Id $conn.OwningProcess; Write-Output \"PID $\\($p.Id\\) \\($\\($p.ProcessName\\)\\) durduruluyor\"; Stop-Process -Id $p.Id -Force -Confirm:$false } else { Write-Output \"3000 portunda dinleyen yok\" })",
+      "Bash(puppeteer\" ; echo \"---chrome---\"; ls \"/c/Program Files/Google/Chrome/Application/chrome.exe\" 2>/dev/null)",
+      "Read(//c/Program Files/Google/Chrome/Application/**)",
+      "Read(//c/Program Files \\\\\\(x86\\\\\\)/Google/Chrome/Application/**)",
+      "Bash(pip install *)",
+      "Bash(curl *)",
+      "Bash(sed -i '/glass-card/{s/ ring-1 ring-white\\\\/8//g; s/ ring-1 ring-white\\\\/10//g; s/ ring-1 ring-emerald-300\\\\/25//g; s/ ring-1 ring-fuchsia-300\\\\/20//g}' components/alerts/AlertsManager.tsx components/billing/ManageSubscription.tsx components/account/SecuritySection.tsx components/account/DangerZone.tsx components/account/ProfileSection.tsx components/chart/TechnicalAISummary.tsx app/hesap/page.tsx \"app/premium/page.tsx\" components/portfolio/PortfolioValueChart.tsx components/portfolio/PortfolioClient.tsx app/premium/dev-checkout/page.tsx components/portfolio/AddLotForm.tsx)",
+      "Bash(grep -rn \"glass-card[^\\\\\"\\\\`]*ring-\" --include=\"*.tsx\" app components)",
+      "Bash(grep -v '\\\\${')"
     ]
   }
 }

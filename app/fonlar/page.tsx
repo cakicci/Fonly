@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowLeft, Search, TrendingDown, TrendingUp } from "lucide-react";
 import type { FundListItem } from "@/app/api/fonlar/route";
@@ -111,14 +111,14 @@ export default function FonlarPage() {
       <div className="mx-auto max-w-6xl space-y-6">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <span className="text-white">Tüm Fonlar</span>
         </nav>
 
         {/* Hero + arama + filtreler */}
-        <div className="rounded-[1.75rem] border border-sky-200/14 bg-[linear-gradient(135deg,rgba(186,230,253,0.07),rgba(11,16,38,0.98))] p-6 sm:p-8">
+        <div className="rounded-section border border-sky-200/14 bg-[linear-gradient(135deg,rgba(186,230,253,0.07),rgba(11,16,38,0.98))] p-6 sm:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
@@ -127,10 +127,10 @@ export default function FonlarPage() {
               </div>
               <h1 className="mt-1 text-3xl font-semibold text-white sm:text-4xl">Tüm Yatırım Fonları</h1>
               {!loading && (
-                <p className="mt-1 text-sm text-mist/45">
+                <p className="mt-1 text-sm text-mist-3">
                   {filtered.length} fon gösteriliyor
                   {updatedAt && (
-                    <span className="ml-2 text-mist/30">
+                    <span className="ml-2 text-mist-3">
                       · {new Date(updatedAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   )}
@@ -141,13 +141,13 @@ export default function FonlarPage() {
 
           {/* Arama */}
           <div className="mt-5 flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3">
-            <Search className="h-4 w-4 shrink-0 text-mist/40" />
+            <Search className="h-4 w-4 shrink-0 text-mist-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ara... (AAK, garanti portföy, altın)"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist/35"
+              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
             />
           </div>
 
@@ -183,10 +183,10 @@ export default function FonlarPage() {
             {Array.from({ length: 24 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : filtered.length === 0 ? (
-          <p className="py-16 text-center text-sm text-mist/40">Sonuç bulunamadı.</p>
+          <p className="py-16 text-center text-sm text-mist-3">Sonuç bulunamadı.</p>
         ) : (
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((fund) => {
+            {filtered.map((fund, i) => {
               const primary =
                 sortKey === "kod" ? fund.getiri1y :
                 fund[sortKey];
@@ -196,12 +196,13 @@ export default function FonlarPage() {
                 <Link
                   key={fund.kod}
                   href={`/fon/${fund.kod.toLowerCase()}`}
-                  className="group flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 transition hover:border-white/16 hover:bg-white/[0.05]"
+                  className="animate-enter group flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 transition hover:border-white/16 hover:bg-white/[0.05]"
+                  style={{ "--enter-index": Math.min(i, 12) } as CSSProperties}
                 >
                   {/* Sol: kod + ad + badge */}
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold text-white">{fund.kod}</p>
-                    <p className="mt-0.5 truncate text-xs text-mist/50" title={fund.ad}>{fund.ad}</p>
+                    <p className="mt-0.5 truncate text-xs text-mist-3" title={fund.ad}>{fund.ad}</p>
                     <div className="mt-1.5 flex flex-wrap gap-1">
                       {fund.riskGroup && (
                         <span className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-medium ${RISK_COLORS[fund.riskGroup]}`}>
@@ -211,7 +212,7 @@ export default function FonlarPage() {
                           )}
                         </span>
                       )}
-                      <span className="inline-flex items-center rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist/60">
+                      <span className="inline-flex items-center rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist-3">
                         {fund.kategori.replace(" Şemsiye Fonu", "")}
                       </span>
                     </div>
@@ -220,12 +221,12 @@ export default function FonlarPage() {
                   {/* Sağ: birincil getiri */}
                   <div className="shrink-0 text-right">
                     <p className={`text-sm font-semibold ${
-                      primary === null ? "text-mist/40" :
+                      primary === null ? "text-mist-3" :
                       isPositive ? "text-emerald-300" : "text-rose-300"
                     }`}>
                       {fmtPct(primary)}
                     </p>
-                    <p className="mt-0.5 flex items-center justify-end gap-0.5 text-[10px] font-medium text-mist/40">
+                    <p className="mt-0.5 flex items-center justify-end gap-0.5 text-[10px] font-medium text-mist-3">
                       {sortKey === "getiri1y" || sortKey === "kod" ? "1 yıl" :
                        sortKey === "getiriyb" ? "YBI" :
                        "1 ay"}
@@ -246,7 +247,7 @@ export default function FonlarPage() {
         <div className="pt-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-2.5 text-sm text-mist/60 transition hover:bg-white/[0.06] hover:text-white"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-2.5 text-sm text-mist-3 transition hover:bg-white/[0.06] hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
             Ana sayfaya dön

@@ -175,13 +175,13 @@ export default async function DashboardPage() {
   const hasPortfolio = lots.length > 0;
 
   const pnlColor =
-    summary.pnl > 0 ? "text-emerald-300" : summary.pnl < 0 ? "text-rose-300" : "text-mist/70";
+    summary.pnl > 0 ? "text-emerald-300" : summary.pnl < 0 ? "text-rose-300" : "text-mist-2";
   const dailyColor =
     daily.changeValue > 0
       ? "text-emerald-300"
       : daily.changeValue < 0
         ? "text-rose-300"
-        : "text-mist/70";
+        : "text-mist-2";
 
   // Alarm satırları: canlı fiyat + eşiğe kalan yüzde.
   const alertItems = alerts.map((a) => {
@@ -271,10 +271,10 @@ export default async function DashboardPage() {
     portfolio: (
       <section key="portfolio">
         {hasPortfolio ? (
-            <div className="glass-card rounded-[1.75rem] p-6 sm:p-7">
+            <div className="glass-card rounded-section p-6 sm:p-7">
               <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2 text-sm text-mist/58">
+                  <div className="flex items-center gap-2 text-sm text-mist-3">
                     <WalletCards className="h-4 w-4 text-emerald-200" />
                     Toplam portföy değeri
                   </div>
@@ -303,14 +303,14 @@ export default async function DashboardPage() {
 
                   <div className="mt-5 flex flex-wrap gap-x-8 gap-y-3">
                     <div>
-                      <p className="text-xs text-mist/50">Bugün</p>
+                      <p className="text-xs text-mist-3">Bugün</p>
                       <p className={`mt-0.5 text-sm font-semibold tabular-nums ${dailyColor}`}>
                         {daily.changeValue >= 0 ? "+" : ""}
                         {formatLira(daily.changeValue)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-mist/50">Toplam kâr/zarar</p>
+                      <p className="text-xs text-mist-3">Toplam kâr/zarar</p>
                       <p className={`mt-0.5 text-sm font-semibold tabular-nums ${pnlColor}`}>
                         {summary.pnl >= 0 ? "+" : ""}
                         {formatLira(summary.pnl)}
@@ -319,8 +319,8 @@ export default async function DashboardPage() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-mist/50">Maliyet</p>
-                      <p className="mt-0.5 text-sm font-semibold tabular-nums text-mist/80">
+                      <p className="text-xs text-mist-3">Maliyet</p>
+                      <p className="mt-0.5 text-sm font-semibold tabular-nums text-mist-2">
                         {formatLira(summary.costTotal)}
                       </p>
                     </div>
@@ -335,7 +335,7 @@ export default async function DashboardPage() {
 
                 <Link
                   href="/portfoy"
-                  className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200"
+                  className="btn btn-sm btn-primary shrink-0"
                 >
                   Portföyü aç <ArrowUpRight className="h-4 w-4" />
                 </Link>
@@ -344,7 +344,7 @@ export default async function DashboardPage() {
           ) : (
             <Link
               href="/portfoy"
-              className="glass-card group flex flex-col gap-4 rounded-[1.75rem] p-6 transition hover:ring-1 hover:ring-emerald-300/20 sm:flex-row sm:items-center sm:justify-between"
+              className="glass-card glass-card-interactive group flex flex-col gap-4 rounded-section p-6 sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-300/12 text-emerald-200">
@@ -352,7 +352,7 @@ export default async function DashboardPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-white">Portföyün boş</h2>
-                  <p className="mt-1 text-sm text-mist/58">
+                  <p className="mt-1 text-sm text-mist-3">
                     İlk alımını ekle, kâr/zararını canlı fiyatlarla takip et.
                   </p>
                 </div>
@@ -370,7 +370,7 @@ export default async function DashboardPage() {
       hasPortfolio && allocTotal > 0 ? (
         <section key="allocation" className="grid gap-4 md:grid-cols-2">
             {/* Varlık dağılımı */}
-            <article className="glass-card rounded-[1.5rem] p-5">
+            <article className="glass-card rounded-panel p-5">
               <h3 className="text-sm font-semibold text-white">Varlık dağılımı</h3>
               <div className="mt-4 flex h-2.5 w-full overflow-hidden rounded-full bg-white/[0.04]">
                 {allocEntries.map(([type, value]) => (
@@ -385,11 +385,11 @@ export default async function DashboardPage() {
               <ul className="mt-4 space-y-2">
                 {allocEntries.map(([type, value]) => (
                   <li key={type} className="flex items-center justify-between text-xs">
-                    <span className="flex items-center gap-2 text-mist/75">
+                    <span className="flex items-center gap-2 text-mist-2">
                       <span className={`h-2.5 w-2.5 rounded-full ${TYPE_STYLE[type].dot}`} />
                       {ASSET_TYPE_LABELS[type]}
                     </span>
-                    <span className="tabular-nums text-mist/55">
+                    <span className="tabular-nums text-mist-3">
                       {((value / allocTotal) * 100).toFixed(1)}% · {formatLira(value)}
                     </span>
                   </li>
@@ -398,7 +398,7 @@ export default async function DashboardPage() {
             </article>
 
             {/* En iyi / en kötü pozisyon */}
-            <article className="glass-card rounded-[1.5rem] p-5">
+            <article className="glass-card rounded-panel p-5">
               <h3 className="text-sm font-semibold text-white">Pozisyon performansı</h3>
               <div className="mt-4 space-y-3">
                 {bestPosition && (
@@ -407,7 +407,7 @@ export default async function DashboardPage() {
                     className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-300/12 bg-emerald-300/[0.06] px-3 py-2.5 transition hover:border-emerald-300/30"
                   >
                     <div className="min-w-0">
-                      <p className="text-[11px] text-mist/45">En çok kazandıran</p>
+                      <p className="text-[11px] text-mist-3">En çok kazandıran</p>
                       <p className="truncate text-sm font-medium text-white">
                         {assetDisplayName(bestPosition.slug)}
                       </p>
@@ -423,7 +423,7 @@ export default async function DashboardPage() {
                     className="flex items-center justify-between gap-3 rounded-2xl border border-rose-300/12 bg-rose-300/[0.06] px-3 py-2.5 transition hover:border-rose-300/30"
                   >
                     <div className="min-w-0">
-                      <p className="text-[11px] text-mist/45">En çok kaybettiren</p>
+                      <p className="text-[11px] text-mist-3">En çok kaybettiren</p>
                       <p className="truncate text-sm font-medium text-white">
                         {assetDisplayName(worstPosition.slug)}
                       </p>
@@ -448,7 +448,7 @@ export default async function DashboardPage() {
         />
 
           {triggered.length > 0 && (
-            <article className="glass-card rounded-[1.5rem] p-5">
+            <article className="glass-card rounded-panel p-5">
               <div className="mb-4 flex items-center gap-2">
                 <Activity className="h-4 w-4 text-emerald-200" />
                 <h3 className="text-sm font-semibold text-white">Senin için gelişmeler</h3>
@@ -460,12 +460,12 @@ export default async function DashboardPage() {
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-300/12 text-emerald-200">
                         <BellRing className="h-3.5 w-3.5" />
                       </span>
-                      <Link href={assetHref(t.slug)} className="truncate text-mist/75 hover:text-white">
+                      <Link href={assetHref(t.slug)} className="truncate text-mist-2 hover:text-white">
                         <span className="font-medium text-white">{assetDisplayName(t.slug)}</span>{" "}
                         {conditionLabel(t.condition)} {formatPrice(t.threshold)} eşiğini geçti
                       </Link>
                     </div>
-                    <span className="shrink-0 tabular-nums text-mist/40">
+                    <span className="shrink-0 tabular-nums text-mist-3">
                       {t.triggeredAt ? timeAgo(t.triggeredAt) : ""}
                     </span>
                   </li>
@@ -480,11 +480,11 @@ export default async function DashboardPage() {
     riskBudget: (
       <section key="riskBudget" className="grid gap-4 md:grid-cols-2">
           {/* Risk Profili */}
-          <article className="glass-card rounded-[1.5rem] p-5">
+          <article className="glass-card rounded-panel p-5">
             <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-300/12 text-emerald-200">
               <ShieldCheck className="h-5 w-5" />
             </div>
-            <p className="text-sm text-mist/58">Risk profilin</p>
+            <p className="text-sm text-mist-3">Risk profilin</p>
             <RiskBadge riskProfile={riskProfile} />
             <Link
               href="/risk-test"
@@ -495,17 +495,17 @@ export default async function DashboardPage() {
           </article>
 
           {/* Aylık Bütçe */}
-          <article className="glass-card rounded-[1.5rem] p-5">
+          <article className="glass-card rounded-panel p-5">
             <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-300/12 text-emerald-200">
               <LineChart className="h-5 w-5" />
             </div>
-            <p className="text-sm text-mist/58">Aylık ayrılabilir tutar</p>
+            <p className="text-sm text-mist-3">Aylık ayrılabilir tutar</p>
             {suggestedAmount ? (
               <h2 className="mt-2 text-2xl font-semibold text-white">{formatLira(suggestedAmount)}</h2>
             ) : (
-              <h2 className="mt-2 text-2xl font-semibold text-mist/40">Belirlenmedi</h2>
+              <h2 className="mt-2 text-2xl font-semibold text-mist-3">Belirlenmedi</h2>
             )}
-            <p className="mt-2 text-xs leading-5 text-mist/50">
+            <p className="mt-2 text-xs leading-5 text-mist-3">
               {suggestedAmount ? "Gelirin ve risk profiline göre." : "Gelirini gir, tutarı hesaplayalım."}
             </p>
           </article>
@@ -516,12 +516,12 @@ export default async function DashboardPage() {
     watchlistAlerts: (
       <section key="watchlistAlerts" className="grid gap-4 md:grid-cols-2">
           {/* İzleme Listem */}
-          <article className="glass-card rounded-[1.5rem] p-5">
+          <article className="glass-card rounded-panel p-5">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 text-amber-200" />
                 <h3 className="text-sm font-semibold text-white">İzleme Listem</h3>
-                <span className="text-xs text-mist/40">({watchlist.length})</span>
+                <span className="text-xs text-mist-3">({watchlist.length})</span>
               </div>
             </div>
             {watchItems.length > 0 ? (
@@ -532,14 +532,14 @@ export default async function DashboardPage() {
                     <li key={w.slug} className="flex items-center justify-between gap-3 text-xs">
                       <Link
                         href={assetHref(w.slug)}
-                        className="truncate text-mist/85 hover:text-white"
+                        className="truncate text-mist-2 hover:text-white"
                       >
                         {w.name}
                       </Link>
                       <div className="flex shrink-0 items-center gap-2 tabular-nums">
                         {w.quote ? (
                           <>
-                            <span className="text-mist/70">{formatPrice(w.quote.price)}</span>
+                            <span className="text-mist-2">{formatPrice(w.quote.price)}</span>
                             {pct != null && (
                               <span
                                 className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold ${
@@ -554,7 +554,7 @@ export default async function DashboardPage() {
                             )}
                           </>
                         ) : (
-                          <span className="text-mist/40">—</span>
+                          <span className="text-mist-3">—</span>
                         )}
                       </div>
                     </li>
@@ -562,19 +562,19 @@ export default async function DashboardPage() {
                 })}
               </ul>
             ) : (
-              <p className="text-xs text-mist/50">
+              <p className="text-xs text-mist-3">
                 Henüz takip ettiğin varlık yok. Varlık sayfalarındaki yıldıza tıklayarak ekle.
               </p>
             )}
           </article>
 
           {/* Aktif Alarmlar */}
-          <article className="glass-card rounded-[1.5rem] p-5">
+          <article className="glass-card rounded-panel p-5">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <BellRing className="h-4 w-4 text-cyan-200" />
                 <h3 className="text-sm font-semibold text-white">Aktif Alarmlar</h3>
-                <span className="text-xs text-mist/40">({alerts.length})</span>
+                <span className="text-xs text-mist-3">({alerts.length})</span>
               </div>
               {alerts.length > 0 && (
                 <Link href="/alarmlar" className="text-xs text-emerald-200 hover:text-emerald-100">
@@ -587,26 +587,26 @@ export default async function DashboardPage() {
                 {alertItems.slice(0, 4).map((a) => (
                   <li key={a.id} className="flex items-center justify-between gap-3 text-xs">
                     <div className="min-w-0">
-                      <Link href={assetHref(a.slug)} className="text-mist/85 hover:text-white">
+                      <Link href={assetHref(a.slug)} className="text-mist-2 hover:text-white">
                         {assetDisplayName(a.slug)}
                       </Link>
-                      <p className="mt-0.5 text-[11px] tabular-nums text-mist/45">
+                      <p className="mt-0.5 text-[11px] tabular-nums text-mist-3">
                         Hedef {conditionLabel(a.condition)} {formatPrice(a.threshold)}
                         {a.current != null && ` · şu an ${formatPrice(a.current)}`}
                       </p>
                     </div>
                     {a.distancePct != null ? (
-                      <span className="shrink-0 rounded-full border border-white/8 bg-white/[0.04] px-2 py-0.5 tabular-nums text-mist/65">
+                      <span className="shrink-0 rounded-full border border-white/8 bg-white/[0.04] px-2 py-0.5 tabular-nums text-mist-2">
                         %{Math.abs(a.distancePct).toFixed(1)} kaldı
                       </span>
                     ) : (
-                      <span className="shrink-0 tabular-nums text-mist/40">—</span>
+                      <span className="shrink-0 tabular-nums text-mist-3">—</span>
                     )}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-xs text-mist/50">
+              <p className="text-xs text-mist-3">
                 Alarm kurmadın. Varlık sayfalarından fiyat alarmı ekleyebilirsin.
               </p>
             )}
@@ -651,7 +651,7 @@ export default async function DashboardPage() {
             <DashboardCustomizer widgets={customizerWidgets} />
             <Link
               href="/hesap"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-4 py-3 text-sm font-semibold text-mist transition hover:bg-white/10"
+              className="btn btn-sm btn-secondary px-4"
             >
               <Settings className="h-4 w-4" /> Hesap ayarları
             </Link>

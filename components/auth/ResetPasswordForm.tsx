@@ -56,14 +56,14 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   // Token yoksa form gösterme — bozuk/eksik bağlantı.
   if (!token) {
     return (
-      <div className="glass-card mx-auto w-full max-w-md rounded-[1.75rem] p-6 text-center">
+      <div className="glass-card mx-auto w-full max-w-md rounded-section p-6 text-center">
         <h1 className="text-2xl font-semibold text-white">Geçersiz bağlantı</h1>
-        <p className="mt-3 text-sm leading-6 text-mist/64">
+        <p className="mt-3 text-sm leading-6 text-mist-2">
           Bu sıfırlama bağlantısı eksik veya hatalı. Lütfen yeni bir sıfırlama isteği oluştur.
         </p>
         <Link
           href="/forgot-password"
-          className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200"
+          className="btn btn-lg btn-primary mt-6 w-full"
         >
           Yeni bağlantı iste
         </Link>
@@ -73,19 +73,19 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 
   if (done) {
     return (
-      <div className="glass-card mx-auto w-full max-w-md rounded-[1.75rem] p-6">
+      <div className="glass-card mx-auto w-full max-w-md rounded-section p-6">
         <div className="flex flex-col items-center text-center">
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-300/15">
             <Check className="h-6 w-6 text-emerald-200" />
           </span>
           <h1 className="mt-4 text-2xl font-semibold text-white">Şifren güncellendi</h1>
-          <p className="mt-3 text-sm leading-6 text-mist/64">
+          <p className="mt-3 text-sm leading-6 text-mist-2">
             Yeni şifrenle giriş yapabilirsin. Birazdan giriş sayfasına yönlendirileceksin.
           </p>
         </div>
         <Link
           href="/login"
-          className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200"
+          className="btn btn-lg btn-primary mt-6 w-full"
         >
           Girişe git
         </Link>
@@ -94,20 +94,20 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   }
 
   return (
-    <div className="glass-card mx-auto w-full max-w-md rounded-[1.75rem] p-6">
+    <div className="glass-card mx-auto w-full max-w-md rounded-section p-6">
       <div className="mb-6">
         <p className="text-sm font-medium text-emerald-200">Şifre sıfırlama</p>
         <h1 className="mt-2 text-3xl font-semibold text-white">Yeni şifre belirle</h1>
-        <p className="mt-3 text-sm leading-6 text-mist/64">
+        <p className="mt-3 text-sm leading-6 text-mist-2">
           Hesabın için yeni bir şifre oluştur. En az 8 karakter olmalı.
         </p>
       </div>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <label className="block">
-          <span className="text-sm font-medium text-mist/72">Yeni şifre</span>
+          <span className="text-sm font-medium text-mist-2">Yeni şifre</span>
           <span className="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
-            <LockKeyhole className="h-5 w-5 text-mist/46" />
+            <LockKeyhole className="h-5 w-5 text-mist-3" />
             <input
               type="password"
               value={password}
@@ -115,16 +115,16 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
               required
               minLength={8}
               autoComplete="new-password"
-              className="w-full bg-transparent text-white outline-none placeholder:text-mist/32"
+              className="w-full bg-transparent text-white outline-none placeholder:text-mist-3"
               placeholder="En az 8 karakter"
             />
           </span>
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-mist/72">Yeni şifre (tekrar)</span>
+          <span className="text-sm font-medium text-mist-2">Yeni şifre (tekrar)</span>
           <span className="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
-            <LockKeyhole className="h-5 w-5 text-mist/46" />
+            <LockKeyhole className="h-5 w-5 text-mist-3" />
             <input
               type="password"
               value={confirm}
@@ -132,7 +132,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
               required
               minLength={8}
               autoComplete="new-password"
-              className="w-full bg-transparent text-white outline-none placeholder:text-mist/32"
+              className="w-full bg-transparent text-white outline-none placeholder:text-mist-3"
               placeholder="Şifreni tekrar gir"
             />
           </span>
@@ -147,14 +147,14 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
         <button
           type="submit"
           disabled={isLoading}
-          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:opacity-70"
+          className="btn btn-lg btn-primary w-full"
         >
           {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           Şifreyi güncelle
         </button>
       </form>
 
-      <p className="mt-5 text-center text-sm text-mist/58">
+      <p className="mt-5 text-center text-sm text-mist-3">
         <Link className="inline-flex items-center gap-1 font-semibold text-emerald-200 hover:text-emerald-100" href="/login">
           <ArrowLeft className="h-3.5 w-3.5" />
           Girişe dön

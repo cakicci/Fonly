@@ -56,8 +56,8 @@ export function PremiumGate({ feature, children, preview = false }: PremiumGateP
             <Lock className="h-3.5 w-3.5" />
             <Sparkles className="h-3.5 w-3.5" />
             <span>{feature}</span>
-            <span className="text-mist/40">·</span>
-            <span className="text-mist/70">Premium</span>
+            <span className="text-mist-3">·</span>
+            <span className="text-mist-2">Premium</span>
           </button>
         </div>
       </div>

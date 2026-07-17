@@ -50,19 +50,19 @@ export function ProfileSection({ initialName, email }: ProfileSectionProps) {
   }
 
   return (
-    <form onSubmit={save} className="glass-card rounded-2xl p-6 ring-1 ring-white/8">
+    <form onSubmit={save} className="glass-card rounded-2xl p-6">
       <div className="flex items-center gap-4">
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-300/30 to-cyan-300/20 text-xl font-semibold text-white">
           {initials(name || email)}
         </div>
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-white">{name || "—"}</p>
-          <p className="truncate text-xs text-mist/50">{email}</p>
+          <p className="truncate text-xs text-mist-3">{email}</p>
         </div>
       </div>
 
       <div className="mt-6 grid gap-4 sm:max-w-md">
-        <label className="text-xs text-mist/55">
+        <label className="text-xs text-mist-3">
           Ad
           <input
             value={name}
@@ -75,14 +75,14 @@ export function ProfileSection({ initialName, email }: ProfileSectionProps) {
           />
         </label>
 
-        <label className="text-xs text-mist/40">
+        <label className="text-xs text-mist-3">
           E-posta
           <input
             value={email}
             disabled
-            className="mt-1 w-full cursor-not-allowed rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-sm text-mist/50"
+            className="mt-1 w-full cursor-not-allowed rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-sm text-mist-3"
           />
-          <span className="mt-1 block text-[11px] text-mist/35">
+          <span className="mt-1 block text-[11px] text-mist-3">
             E-posta değişikliği şimdilik desteklenmiyor.
           </span>
         </label>
@@ -93,7 +93,7 @@ export function ProfileSection({ initialName, email }: ProfileSectionProps) {
       <button
         type="submit"
         disabled={!dirty || saving}
-        className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-300/85 px-4 py-2 text-sm font-semibold text-ink transition hover:bg-emerald-200 disabled:opacity-50"
+        className="btn btn-sm btn-primary mt-5"
       >
         {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : saved ? <Check className="h-4 w-4" /> : null}
         {saved && !dirty ? "Kaydedildi" : "Kaydet"}

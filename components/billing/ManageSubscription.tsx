@@ -44,13 +44,13 @@ export function ManageSubscription({ planName, periodEnd, cancelAtPeriodEnd }: M
   }
 
   return (
-    <div className="glass-card mx-auto mt-12 max-w-md rounded-3xl p-6 ring-1 ring-emerald-300/25">
+    <div className="glass-card mx-auto mt-12 max-w-md rounded-3xl p-6">
       <div className="flex items-center gap-2 text-emerald-200">
         <CheckCircle2 className="h-5 w-5" />
         <span className="text-sm font-semibold">FonlyPro aktif — {planName} plan</span>
       </div>
 
-      <p className="mt-3 text-sm text-mist/65">
+      <p className="mt-3 text-sm text-mist-2">
         {canceled
           ? `Aboneliğin ${endLabel} tarihinde sona erecek. O güne kadar tüm premium özellikler açık.`
           : `Sonraki yenileme: ${endLabel}. İstediğin zaman iptal edebilirsin.`}
@@ -61,7 +61,7 @@ export function ManageSubscription({ planName, periodEnd, cancelAtPeriodEnd }: M
           type="button"
           onClick={cancel}
           disabled={canceling}
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-mist/75 transition hover:bg-white/[0.08] disabled:opacity-60"
+          className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-mist-2 transition hover:bg-white/[0.08] disabled:opacity-60"
         >
           {canceling && <Loader2 className="h-4 w-4 animate-spin" />}
           Aboneliği dönem sonunda iptal et

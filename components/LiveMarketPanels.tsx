@@ -40,7 +40,7 @@ function UpdatedAt({ iso }: { iso: string }) {
   const time = new Date(iso).toLocaleTimeString("tr-TR", {
     hour: "2-digit", minute: "2-digit", second: "2-digit"
   });
-  return <p className="mt-4 text-right text-xs text-mist/32">{time}</p>;
+  return <p className="mt-4 text-right text-xs text-mist-3">{time}</p>;
 }
 
 // ── Döviz Paneli ───────────────────────────────────────────────────────────
@@ -49,19 +49,19 @@ function DovizPanel({ data, loading }: { data: MarketResponse | null; loading: b
   const displayCurrencies = data?.doviz.slice(0, 5) ?? [];
 
   return (
-    <div className="flex flex-col rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
+    <div className="flex flex-col rounded-panel border border-white/8 bg-white/[0.03] p-5">
       <div className="mb-5 flex items-center gap-2">
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-300/10 text-cyan-200">
           <Coins className="h-4 w-4" />
         </div>
         <div className="flex-1">
-          <p className="text-xs text-mist/50">Canlı kur</p>
+          <p className="text-xs text-mist-3">Canlı kur</p>
           <h3 className="text-base font-semibold text-white">Döviz</h3>
         </div>
         <LiveDot active={!loading} />
         <Link
           href="/doviz"
-          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist/40
+          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist-3
                      transition hover:bg-white/8 hover:text-cyan-200"
         >
           Tümü <ExternalLink className="h-3 w-3" />
@@ -80,17 +80,17 @@ function DovizPanel({ data, loading }: { data: MarketResponse | null; loading: b
               >
                 <div className="flex items-center gap-2">
                   <span className="text-base">{item.flag}</span>
-                  <span className="text-sm text-mist/68">
+                  <span className="text-sm text-mist-2">
                     {item.shortName}
                     {item.displayPer > 1 && (
-                      <span className="ml-1 text-xs text-mist/35">({item.displayPer})</span>
+                      <span className="ml-1 text-xs text-mist-3">({item.displayPer})</span>
                     )}
                   </span>
                 </div>
                 <div className="text-right">
                   <FlashPrice value={item.rawValue} className="text-sm font-semibold text-white">
                     {item.value}
-                    <span className="ml-1 text-xs font-normal text-mist/40">TL</span>
+                    <span className="ml-1 text-xs font-normal text-mist-3">TL</span>
                   </FlashPrice>
                   <span
                     className={`ml-2 text-xs font-medium ${
@@ -112,20 +112,20 @@ function DovizPanel({ data, loading }: { data: MarketResponse | null; loading: b
 // ── Altın Paneli ───────────────────────────────────────────────────────────
 function AltinPanel({ data, loading }: { data: MarketResponse | null; loading: boolean }) {
   return (
-    <div className="flex flex-col rounded-[1.5rem] border border-amber-200/14
+    <div className="flex flex-col rounded-panel border border-amber-200/14
                     bg-[linear-gradient(135deg,rgba(251,191,36,0.06),rgba(255,255,255,0.02))] p-5">
       <div className="mb-5 flex items-center gap-2">
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-300/12 text-amber-200">
           <Gem className="h-4 w-4" />
         </div>
         <div className="flex-1">
-          <p className="text-xs text-mist/50">Anlık fiyat</p>
+          <p className="text-xs text-mist-3">Anlık fiyat</p>
           <h3 className="text-base font-semibold text-white">Altın</h3>
         </div>
         <LiveDot active={!loading} />
         <Link
           href="/altin"
-          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist/40
+          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist-3
                      transition hover:bg-white/8 hover:text-amber-200"
         >
           Tümü <ExternalLink className="h-3 w-3" />
@@ -140,7 +140,7 @@ function AltinPanel({ data, loading }: { data: MarketResponse | null; loading: b
       ) : (
         <div className="space-y-3">
           <Link href="/altin/gram" className="block rounded-xl px-2 py-1 transition hover:bg-white/[0.04]">
-            <p className="text-xs text-mist/50">Gram altın</p>
+            <p className="text-xs text-mist-3">Gram altın</p>
             <FlashPrice
               value={data.altin.gramRaw}
               className="mt-1 text-3xl font-semibold text-amber-200"
@@ -161,7 +161,7 @@ function AltinPanel({ data, loading }: { data: MarketResponse | null; loading: b
                 className="rounded-xl border border-white/8 bg-white/[0.04] p-2.5 text-center
                            transition hover:border-amber-200/20 hover:bg-white/[0.07]"
               >
-                <p className="text-[10px] text-mist/48">{label}</p>
+                <p className="text-[10px] text-mist-3">{label}</p>
                 <FlashPrice value={parseTrPrice(value)} className="mt-1 text-xs font-semibold text-white">
                   {value}
                 </FlashPrice>
@@ -170,7 +170,7 @@ function AltinPanel({ data, loading }: { data: MarketResponse | null; loading: b
           </div>
 
           <div className="px-2">
-            <p className="text-xs text-mist/50">Ons (USD)</p>
+            <p className="text-xs text-mist-3">Ons (USD)</p>
             <FlashPrice value={parseTrPrice(data.altin.oz)} className="mt-0.5 text-sm font-semibold text-white">
               {data.altin.oz}
             </FlashPrice>
@@ -190,20 +190,20 @@ function BorsaPanel({ data, loading }: { data: MarketResponse | null; loading: b
   const hisseler = data?.borsa.slice(1) ?? [];
 
   return (
-    <div className="flex flex-col rounded-[1.5rem] border border-emerald-200/14
+    <div className="flex flex-col rounded-panel border border-emerald-200/14
                     bg-[linear-gradient(135deg,rgba(45,227,168,0.06),rgba(255,255,255,0.02))] p-5">
       <div className="mb-5 flex items-center gap-2">
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-300/12 text-emerald-200">
           <BarChart2 className="h-4 w-4" />
         </div>
         <div className="flex-1">
-          <p className="text-xs text-mist/50">Anlık endeks</p>
+          <p className="text-xs text-mist-3">Anlık endeks</p>
           <h3 className="text-base font-semibold text-white">Borsa</h3>
         </div>
         <LiveDot active={!loading} />
         <Link
           href="/hisseler"
-          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist/40
+          className="ml-1 flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-mist-3
                      transition hover:bg-white/8 hover:text-emerald-200"
         >
           Tümü <ExternalLink className="h-3 w-3" />
@@ -222,7 +222,7 @@ function BorsaPanel({ data, loading }: { data: MarketResponse | null; loading: b
           {/* BIST 100 endeksi */}
           {endeks && (
             <div>
-              <p className="text-xs text-mist/50">{endeks.name}</p>
+              <p className="text-xs text-mist-3">{endeks.name}</p>
               <FlashPrice
                 value={parseTrPrice(endeks.value)}
                 className="mt-1 text-3xl font-semibold text-white"
@@ -256,7 +256,7 @@ function BorsaPanel({ data, loading }: { data: MarketResponse | null; loading: b
                 >
                   <div>
                     <p className="text-xs font-semibold text-white">{item.symbol}</p>
-                    <p className="text-[10px] text-mist/45">{item.name}</p>
+                    <p className="text-[10px] text-mist-3">{item.name}</p>
                   </div>
                   <div className="text-right">
                     <FlashPrice value={parseTrPrice(item.value)} className="text-xs font-semibold text-white">
@@ -306,7 +306,7 @@ export function LiveMarketPanels() {
   }, [fetchData]);
 
   return (
-    <section className="rounded-[1.75rem] border border-white/8 bg-white/[0.015] p-5 sm:p-6">
+    <section className="rounded-section border border-white/8 bg-white/[0.015] p-5 sm:p-6">
       <div className="mb-5 flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-emerald-200">Canlı piyasa</p>
@@ -314,7 +314,7 @@ export function LiveMarketPanels() {
             Anlık fiyatlar
           </h2>
         </div>
-        <div className="flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-2 text-xs text-mist/50">
+        <div className="flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-2 text-xs text-mist-3">
           <LiveDot active={!loading} />
           <span>5 sn&apos;de bir güncellenir</span>
         </div>

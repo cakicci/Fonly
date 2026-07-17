@@ -33,16 +33,16 @@ export function DangerZone() {
   return (
     <div className="space-y-4">
       {/* Veri indir */}
-      <div className="glass-card flex flex-col gap-3 rounded-2xl p-6 ring-1 ring-white/8 sm:flex-row sm:items-center sm:justify-between">
+      <div className="glass-card flex flex-col gap-3 rounded-2xl p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-medium text-white">Verilerimi indir</p>
-          <p className="mt-1 text-xs text-mist/55">
+          <p className="mt-1 text-xs text-mist-3">
             Hesabına ait tüm veriyi (profil, izleme listesi, alarmlar, portföy) JSON olarak indir.
           </p>
         </div>
         <a
           href="/api/user/export"
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-2 text-sm font-medium text-mist/80 transition hover:bg-white/[0.08]"
+          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-2 text-sm font-medium text-mist-2 transition hover:bg-white/[0.08]"
         >
           <Download className="h-4 w-4" />
           İndir (JSON)
@@ -55,7 +55,7 @@ export function DangerZone() {
           <AlertTriangle className="h-4 w-4" />
           <h2 className="text-sm font-semibold">Hesabı sil</h2>
         </div>
-        <p className="mt-2 text-xs leading-relaxed text-mist/60">
+        <p className="mt-2 text-xs leading-relaxed text-mist-3">
           Bu işlem geri alınamaz. Profilin, izleme listen, alarmların, portföyün ve aboneliğin
           kalıcı olarak silinir. Onaylamak için aşağıya <strong className="text-rose-200">{CONFIRM_WORD}</strong> yaz.
         </p>

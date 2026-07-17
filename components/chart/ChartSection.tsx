@@ -193,10 +193,10 @@ export function ChartSection({
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center gap-2" style={{ height: chartHeight }}>
-            <p className="text-sm text-mist/50">{error}</p>
+            <p className="text-sm text-mist-3">{error}</p>
             <button
               onClick={fetchData}
-              className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-mist/70 transition hover:bg-white/[0.08] hover:text-white"
+              className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-white"
             >
               Tekrar dene
             </button>
@@ -215,13 +215,13 @@ export function ChartSection({
           />
         ) : (
           <div className="flex items-center justify-center" style={{ height: chartHeight }}>
-            <p className="text-sm text-mist/40">Veri yok</p>
+            <p className="text-sm text-mist-3">Veri yok</p>
           </div>
         )}
       </div>
 
       {/* Disclaimer */}
-      <p className="text-[11px] text-mist/35">
+      <p className="text-[11px] text-mist-3">
         {isLineOnly
           ? "TEFAS sadece günlük NAV verir; intraday mum ve hacim desteklenmez."
           : "Yahoo Finance verisi — yaklaşık 15 dk gecikmeli olabilir."}

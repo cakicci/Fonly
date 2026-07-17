@@ -43,7 +43,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
       <div className="mx-auto max-w-3xl">
 
         {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-2 text-sm text-mist/45">
+        <nav className="mb-6 flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <Link href="/rehber" className="transition hover:text-white">Yatırım Rehberi</Link>
@@ -68,7 +68,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
         </div>
 
         {/* Hero */}
-        <div className={`mb-6 rounded-[1.75rem] border p-6 sm:p-8 ${accent.border} ${accent.bg}`}>
+        <div className={`mb-6 rounded-section border p-6 sm:p-8 ${accent.border} ${accent.bg}`}>
           <div className="flex items-start gap-4">
             <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-xl font-bold ${accent.num}`}>
               {chapter.num}
@@ -80,8 +80,8 @@ export default function RehberChapterPage({ params }: { params: Params }) {
               <h1 className="mt-1 text-2xl font-semibold text-white sm:text-3xl">
                 {chapter.title}
               </h1>
-              <p className="mt-2 text-base text-mist/64">{chapter.subtitle}</p>
-              <div className="mt-3 flex items-center gap-1.5 text-xs text-mist/40">
+              <p className="mt-2 text-base text-mist-2">{chapter.subtitle}</p>
+              <div className="mt-3 flex items-center gap-1.5 text-xs text-mist-3">
                 <Clock className="h-3.5 w-3.5" />
                 {chapter.readingMin} dakika okuma
               </div>
@@ -93,13 +93,13 @@ export default function RehberChapterPage({ params }: { params: Params }) {
 
           {/* Bu bölümde öğreneceklerin */}
           <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
-            <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-mist/40">
+            <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-mist-3">
               <CheckCircle2 className="h-3.5 w-3.5" />
               Bu bölümde öğreneceklerin
             </p>
             <ul className="space-y-2">
               {chapter.objectives.map((obj) => (
-                <li key={obj} className="flex items-start gap-2.5 text-sm text-mist/70">
+                <li key={obj} className="flex items-start gap-2.5 text-sm text-mist-2">
                   <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${accent.dot}`} />
                   {obj}
                 </li>
@@ -113,7 +113,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
               <h2 className="mb-4 text-base font-semibold text-white">{section.heading}</h2>
               <ul className="space-y-3">
                 {section.items.map((item, iIdx) => (
-                  <li key={iIdx} className="flex items-start gap-3 text-sm leading-6 text-mist/68">
+                  <li key={iIdx} className="flex items-start gap-3 text-sm leading-6 text-mist-2">
                     <span className={`mt-2 h-1 w-4 shrink-0 rounded-full ${accent.dot} opacity-60`} />
                     {item}
                   </li>
@@ -128,12 +128,12 @@ export default function RehberChapterPage({ params }: { params: Params }) {
               <MapPin className="h-3.5 w-3.5" />
               {chapter.turkeyExample.title}
             </p>
-            <p className="text-sm leading-6 text-mist/68">{chapter.turkeyExample.body}</p>
+            <p className="text-sm leading-6 text-mist-2">{chapter.turkeyExample.body}</p>
           </div>
 
           {/* Aklında kalsın */}
           <div className={`rounded-2xl border p-5 ${accent.takeaway}`}>
-            <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-mist/40">
+            <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-mist-3">
               <Lightbulb className="h-3.5 w-3.5" />
               Aklında kalsın
             </p>
@@ -165,9 +165,9 @@ export default function RehberChapterPage({ params }: { params: Params }) {
                 className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4
                            transition hover:bg-white/[0.06]"
               >
-                <ArrowLeft className="h-5 w-5 shrink-0 text-mist/40" />
+                <ArrowLeft className="h-5 w-5 shrink-0 text-mist-3" />
                 <div className="min-w-0">
-                  <p className="text-xs text-mist/40">Önceki bölüm</p>
+                  <p className="text-xs text-mist-3">Önceki bölüm</p>
                   <p className="mt-0.5 truncate text-sm font-medium text-white">{prev.title}</p>
                 </div>
               </Link>
@@ -177,9 +177,9 @@ export default function RehberChapterPage({ params }: { params: Params }) {
                 className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4
                            transition hover:bg-white/[0.06]"
               >
-                <ArrowLeft className="h-5 w-5 shrink-0 text-mist/40" />
+                <ArrowLeft className="h-5 w-5 shrink-0 text-mist-3" />
                 <div>
-                  <p className="text-xs text-mist/40">Geri dön</p>
+                  <p className="text-xs text-mist-3">Geri dön</p>
                   <p className="mt-0.5 text-sm font-medium text-white">Rehber ana sayfası</p>
                 </div>
               </Link>
@@ -192,10 +192,10 @@ export default function RehberChapterPage({ params }: { params: Params }) {
                            bg-white/[0.03] p-4 transition hover:bg-white/[0.06]"
               >
                 <div className="min-w-0">
-                  <p className="text-xs text-mist/40">Sonraki bölüm</p>
+                  <p className="text-xs text-mist-3">Sonraki bölüm</p>
                   <p className="mt-0.5 truncate text-sm font-medium text-white">{next.title}</p>
                 </div>
-                <ArrowRight className="h-5 w-5 shrink-0 text-mist/40" />
+                <ArrowRight className="h-5 w-5 shrink-0 text-mist-3" />
               </Link>
             ) : (
               <Link
@@ -214,7 +214,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
 
           {/* Yasal not */}
           <div className="rounded-2xl border border-white/6 bg-white/[0.015] p-4 text-center">
-            <p className="text-xs leading-5 text-mist/35">
+            <p className="text-xs leading-5 text-mist-3">
               Bu içerik yalnızca eğitim amaçlıdır, yatırım tavsiyesi değildir.
               Yatırım kararı vermeden önce mali danışmanlık almanız önerilir.
             </p>

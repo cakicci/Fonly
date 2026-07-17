@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>FonlyPro Hero — Data Stream</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 600px; overflow: hidden; }
+  body {
+    font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(232, 121, 249, 0.13), transparent 30rem),
+      radial-gradient(circle at 0% 100%, rgba(103, 232, 249, 0.10), transparent 28rem),
+      radial-gradient(circle at 70% 80%, rgba(45, 227, 168, 0.10), transparent 26rem),
+      linear-gradient(160deg, #070b1d 0%, #0b1026 55%, #101a3a 100%);
+    color: #d8f7ee;
+    position: relative;
+  }
+  /* big background candlestick silhouette */
+  .bg-candles { position: absolute; right: 0; top: 0; height: 100%; opacity: 0.5; }
+  .wrap {
+    position: relative; z-index: 2; height: 100%;
+    display: flex; align-items: center; gap: 90px;
+    padding: 0 140px 44px;
+  }
+  .copy { flex: 1; max-width: 900px; }
+  .brandline { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+  .logo {
+    width: 48px; height: 48px; object-fit: contain;
+    filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.45));
+  }
+  .brand { font-size: 24px; font-weight: 700; color: #ecfff9; }
+  .brand .pro {
+    background: linear-gradient(90deg, #e879f9, #c084fc);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  h1 {
+    font-size: 62px; font-weight: 800; line-height: 1.1;
+    letter-spacing: -0.025em; color: #ecfff9; margin-bottom: 20px;
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #e879f9, #c084fc, #67e8f9);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { font-size: 21px; line-height: 1.55; color: rgba(216,247,238,0.7); max-width: 700px; margin-bottom: 30px; }
+  .feats { display: flex; flex-direction: column; gap: 12px; margin-bottom: 34px; }
+  .feat { display: flex; align-items: center; gap: 12px; font-size: 17.5px; font-weight: 500; color: rgba(216,247,238,0.85); }
+  .tick {
+    width: 24px; height: 24px; border-radius: 8px; flex-shrink: 0;
+    background: rgba(110,231,183,0.14); border: 1px solid rgba(110,231,183,0.35);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cta-row { display: flex; align-items: center; gap: 22px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #6ee7b7, #34d399);
+    color: #06281c; font-weight: 700; font-size: 19px;
+    border-radius: 16px; padding: 17px 34px;
+    box-shadow: 0 0 44px rgba(40, 230, 164, 0.30);
+  }
+  .cta svg { width: 20px; height: 20px; }
+  .note { font-size: 16px; color: rgba(216,247,238,0.5); }
+  /* right: AI verdict panel */
+  .panel {
+    position: relative; flex-shrink: 0; width: 520px;
+    border: 1px solid rgba(216,247,238,0.12);
+    background: linear-gradient(145deg, rgba(19,28,55,0.9), rgba(10,16,36,0.75));
+    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+    backdrop-filter: blur(18px);
+    border-radius: 24px; padding: 30px 32px;
+  }
+  .panel::before {
+    content: ""; position: absolute; inset: -1px; border-radius: 24px; z-index: -1;
+    background: linear-gradient(135deg, rgba(232,121,249,0.4), transparent 40%, rgba(110,231,183,0.35));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    padding: 1px;
+  }
+  .p-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .p-title { font-size: 16px; font-weight: 700; color: #ecfff9; display: flex; align-items: center; gap: 10px; }
+  .p-title .orb {
+    width: 30px; height: 30px; border-radius: 10px;
+    background: rgba(232,121,249,0.14); border: 1px solid rgba(232,121,249,0.35);
+    display: flex; align-items: center; justify-content: center; color: #f5d0fe; font-size: 15px;
+  }
+  .soon {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em;
+    color: #fde68a; border: 1px solid rgba(253,230,138,0.3);
+    background: rgba(253,230,138,0.10); border-radius: 999px; padding: 4px 12px;
+  }
+  .candles { display: block; margin-bottom: 16px; }
+  .rows { display: flex; flex-direction: column; gap: 10px; }
+  .row {
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid rgba(216,247,238,0.08);
+    background: rgba(255,255,255,0.03);
+    border-radius: 13px; padding: 12px 16px; font-size: 14.5px;
+  }
+  .row .k { color: rgba(216,247,238,0.6); font-weight: 500; }
+  .row .v { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .v-em { color: #6ee7b7; } .v-cy { color: #67e8f9; } .v-fu { color: #f0abfc; }
+  .p-note { margin-top: 16px; font-size: 13.5px; line-height: 1.5; color: rgba(216,247,238,0.55); }
+  .p-note strong { color: #a7f3d0; font-weight: 600; }
+</style>
+</head>
+<body>
+  <svg class="bg-candles" width="760" height="600" viewBox="0 0 760 600" fill="none">
+    <g opacity="0.16">
+      <line x1="70" y1="120" x2="70" y2="360" stroke="#6ee7b7" stroke-width="2"/><rect x="56" y="170" width="28" height="130" rx="4" fill="#6ee7b7"/>
+      <line x1="150" y1="200" x2="150" y2="430" stroke="#fda4af" stroke-width="2"/><rect x="136" y="250" width="28" height="120" rx="4" fill="#fda4af"/>
+      <line x1="230" y1="150" x2="230" y2="400" stroke="#6ee7b7" stroke-width="2"/><rect x="216" y="190" width="28" height="150" rx="4" fill="#6ee7b7"/>
+      <line x1="310" y1="90" x2="310" y2="330" stroke="#6ee7b7" stroke-width="2"/><rect x="296" y="130" width="28" height="140" rx="4" fill="#6ee7b7"/>
+      <line x1="390" y1="180" x2="390" y2="420" stroke="#fda4af" stroke-width="2"/><rect x="376" y="220" width="28" height="130" rx="4" fill="#fda4af"/>
+      <line x1="470" y1="110" x2="470" y2="350" stroke="#6ee7b7" stroke-width="2"/><rect x="456" y="150" width="28" height="140" rx="4" fill="#6ee7b7"/>
+      <line x1="550" y1="60" x2="550" y2="290" stroke="#6ee7b7" stroke-width="2"/><rect x="536" y="95" width="28" height="130" rx="4" fill="#6ee7b7"/>
+      <line x1="630" y1="130" x2="630" y2="370" stroke="#fda4af" stroke-width="2"/><rect x="616" y="170" width="28" height="120" rx="4" fill="#fda4af"/>
+      <line x1="710" y1="40" x2="710" y2="260" stroke="#6ee7b7" stroke-width="2"/><rect x="696" y="70" width="28" height="125" rx="4" fill="#6ee7b7"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <div class="copy">
+      <div class="brandline">
+        <img class="logo" src="fonly-logo.png" alt="Fonly logosu">
+        <div class="brand">Fonly<span class="pro">Pro</span></div>
+      </div>
+      <h1>Veriyi herkes görür,<br><em>anlamı FonlyPro çıkarır</em></h1>
+      <p class="sub">Yapay zekâ; grafiklerin, bilançoların ve haber akışının içinden senin için sonuç çıkarır.</p>
+      <div class="feats">
+        <div class="feat"><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Her varlık için AI teknik analiz ve yorum</div>
+        <div class="feat"><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Haber akışını tek paragrafa indiren özetler</div>
+        <div class="feat"><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Portföyüne özel anlık soru-cevap</div>
+      </div>
+      <div class="cta-row">
+        <span class="cta">Premium'a Geç
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+        <span class="note">Tek abonelik · tüm varlıklar</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="p-head">
+        <div class="p-title"><span class="orb">✦</span>AI Analiz Motoru</div>
+        <span class="soon">YAKINDA</span>
+      </div>
+      <svg class="candles" width="456" height="130" viewBox="0 0 456 130">
+        <defs>
+          <linearGradient id="pa" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e879f9" stop-opacity="0.22"/>
+            <stop offset="1" stop-color="#e879f9" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,100 C40,96 60,76 100,80 C140,84 160,58 200,62 C240,66 260,42 300,46 C340,50 360,26 400,22 C424,20 440,14 456,10 L456,130 L0,130 Z" fill="url(#pa)"/>
+        <path d="M0,100 C40,96 60,76 100,80 C140,84 160,58 200,62 C240,66 260,42 300,46 C340,50 360,26 400,22 C424,20 440,14 456,10" fill="none" stroke="#e879f9" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M0,100 C40,90 70,86 110,92 C150,98 180,74 220,78 C260,82 290,60 330,58 C370,56 420,44 456,40" fill="none" stroke="#67e8f9" stroke-width="2" stroke-dasharray="6 7" opacity="0.7"/>
+        <circle cx="456" cy="10" r="4.5" fill="#e879f9"/>
+        <circle cx="456" cy="10" r="9" fill="#e879f9" opacity="0.25"/>
+      </svg>
+      <div class="rows">
+        <div class="row"><span class="k">Trend gücü</span><span class="v v-em">Güçlü yükseliş</span></div>
+        <div class="row"><span class="k">RSI (14)</span><span class="v v-cy">58,3 — nötr üstü</span></div>
+        <div class="row"><span class="k">AI güven skoru</span><span class="v v-fu">%84</span></div>
+      </div>
+      <p class="p-note"><strong>Örnek çıktı:</strong> AI motoru bağlandığında analizler her varlık sayfasında otomatik görünecek.</p>
+    </div>
+  </div>
+</body>
+</html>

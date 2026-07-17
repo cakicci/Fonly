@@ -35,7 +35,7 @@ export function AnalysisCard({ slug, type, assetName }: Props) {
   if (!lines) return null;
 
   return (
-    <div className="rounded-[1.5rem] border border-emerald-200/12 bg-emerald-300/[0.03] p-5">
+    <div className="rounded-panel border border-emerald-200/12 bg-emerald-300/[0.03] p-5">
       <div className="mb-3 flex items-center gap-2">
         <Sparkles className="h-4 w-4 text-emerald-300" />
         <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200">
@@ -44,7 +44,7 @@ export function AnalysisCard({ slug, type, assetName }: Props) {
       </div>
       <div className="space-y-2">
         {lines.map((line, i) => (
-          <p key={i} className="text-sm leading-6 text-mist/70">
+          <p key={i} className="text-sm leading-6 text-mist-2">
             {line}
           </p>
         ))}

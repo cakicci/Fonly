@@ -97,7 +97,7 @@ export function PriceAlertModal({
           <button
             onClick={onClose}
             aria-label="Kapat"
-            className="rounded-lg p-1.5 text-mist/55 transition hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>
@@ -105,28 +105,28 @@ export function PriceAlertModal({
 
         {status !== "authenticated" ? (
           <div className="p-6 text-center">
-            <p className="text-sm text-mist/65">
+            <p className="text-sm text-mist-2">
               Alarm kurmak için <Link href="/login" className="font-semibold text-emerald-300 hover:underline">giriş yapmalısın</Link>.
             </p>
           </div>
         ) : success ? (
           <div className="p-6 text-center">
             <p className="text-sm font-semibold text-emerald-300">✓ Alarm kuruldu</p>
-            <p className="mt-2 text-xs text-mist/50">
+            <p className="mt-2 text-xs text-mist-3">
               Fiyat hedefine ulaştığında dashboard&apos;da bildirim göreceksin.
             </p>
           </div>
         ) : (
           <form onSubmit={onSubmit} className="space-y-4 p-5">
             <div>
-              <p className="mb-1 text-xs text-mist/45">Varlık</p>
+              <p className="mb-1 text-xs text-mist-3">Varlık</p>
               <p className="rounded-lg border border-white/8 bg-white/[0.025] px-3 py-2 text-sm text-white">
                 {assetName}
               </p>
             </div>
 
             <div>
-              <p className="mb-2 text-xs font-medium text-mist/60">Koşul</p>
+              <p className="mb-2 text-xs font-medium text-mist-3">Koşul</p>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
@@ -134,7 +134,7 @@ export function PriceAlertModal({
                   className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
                     condition === "above"
                       ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
-                      : "border-white/10 bg-white/[0.04] text-mist/60 hover:bg-white/[0.07]"
+                      : "border-white/10 bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
                   }`}
                 >
                   ↗ Bunun üstüne çıktığında
@@ -145,7 +145,7 @@ export function PriceAlertModal({
                   className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
                     condition === "below"
                       ? "border-rose-300/35 bg-rose-300/12 text-rose-100"
-                      : "border-white/10 bg-white/[0.04] text-mist/60 hover:bg-white/[0.07]"
+                      : "border-white/10 bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
                   }`}
                 >
                   ↘ Bunun altına düştüğünde
@@ -154,7 +154,7 @@ export function PriceAlertModal({
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-medium text-mist/60">
+              <label className="mb-1 block text-xs font-medium text-mist-3">
                 Hedef fiyat
               </label>
               <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2">
@@ -165,13 +165,13 @@ export function PriceAlertModal({
                   value={threshold}
                   onChange={(e) => setThreshold(e.target.value)}
                   placeholder="0.00"
-                  className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist/30"
+                  className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
                 />
-                {unit && <span className="text-xs text-mist/45">{unit}</span>}
+                {unit && <span className="text-xs text-mist-3">{unit}</span>}
               </div>
               {currentPrice > 0 && (
-                <p className="mt-1.5 text-[11px] text-mist/40">
-                  Şu anki fiyat: <span className="text-mist/65">{currentPrice.toFixed(2)} {unit}</span>
+                <p className="mt-1.5 text-[11px] text-mist-3">
+                  Şu anki fiyat: <span className="text-mist-2">{currentPrice.toFixed(2)} {unit}</span>
                 </p>
               )}
             </div>
@@ -187,14 +187,14 @@ export function PriceAlertModal({
                 type="button"
                 onClick={onClose}
                 disabled={busy}
-                className="flex-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-mist/65 transition hover:bg-white/[0.07] hover:text-white"
+                className="flex-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-mist-2 transition hover:bg-white/[0.07] hover:text-white"
               >
                 İptal
               </button>
               <button
                 type="submit"
                 disabled={busy}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-300 px-4 py-2.5 text-sm font-semibold text-ink shadow-glow transition hover:bg-emerald-200 disabled:opacity-60"
+                className="btn btn-sm btn-primary flex-1 shadow-glow"
               >
                 {busy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 Alarm Kur

@@ -22,7 +22,7 @@ const GROUP_ORDER: ResultItem["group"][] = ["Hisse", "Fon", "Döviz", "Altın"];
 const GROUP_COLORS: Record<ResultItem["group"], string> = {
   Hisse: "text-cyan-200",
   Fon: "text-emerald-200",
-  Döviz: "text-mist/80",
+  Döviz: "text-mist-2",
   Altın: "text-amber-200",
 };
 
@@ -207,7 +207,7 @@ export function HeaderSearch() {
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl">
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-mist/45" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-mist-3" />
         <input
           ref={inputRef}
           type="text"
@@ -216,7 +216,7 @@ export function HeaderSearch() {
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           placeholder="Hisse, fon, döviz veya altın ara..."
-          className="w-full rounded-2xl border border-white/8 bg-white/[0.04] py-2 pl-9 pr-9 text-sm text-white placeholder:text-mist/40 outline-none transition focus:border-emerald-200/40 focus:bg-white/[0.07]"
+          className="w-full rounded-2xl border border-white/8 bg-white/[0.04] py-2 pl-9 pr-9 text-sm text-white placeholder:text-mist-3 outline-none transition focus:border-emerald-200/40 focus:bg-white/[0.07]"
           aria-label="Site içi arama"
           autoComplete="off"
         />
@@ -227,14 +227,14 @@ export function HeaderSearch() {
               setQuery("");
               inputRef.current?.focus();
             }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-mist/45 transition hover:bg-white/[0.06] hover:text-white"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-mist-3 transition hover:bg-white/[0.06] hover:text-white"
             aria-label="Temizle"
           >
             <X className="h-3.5 w-3.5" />
           </button>
         )}
         {!query && (
-          <kbd className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist/45 sm:block">
+          <kbd className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist-3 sm:block">
             Ctrl K
           </kbd>
         )}
@@ -243,7 +243,7 @@ export function HeaderSearch() {
       {showDropdown && (
         <div className="glass-card absolute left-0 right-0 top-full z-50 mt-2 max-h-[28rem] overflow-y-auto rounded-2xl p-2">
           {grouped.length === 0 ? (
-            <div className="px-3 py-6 text-center text-sm text-mist/55">
+            <div className="px-3 py-6 text-center text-sm text-mist-3">
               {fundsLoaded
                 ? `"${debounced}" için sonuç bulunamadı.`
                 : "Sonuçlar yükleniyor..."}
@@ -271,11 +271,11 @@ export function HeaderSearch() {
                       className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm transition ${
                         active
                           ? "bg-white/[0.06] text-white"
-                          : "text-mist/75 hover:bg-white/[0.04] hover:text-white"
+                          : "text-mist-2 hover:bg-white/[0.04] hover:text-white"
                       }`}
                     >
                       <span className="font-medium">{item.primary}</span>
-                      <span className="truncate text-xs text-mist/55">
+                      <span className="truncate text-xs text-mist-3">
                         {item.secondary}
                       </span>
                     </Link>

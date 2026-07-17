@@ -42,10 +42,10 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
               size="sm"
             />
           </div>
-          <p className="whitespace-pre-line text-sm leading-7 text-mist/75">
+          <p className="whitespace-pre-line text-sm leading-7 text-mist-2">
             {profile.longBusinessSummary}
           </p>
-          <p className="mt-3 text-[11px] text-mist/35">
+          <p className="mt-3 text-[11px] text-mist-3">
             Açıklama Yahoo Finance&apos;tan geldiği için İngilizcedir. Türkçe özet için yukarıdaki AI butonunu kullanabilirsiniz.
           </p>
         </div>
@@ -72,7 +72,7 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+                <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
                   <th className="pb-3 pr-4 font-medium">Ad</th>
                   <th className="pb-3 pr-4 font-medium">Görev</th>
                   <th className="pb-3 text-right font-medium">Yaş</th>
@@ -82,8 +82,8 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
                 {profile.officers.map((o, i) => (
                   <tr key={`${o.name}-${i}`}>
                     <td className="py-2.5 pr-4 font-medium text-white">{o.name}</td>
-                    <td className="py-2.5 pr-4 text-mist/65">{o.title}</td>
-                    <td className="py-2.5 text-right tabular-nums text-mist/55">
+                    <td className="py-2.5 pr-4 text-mist-2">{o.title}</td>
+                    <td className="py-2.5 text-right tabular-nums text-mist-3">
                       {o.age != null ? o.age : "—"}
                     </td>
                   </tr>
@@ -94,7 +94,7 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
         </div>
       )}
 
-      <p className="text-[11px] text-mist/35">
+      <p className="text-[11px] text-mist-3">
         Veri kaynağı: Yahoo Finance · assetProfile.
       </p>
     </div>
@@ -108,7 +108,7 @@ function FactCell({
 }: { icon: React.ReactNode; label: string; value: string | null }) {
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-mist/40">
+      <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-mist-3">
         {icon}
         {label}
       </div>
@@ -127,9 +127,9 @@ function ContactRow({
 }) {
   return (
     <div className="flex items-start gap-3 rounded-xl border border-white/[0.04] bg-white/[0.015] p-3">
-      <div className="mt-0.5 rounded-md bg-white/[0.04] p-1.5 text-mist/55">{icon}</div>
+      <div className="mt-0.5 rounded-md bg-white/[0.04] p-1.5 text-mist-3">{icon}</div>
       <div className="min-w-0 flex-1">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-mist/40">{label}</p>
+        <p className="text-[11px] font-medium uppercase tracking-wider text-mist-3">{label}</p>
         {value
           ? href
             ? (
@@ -138,8 +138,8 @@ function ContactRow({
                 {value}
               </a>
             )
-            : <p className="break-words text-sm text-mist/80">{value}</p>
-          : <p className="text-sm text-mist/35">—</p>}
+            : <p className="break-words text-sm text-mist-2">{value}</p>
+          : <p className="text-sm text-mist-3">—</p>}
       </div>
     </div>
   );

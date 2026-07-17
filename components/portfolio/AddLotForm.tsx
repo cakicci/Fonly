@@ -63,7 +63,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
   }
 
   return (
-    <form onSubmit={submit} className="glass-card rounded-2xl p-5 ring-1 ring-white/8">
+    <form onSubmit={submit} className="glass-card rounded-2xl p-5">
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-sm font-semibold text-white">İşlem ekle</h2>
         <div className="flex rounded-xl border border-white/10 p-0.5" role="group" aria-label="İşlem yönü">
@@ -71,7 +71,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
             type="button"
             onClick={() => setSide("buy")}
             className={`rounded-[10px] px-3 py-1 text-xs font-semibold transition ${
-              side === "buy" ? "bg-emerald-300/85 text-ink" : "text-mist/55 hover:text-white"
+              side === "buy" ? "bg-emerald-300/85 text-ink" : "text-mist-3 hover:text-white"
             }`}
           >
             Alış
@@ -80,7 +80,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
             type="button"
             onClick={() => setSide("sell")}
             className={`rounded-[10px] px-3 py-1 text-xs font-semibold transition ${
-              side === "sell" ? "bg-rose-300/85 text-ink" : "text-mist/55 hover:text-white"
+              side === "sell" ? "bg-rose-300/85 text-ink" : "text-mist-3 hover:text-white"
             }`}
           >
             Satış
@@ -90,7 +90,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {/* Tip */}
-        <label className="text-xs text-mist/55">
+        <label className="text-xs text-mist-3">
           Tür
           <select
             value={type}
@@ -106,7 +106,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
         </label>
 
         {/* Varlık seçici */}
-        <label className="text-xs text-mist/55">
+        <label className="text-xs text-mist-3">
           Varlık
           {type === "altin" ? (
             <select
@@ -153,7 +153,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
         </label>
 
         {/* Adet */}
-        <label className="text-xs text-mist/55">
+        <label className="text-xs text-mist-3">
           Adet / birim
           <input
             value={quantity}
@@ -165,7 +165,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
         </label>
 
         {/* Birim fiyat */}
-        <label className="text-xs text-mist/55">
+        <label className="text-xs text-mist-3">
           {side === "buy" ? "Alış fiyatı (₺)" : "Satış fiyatı (₺)"}
           <input
             value={unitCost}
@@ -182,11 +182,7 @@ export function AddLotForm({ onAdded }: AddLotFormProps) {
       <button
         type="submit"
         disabled={submitting}
-        className={`mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-ink transition disabled:opacity-60 ${
-          side === "buy"
-            ? "bg-emerald-300/85 hover:bg-emerald-200"
-            : "bg-rose-300/85 hover:bg-rose-200"
-        }`}
+        className={`btn btn-sm mt-4 ${side === "buy" ? "btn-primary" : "btn-danger"}`}
       >
         {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
         {side === "buy" ? "Alış ekle" : "Satış ekle"}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>FonlyPro Hero — Glass Orbit</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 600px; overflow: hidden; }
+  body {
+    font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    background:
+      radial-gradient(circle at 78% 30%, rgba(232, 121, 249, 0.14), transparent 34rem),
+      radial-gradient(circle at 12% 82%, rgba(45, 227, 168, 0.13), transparent 30rem),
+      radial-gradient(circle at 55% -10%, rgba(86, 173, 255, 0.10), transparent 28rem),
+      linear-gradient(180deg, #070b1d 0%, #0b1026 55%, #101a3a 100%);
+    color: #d8f7ee;
+    position: relative;
+  }
+  /* faint grid */
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(216,247,238,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(216,247,238,0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse at 60% 50%, black 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse at 60% 50%, black 30%, transparent 78%);
+  }
+  .wrap {
+    position: relative; z-index: 2;
+    height: 100%;
+    display: flex; align-items: center;
+    padding: 0 140px;
+    gap: 80px;
+  }
+  .copy { flex: 1; max-width: 860px; }
+  .brandline { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+  .logo {
+    width: 48px; height: 48px; object-fit: contain;
+    filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.45));
+  }
+  .brand { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; color: #ecfff9; }
+  .brand .pro {
+    background: linear-gradient(90deg, #e879f9, #c084fc);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(232, 121, 249, 0.35);
+    background: rgba(232, 121, 249, 0.10);
+    color: #f5d0fe; font-size: 15px; font-weight: 600;
+    border-radius: 999px; padding: 7px 18px; margin-bottom: 22px;
+  }
+  .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #e879f9; box-shadow: 0 0 12px #e879f9; }
+  h1 {
+    font-size: 64px; font-weight: 800; line-height: 1.08;
+    letter-spacing: -0.025em; color: #ecfff9; margin-bottom: 22px;
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #6ee7b7, #67e8f9);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub {
+    font-size: 22px; line-height: 1.55; color: rgba(216,247,238,0.7);
+    max-width: 720px; margin-bottom: 34px;
+  }
+  .cta-row { display: flex; align-items: center; gap: 22px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #6ee7b7, #34d399);
+    color: #06281c; font-weight: 700; font-size: 19px;
+    border-radius: 16px; padding: 17px 34px;
+    box-shadow: 0 0 44px rgba(40, 230, 164, 0.30);
+  }
+  .cta svg { width: 20px; height: 20px; }
+  .note { font-size: 16px; color: rgba(216,247,238,0.5); }
+  /* right: floating glass cards */
+  .stack { position: relative; width: 560px; height: 460px; flex-shrink: 0; }
+  .card {
+    position: absolute;
+    border: 1px solid rgba(216,247,238,0.12);
+    background: linear-gradient(145deg, rgba(19,28,55,0.88), rgba(10,16,36,0.72));
+    box-shadow: 0 20px 80px rgba(0,0,0,0.38);
+    backdrop-filter: blur(18px);
+    border-radius: 20px;
+  }
+  .card-main { top: 60px; left: 0; width: 440px; padding: 26px 28px; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .ticker { font-size: 17px; font-weight: 700; color: #ecfff9; }
+  .ticker span { color: rgba(216,247,238,0.5); font-weight: 500; font-size: 14px; margin-left: 8px; }
+  .ai-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+    color: #f5d0fe; border: 1px solid rgba(232,121,249,0.35);
+    background: rgba(232,121,249,0.12); border-radius: 999px; padding: 4px 12px;
+  }
+  .price { font-size: 30px; font-weight: 800; color: #ecfff9; font-variant-numeric: tabular-nums; }
+  .price .chg { font-size: 16px; font-weight: 700; color: #6ee7b7; margin-left: 10px; }
+  .chart { margin: 14px 0 12px; }
+  .verdict {
+    border-top: 1px solid rgba(216,247,238,0.10); padding-top: 14px;
+    font-size: 14.5px; line-height: 1.5; color: rgba(216,247,238,0.72);
+  }
+  .verdict strong { color: #a7f3d0; font-weight: 600; }
+  .card-chip {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; font-size: 15px; font-weight: 600; color: #ecfff9;
+  }
+  .chip-news { top: 0; right: 0; width: 300px; }
+  .chip-chat { bottom: 0; right: 0; width: 330px; }
+  .chip-ico {
+    width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ico-amber { background: rgba(253,230,138,0.14); border: 1px solid rgba(253,230,138,0.28); }
+  .ico-cyan  { background: rgba(103,232,249,0.12); border: 1px solid rgba(103,232,249,0.28); }
+  .chip-sub { display: block; font-size: 12.5px; font-weight: 500; color: rgba(216,247,238,0.5); margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="wrap">
+    <div class="copy">
+      <div class="brandline">
+        <img class="logo" src="fonly-logo.png" alt="Fonly logosu">
+        <div class="brand">Fonly<span class="pro">Pro</span></div>
+      </div>
+      <div class="badge"><span class="dot"></span>Yapay zekâ destekli analiz — çok yakında</div>
+      <h1>Piyasayı okuyan<br><em>yapay zekâ</em> yanında</h1>
+      <p class="sub">Fon, döviz, altın ve hisseler için AI teknik analiz, haber özetleri ve anlık soru-cevap. Tek abonelik, tüm varlıklar.</p>
+      <div class="cta-row">
+        <span class="cta">Premium'a Geç
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+        <span class="note">İstediğin zaman iptal et</span>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card card-main">
+        <div class="card-head">
+          <div class="ticker">THYAO <span>Türk Hava Yolları</span></div>
+          <div class="ai-chip">✦ AI ANALİZ</div>
+        </div>
+        <div class="price">312,50 ₺<span class="chg">+%2,4</span></div>
+        <svg class="chart" width="384" height="120" viewBox="0 0 384 120">
+          <defs>
+            <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#6ee7b7" stop-opacity="0.28"/>
+              <stop offset="1" stop-color="#6ee7b7" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,92 C30,88 48,70 76,74 C104,78 118,52 150,56 C182,60 196,38 228,42 C260,46 276,26 308,22 C332,19 358,12 384,8 L384,120 L0,120 Z" fill="url(#area)"/>
+          <path d="M0,92 C30,88 48,70 76,74 C104,78 118,52 150,56 C182,60 196,38 228,42 C260,46 276,26 308,22 C332,19 358,12 384,8" fill="none" stroke="#6ee7b7" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="384" cy="8" r="4.5" fill="#6ee7b7"/>
+          <circle cx="384" cy="8" r="9" fill="#6ee7b7" opacity="0.25"/>
+        </svg>
+        <div class="verdict"><strong>AI görüşü:</strong> Yükselen trend 50 günlük ortalamanın üzerinde güçleniyor.</div>
+      </div>
+      <div class="card card-chip chip-news">
+        <div class="chip-ico ico-amber">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fde68a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9h4"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg>
+        </div>
+        <div>AI haber özetleri<span class="chip-sub">Günün akışı tek paragrafta</span></div>
+      </div>
+      <div class="card card-chip chip-chat">
+        <div class="chip-ico ico-cyan">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>Anlık soru-cevap<span class="chip-sub">"Bu fon bana uygun mu?"</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

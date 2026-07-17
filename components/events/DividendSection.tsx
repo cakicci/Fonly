@@ -33,7 +33,7 @@ export function DividendSection({ payments }: Props) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
         <p className="text-sm font-medium text-white">Bu hisse için temettü kaydı yok</p>
-        <p className="mt-1 text-xs text-mist/45">
+        <p className="mt-1 text-xs text-mist-3">
           Yahoo Finance son 10 yıl içinde temettü ödemesi tespit etmedi.
         </p>
       </div>
@@ -92,7 +92,7 @@ export function DividendSection({ payments }: Props) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+              <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
                 <th className="pb-3 pr-4 font-medium">Yıl</th>
                 <th className="pb-3 pr-4 font-medium text-right">Ödeme Sayısı</th>
                 <th className="pb-3 font-medium text-right">Toplam (₺)</th>
@@ -102,7 +102,7 @@ export function DividendSection({ payments }: Props) {
               {[...yearly].reverse().map(y => (
                 <tr key={y.year}>
                   <td className="py-2.5 pr-4 font-medium text-white">{y.year}</td>
-                  <td className="py-2.5 pr-4 text-right tabular-nums text-mist/60">{y.count}</td>
+                  <td className="py-2.5 pr-4 text-right tabular-nums text-mist-3">{y.count}</td>
                   <td className="py-2.5 text-right tabular-nums text-white">{fmtAmount(y.total)}</td>
                 </tr>
               ))}
@@ -117,7 +117,7 @@ export function DividendSection({ payments }: Props) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+              <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
                 <th className="pb-3 pr-4 font-medium">Tarih</th>
                 <th className="pb-3 font-medium text-right">Tutar (₺/Hisse)</th>
               </tr>
@@ -125,8 +125,8 @@ export function DividendSection({ payments }: Props) {
             <tbody className="divide-y divide-white/5">
               {[...payments].reverse().map(p => (
                 <tr key={p.epoch}>
-                  <td className="py-2 pr-4 text-mist/65">{fmtDateTr(p.date)}</td>
-                  <td className="py-2 text-right tabular-nums text-mist/85">{fmtAmount(p.amount)}</td>
+                  <td className="py-2 pr-4 text-mist-2">{fmtDateTr(p.date)}</td>
+                  <td className="py-2 text-right tabular-nums text-mist-2">{fmtAmount(p.amount)}</td>
                 </tr>
               ))}
             </tbody>
@@ -134,7 +134,7 @@ export function DividendSection({ payments }: Props) {
         </div>
       </div>
 
-      <p className="text-[11px] text-mist/35">
+      <p className="text-[11px] text-mist-3">
         Veri kaynağı: Yahoo Finance · v8 chart events. Geçmiş ödemeler, gelecekteki temettüleri garanti etmez.
       </p>
     </div>
@@ -152,10 +152,10 @@ function SummaryCard({
 }) {
   const subCls = subTone === "buy" ? "text-emerald-200"
               : subTone === "sell" ? "text-rose-200"
-              : "text-mist/45";
+              : "text-mist-3";
   return (
     <div className="glass-card rounded-2xl p-4">
-      <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-mist/40">
+      <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-mist-3">
         {icon}
         {label}
       </div>

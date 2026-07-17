@@ -35,18 +35,18 @@ export function IncomeForm({ currentIncome }: IncomeFormProps) {
   }
 
   return (
-    <div className="glass-card rounded-[1.75rem] p-5 sm:p-6">
+    <div className="glass-card rounded-section p-5 sm:p-6">
       <div className="mb-5">
         <p className="text-sm font-medium text-emerald-200">Gelir bilgisi</p>
         <h2 className="mt-2 text-2xl font-semibold text-white">Aylık gelirini gir</h2>
-        <p className="mt-2 text-sm leading-6 text-mist/60">
+        <p className="mt-2 text-sm leading-6 text-mist-3">
           Girdiğin gelire ve risk profiline göre aylık ayrılabilir tutar hesaplanır.
         </p>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <div className="flex-1">
-          <label className="block text-sm font-medium text-mist/72 mb-2" htmlFor="income-input">
+          <label className="block text-sm font-medium text-mist-2 mb-2" htmlFor="income-input">
             Aylık net gelir (TL)
           </label>
           <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
@@ -59,9 +59,9 @@ export function IncomeForm({ currentIncome }: IncomeFormProps) {
               value={income}
               onChange={(e) => { setIncome(e.target.value); setSaved(false); }}
               placeholder="Örn: 30000"
-              className="w-full bg-transparent text-lg font-semibold text-white outline-none placeholder:text-mist/30"
+              className="w-full bg-transparent text-lg font-semibold text-white outline-none placeholder:text-mist-3"
             />
-            <span className="text-sm text-mist/50 shrink-0">TL</span>
+            <span className="text-sm text-mist-3 shrink-0">TL</span>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export function IncomeForm({ currentIncome }: IncomeFormProps) {
           type="button"
           onClick={handleSave}
           disabled={isLoading || !income}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-6 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:opacity-50 sm:shrink-0"
+          className="btn btn-lg btn-primary px-6 sm:shrink-0"
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" />

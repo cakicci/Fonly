@@ -37,20 +37,20 @@ export function ForgotPasswordForm() {
 
   if (sent) {
     return (
-      <div className="glass-card mx-auto w-full max-w-md rounded-[1.75rem] p-6">
+      <div className="glass-card mx-auto w-full max-w-md rounded-section p-6">
         <div className="flex flex-col items-center text-center">
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-300/15">
             <MailCheck className="h-6 w-6 text-emerald-200" />
           </span>
           <h1 className="mt-4 text-2xl font-semibold text-white">Posta kutunu kontrol et</h1>
-          <p className="mt-3 text-sm leading-6 text-mist/64">
+          <p className="mt-3 text-sm leading-6 text-mist-2">
             Eğer <span className="text-mist">{email}</span> adresi kayıtlıysa, şifre sıfırlama
             bağlantısını gönderdik. Bağlantı 1 saat geçerli. Gelen kutunda yoksa spam klasörüne bak.
           </p>
         </div>
         <Link
           href="/login"
-          className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition hover:bg-white/10"
+          className="btn btn-lg btn-secondary mt-6 w-full"
         >
           <ArrowLeft className="h-4 w-4" />
           Girişe dön
@@ -60,26 +60,26 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <div className="glass-card mx-auto w-full max-w-md rounded-[1.75rem] p-6">
+    <div className="glass-card mx-auto w-full max-w-md rounded-section p-6">
       <div className="mb-6">
         <p className="text-sm font-medium text-emerald-200">Şifre sıfırlama</p>
         <h1 className="mt-2 text-3xl font-semibold text-white">Şifreni mi unuttun?</h1>
-        <p className="mt-3 text-sm leading-6 text-mist/64">
+        <p className="mt-3 text-sm leading-6 text-mist-2">
           Hesabının e-posta adresini gir, sana sıfırlama bağlantısı gönderelim.
         </p>
       </div>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <label className="block">
-          <span className="text-sm font-medium text-mist/72">Email</span>
+          <span className="text-sm font-medium text-mist-2">Email</span>
           <span className="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
-            <Mail className="h-5 w-5 text-mist/46" />
+            <Mail className="h-5 w-5 text-mist-3" />
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              className="w-full bg-transparent text-white outline-none placeholder:text-mist/32"
+              className="w-full bg-transparent text-white outline-none placeholder:text-mist-3"
               placeholder="ornek@mail.com"
             />
           </span>
@@ -94,14 +94,14 @@ export function ForgotPasswordForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:opacity-70"
+          className="btn btn-lg btn-primary w-full"
         >
           {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           Sıfırlama bağlantısı gönder
         </button>
       </form>
 
-      <p className="mt-5 text-center text-sm text-mist/58">
+      <p className="mt-5 text-center text-sm text-mist-3">
         <Link className="font-semibold text-emerald-200 hover:text-emerald-100" href="/login">
           Girişe dön
         </Link>

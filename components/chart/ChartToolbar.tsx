@@ -62,7 +62,7 @@ export function ChartToolbar({
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
               timeframe === tf
                 ? "bg-emerald-300/15 text-emerald-100"
-                : "text-mist/55 hover:bg-white/[0.04] hover:text-white"
+                : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
             }`}
           >
             {TIMEFRAME_LABELS[tf]}
@@ -104,10 +104,10 @@ export function ChartToolbar({
         aria-pressed={showVolume}
         className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
           candleDisabled
-            ? "border-white/4 bg-white/[0.01] text-mist/25 cursor-not-allowed"
+            ? "border-white/4 bg-white/[0.01] text-mist-3 cursor-not-allowed"
             : showVolume
               ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
-              : "border-white/8 bg-white/[0.02] text-mist/55 hover:bg-white/[0.05] hover:text-white"
+              : "border-white/8 bg-white/[0.02] text-mist-3 hover:bg-white/[0.05] hover:text-white"
         }`}
       >
         <BarChart3 className="h-3.5 w-3.5" />
@@ -122,7 +122,7 @@ export function ChartToolbar({
           className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
             indicators.length > 0
               ? "border-cyan-300/35 bg-cyan-300/12 text-cyan-100"
-              : "border-white/8 bg-white/[0.02] text-mist/55 hover:bg-white/[0.05] hover:text-white"
+              : "border-white/8 bg-white/[0.02] text-mist-3 hover:bg-white/[0.05] hover:text-white"
           }`}
         >
           <TrendingUp className="h-3.5 w-3.5" />
@@ -143,7 +143,7 @@ export function ChartToolbar({
               aria-hidden
             />
             <div className="absolute right-0 top-full z-40 mt-2 w-56 overflow-hidden rounded-xl border border-white/10 bg-ink/95 shadow-xl backdrop-blur-md">
-              <div className="border-b border-white/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist/40">
+              <div className="border-b border-white/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
                 Hareketli Ortalama
               </div>
               {INDICATORS.filter(i => i.group === "MA").map(i => (
@@ -154,7 +154,7 @@ export function ChartToolbar({
                   onClick={() => onToggleIndicator(i.key)}
                 />
               ))}
-              <div className="border-y border-white/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist/40">
+              <div className="border-y border-white/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
                 Volatilite
               </div>
               {INDICATORS.filter(i => i.group === "Volatility").map(i => (
@@ -174,7 +174,7 @@ export function ChartToolbar({
       <button
         onClick={onToggleFullscreen}
         aria-label={isFullscreen ? "Tam ekrandan çık" : "Tam ekran"}
-        className="ml-auto rounded-xl border border-white/8 bg-white/[0.02] p-2 text-mist/55 transition hover:bg-white/[0.05] hover:text-white"
+        className="ml-auto rounded-xl border border-white/8 bg-white/[0.02] p-2 text-mist-3 transition hover:bg-white/[0.05] hover:text-white"
       >
         {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
       </button>
@@ -199,10 +199,10 @@ function ChartTypeButton({
       title={disabled ? `${label} bu varlık için desteklenmiyor` : label}
       className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition ${
         disabled
-          ? "text-mist/25 cursor-not-allowed"
+          ? "text-mist-3 cursor-not-allowed"
           : active
             ? "bg-emerald-300/15 text-emerald-100"
-            : "text-mist/55 hover:bg-white/[0.04] hover:text-white"
+            : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
       }`}
     >
       {icon}
@@ -221,7 +221,7 @@ function IndicatorRow({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center justify-between px-3 py-2 text-xs font-medium text-mist/70 transition hover:bg-white/[0.04] hover:text-white"
+      className="flex w-full items-center justify-between px-3 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.04] hover:text-white"
     >
       {label}
       <span

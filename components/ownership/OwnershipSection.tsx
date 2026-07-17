@@ -98,19 +98,19 @@ export function OwnershipSection({ data }: Props) {
         </div>
         <div className="space-y-1.5">
           <h3 className="text-sm font-semibold text-white">Detaylı kurum listesi</h3>
-          <p className="text-sm leading-6 text-mist/65">
+          <p className="text-sm leading-6 text-mist-2">
             Yahoo Finance, Türk hisselerinde tek tek kurumların ve fonların listesini
             sağlamıyor — sadece yukarıdaki toplu yüzdeler ve sayım veriliyor.
             En büyük hissedar tablosu KAP&apos;tan ortaklık yapısı bildirimlerinin
             entegrasyonuyla gelecek.
           </p>
-          <span className="inline-flex items-center rounded-full border border-white/8 bg-white/[0.025] px-3 py-1 text-[11px] text-mist/45">
+          <span className="inline-flex items-center rounded-full border border-white/8 bg-white/[0.025] px-3 py-1 text-[11px] text-mist-3">
             Yol haritası: Faz 6.5 — KAP ortaklık yapısı
           </span>
         </div>
       </div>
 
-      <p className="text-[11px] text-mist/35">
+      <p className="text-[11px] text-mist-3">
         Veri kaynağı: Yahoo Finance · majorHoldersBreakdown + netSharePurchaseActivity.
       </p>
     </div>
@@ -147,7 +147,7 @@ function CompositionBar({
         )}
       </div>
       {others > 0 && (
-        <p className="text-[11px] text-mist/40">
+        <p className="text-[11px] text-mist-3">
           Diğer / kategorize edilemeyen: {(others * 100).toFixed(2)}%
         </p>
       )}
@@ -162,10 +162,10 @@ function CompositionLegend({
     <div className="rounded-xl border border-white/[0.04] bg-white/[0.015] p-3">
       <div className="flex items-center gap-2">
         <span className={`h-2 w-2 rounded-full ${color}`} />
-        <p className="text-[11px] font-medium uppercase tracking-wider text-mist/45">{label}</p>
+        <p className="text-[11px] font-medium uppercase tracking-wider text-mist-3">{label}</p>
       </div>
       <p className="mt-1 text-lg font-semibold tabular-nums text-white">{value}</p>
-      <p className="mt-1 text-[11px] leading-relaxed text-mist/45">{hint}</p>
+      <p className="mt-1 text-[11px] leading-relaxed text-mist-3">{hint}</p>
     </div>
   );
 }
@@ -185,7 +185,7 @@ function StatCard({
       : "text-white";
   return (
     <div className="rounded-xl border border-white/[0.04] bg-white/[0.015] p-3">
-      <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-mist/40">
+      <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-mist-3">
         {icon}
         {label}
       </div>

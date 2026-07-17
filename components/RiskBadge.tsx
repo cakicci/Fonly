@@ -19,7 +19,7 @@ interface RiskBadgeProps {
 
 export function RiskBadge({ riskProfile }: RiskBadgeProps) {
   if (!riskProfile) {
-    return <h2 className="mt-2 text-2xl font-semibold text-mist/40">Henüz seçilmedi</h2>;
+    return <h2 className="mt-2 text-2xl font-semibold text-mist-3">Henüz seçilmedi</h2>;
   }
 
   const { label, className } = riskLabels[riskProfile];

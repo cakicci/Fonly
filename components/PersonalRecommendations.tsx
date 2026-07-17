@@ -71,7 +71,7 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
   const hasLive = liveFunds.length > 0;
 
   return (
-    <div className="rounded-[1.75rem] border border-white/8 bg-white/[0.025] p-5 sm:p-6">
+    <div className="rounded-section border border-white/8 bg-white/[0.025] p-5 sm:p-6">
       <div className="mb-6 flex items-start gap-4">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/8">
           <Icon className={`h-5 w-5 ${rec.color}`} />
@@ -79,13 +79,13 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
         <div>
           <p className="text-sm font-medium text-emerald-200">Kişisel öneriler</p>
           <h2 className="mt-1 text-xl font-semibold text-white sm:text-2xl">{rec.title}</h2>
-          <p className="mt-2 text-sm leading-6 text-mist/64">{rec.description}</p>
+          <p className="mt-2 text-sm leading-6 text-mist-2">{rec.description}</p>
         </div>
       </div>
 
       {hasLive ? (
         <>
-          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-mist/40">
+          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-mist-3">
             Risk profiline uygun fonlar · son 1 yıl getirisi
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -98,9 +98,9 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-white">{fund.kod}</span>
-                    <ArrowUpRight className="h-3.5 w-3.5 text-mist/30 transition group-hover:text-emerald-200" />
+                    <ArrowUpRight className="h-3.5 w-3.5 text-mist-3 transition group-hover:text-emerald-200" />
                   </div>
-                  <p className="mt-1 truncate text-xs text-mist/55">{fund.ad}</p>
+                  <p className="mt-1 truncate text-xs text-mist-3">{fund.ad}</p>
                 </div>
                 <span
                   className={`shrink-0 rounded-lg px-2 py-1 text-sm font-semibold tabular-nums ${
@@ -115,7 +115,7 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
               </Link>
             ))}
           </div>
-          <p className="mt-3 text-[11px] leading-5 text-mist/40">
+          <p className="mt-3 text-[11px] leading-5 text-mist-3">
             Geçmiş getiri gelecekteki performansı garanti etmez. Yatırım tavsiyesi değildir.
           </p>
         </>
@@ -130,7 +130,7 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
                 <TrendingUp className={`h-4 w-4 ${rec.color}`} />
                 <span className="text-sm font-semibold text-white">{fund.name}</span>
               </div>
-              <p className="text-xs leading-5 text-mist/58">{fund.reason}</p>
+              <p className="text-xs leading-5 text-mist-3">{fund.reason}</p>
             </div>
           ))}
         </div>

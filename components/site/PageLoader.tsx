@@ -9,7 +9,7 @@ export function PageLoader({ label = "Yükleniyor…" }: { label?: string }) {
     <main className="flex min-h-[60vh] items-center justify-center px-4">
       <div className="flex flex-col items-center gap-3">
         <Loader2 className="h-8 w-8 animate-spin text-emerald-300" />
-        <p className="text-sm text-mist/55">{label}</p>
+        <p className="text-sm text-mist-3">{label}</p>
       </div>
     </main>
   );

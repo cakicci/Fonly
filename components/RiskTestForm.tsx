@@ -115,18 +115,18 @@ export function RiskTestForm() {
   if (result) {
     const info = riskLabels[result];
     return (
-      <div className="glass-card rounded-[1.75rem] p-8 text-center">
+      <div className="glass-card rounded-section p-8 text-center">
         <div className="mb-6 flex justify-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-300/12">
             <CheckCircle2 className="h-8 w-8 text-emerald-200" />
           </div>
         </div>
-        <p className="text-sm font-medium text-mist/60">Risk profili sonucun</p>
+        <p className="text-sm font-medium text-mist-3">Risk profili sonucun</p>
         <h2 className={`mt-2 text-4xl font-semibold ${info.color}`}>{info.label}</h2>
-        <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-mist/70">{info.description}</p>
+        <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-mist-2">{info.description}</p>
         <button
           onClick={() => router.push("/dashboard")}
-          className="mt-8 inline-flex min-h-12 items-center justify-center rounded-2xl bg-emerald-300 px-8 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200"
+          className="btn btn-lg btn-primary mt-8 px-8"
         >
           Panele dön
         </button>
@@ -135,10 +135,10 @@ export function RiskTestForm() {
   }
 
   return (
-    <div className="glass-card rounded-[1.75rem] p-6 sm:p-8">
+    <div className="glass-card rounded-section p-6 sm:p-8">
       {/* Progress */}
       <div className="mb-8">
-        <div className="mb-2 flex justify-between text-xs text-mist/50">
+        <div className="mb-2 flex justify-between text-xs text-mist-3">
           <span>Soru {currentQuestion + 1} / {questions.length}</span>
           <span>%{Math.round(progress)}</span>
         </div>
@@ -163,13 +163,13 @@ export function RiskTestForm() {
             className={`flex w-full items-center gap-4 rounded-2xl border px-4 py-4 text-left text-sm transition ${
               selectedOption === option.score
                 ? "border-emerald-200/40 bg-emerald-300/12 text-white"
-                : "border-white/8 bg-white/[0.03] text-mist/70 hover:bg-white/[0.06]"
+                : "border-white/8 bg-white/[0.03] text-mist-2 hover:bg-white/[0.06]"
             }`}
           >
             <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-semibold ${
               selectedOption === option.score
                 ? "border-emerald-300 bg-emerald-300 text-ink"
-                : "border-white/20 text-mist/50"
+                : "border-white/20 text-mist-3"
             }`}>
               {String.fromCharCode(65 + index)}
             </span>
@@ -183,7 +183,7 @@ export function RiskTestForm() {
         type="button"
         onClick={handleNext}
         disabled={selectedOption === null || isLoading}
-        className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:opacity-50"
+        className="btn btn-lg btn-primary mt-6 w-full"
       >
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />

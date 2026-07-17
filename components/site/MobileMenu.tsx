@@ -36,7 +36,7 @@ export function MobileMenu() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-mist/80 transition hover:bg-white/[0.08] lg:hidden"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-mist-2 transition hover:bg-white/[0.08] lg:hidden"
         aria-label="Menüyü aç"
       >
         <Menu className="h-5 w-5" />
@@ -50,11 +50,11 @@ export function MobileMenu() {
           />
           <aside className="glass-card absolute right-0 top-0 flex h-full w-[85vw] max-w-sm flex-col overflow-y-auto rounded-l-3xl p-5">
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-sm font-semibold text-mist/72">Menü</span>
+              <span className="text-sm font-semibold text-mist-2">Menü</span>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="rounded-lg p-2 text-mist/65 transition hover:bg-white/[0.06] hover:text-white"
+                className="rounded-lg p-2 text-mist-2 transition hover:bg-white/[0.06] hover:text-white"
                 aria-label="Kapat"
               >
                 <X className="h-5 w-5" />
@@ -66,17 +66,17 @@ export function MobileMenu() {
                 if (item.mega) {
                   return (
                     <div key={item.label} className="pt-2">
-                      <div className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-mist/45">
+                      <div className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
                         {item.label}
                       </div>
                       {item.mega.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className="block rounded-xl px-3 py-2 text-sm text-mist/80 transition hover:bg-white/[0.04] hover:text-white"
+                          className="block rounded-xl px-3 py-2 text-sm text-mist-2 transition hover:bg-white/[0.04] hover:text-white"
                         >
                           {sub.label}
-                          <span className="block text-xs text-mist/45">
+                          <span className="block text-xs text-mist-3">
                             {sub.description}
                           </span>
                         </Link>
@@ -94,7 +94,7 @@ export function MobileMenu() {
                         setDrawerOpen(true);
                         setOpen(false);
                       }}
-                      className="block w-full rounded-xl px-3 py-2 text-left text-sm text-mist/80 transition hover:bg-white/[0.04] hover:text-white"
+                      className="block w-full rounded-xl px-3 py-2 text-left text-sm text-mist-2 transition hover:bg-white/[0.04] hover:text-white"
                     >
                       {item.label}
                     </button>
@@ -108,7 +108,7 @@ export function MobileMenu() {
                     className={`block rounded-xl px-3 py-2 text-sm transition ${
                       item.highlight
                         ? "bg-emerald-300/15 text-emerald-100 hover:bg-emerald-300/25"
-                        : "text-mist/80 hover:bg-white/[0.04] hover:text-white"
+                        : "text-mist-2 hover:bg-white/[0.04] hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -118,7 +118,7 @@ export function MobileMenu() {
             </div>
 
             <div className="mt-6 border-t border-white/8 pt-4">
-              <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-mist/45">
+              <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
                 Hızlı bağlantılar
               </div>
               <div className="space-y-1">
@@ -126,10 +126,10 @@ export function MobileMenu() {
                   item.comingSoon ? (
                     <span
                       key={item.label}
-                      className="flex items-center justify-between rounded-xl px-3 py-2 text-sm text-mist/35"
+                      className="flex items-center justify-between rounded-xl px-3 py-2 text-sm text-mist-3"
                     >
                       {item.label}
-                      <span className="rounded-md border border-white/8 bg-white/[0.03] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-mist/50">
+                      <span className="rounded-md border border-white/8 bg-white/[0.03] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-mist-3">
                         Yakında
                       </span>
                     </span>
@@ -137,7 +137,7 @@ export function MobileMenu() {
                     <Link
                       key={item.label}
                       href={item.href}
-                      className="block rounded-xl px-3 py-2 text-sm text-mist/72 transition hover:bg-white/[0.04] hover:text-white"
+                      className="block rounded-xl px-3 py-2 text-sm text-mist-2 transition hover:bg-white/[0.04] hover:text-white"
                     >
                       {item.label}
                     </Link>

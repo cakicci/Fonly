@@ -43,7 +43,7 @@ export function RiskPlanner() {
   const safetyAmount = Math.round(income * 3);
 
   return (
-    <section id="risk-planner" className="glass-card rounded-[1.75rem] p-5 sm:p-6">
+    <section id="risk-planner" className="glass-card rounded-section p-5 sm:p-6">
       <div className="mb-6 flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
         <div>
           <p className="text-sm font-medium text-emerald-200">Risk ve bütçe rehberi</p>
@@ -51,14 +51,14 @@ export function RiskPlanner() {
             Gelirine göre ne kadar ayırmak mantıklı?
           </h2>
         </div>
-        <p className="max-w-lg text-sm leading-6 text-mist/62">
+        <p className="max-w-lg text-sm leading-6 text-mist-3">
           Bu bölüm yatırım tavsiyesi değildir. Ama finans okuryazarlığı düşük biri için güvenli düşünme çerçevesi verir.
         </p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="rounded-[1.25rem] border border-white/8 bg-white/[0.04] p-5">
-          <label className="text-sm font-medium text-mist/72" htmlFor="income">
+        <div className="rounded-card border border-white/8 bg-white/[0.04] p-5">
+          <label className="text-sm font-medium text-mist-2" htmlFor="income">
             Aylık gelirini seç
           </label>
           <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
@@ -72,11 +72,11 @@ export function RiskPlanner() {
               onChange={(event) => setIncome(Number(event.target.value) || 0)}
               className="w-full bg-transparent text-lg font-semibold text-white outline-none"
             />
-            <span className="text-sm text-mist/54">TL</span>
+            <span className="text-sm text-mist-3">TL</span>
           </div>
 
           <div className="mt-5">
-            <p className="mb-3 text-sm font-medium text-mist/72">Risk grubunu seç</p>
+            <p className="mb-3 text-sm font-medium text-mist-2">Risk grubunu seç</p>
             <div className="grid gap-2">
               {(Object.keys(riskProfiles) as RiskKey[]).map((key) => (
                 <button
@@ -86,7 +86,7 @@ export function RiskPlanner() {
                   className={`flex min-h-12 items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${
                     risk === key
                       ? "border-emerald-200/40 bg-emerald-300/12 text-white"
-                      : "border-white/8 bg-white/[0.03] text-mist/68 hover:bg-white/[0.06]"
+                      : "border-white/8 bg-white/[0.03] text-mist-2 hover:bg-white/[0.06]"
                   }`}
                 >
                   <span className="text-sm font-semibold">{riskProfiles[key].label}</span>
@@ -97,35 +97,35 @@ export function RiskPlanner() {
           </div>
         </div>
 
-        <div className="rounded-[1.25rem] border border-emerald-200/14 bg-[linear-gradient(135deg,rgba(45,227,168,0.12),rgba(255,255,255,0.035))] p-5">
+        <div className="rounded-card border border-emerald-200/14 bg-[linear-gradient(135deg,rgba(45,227,168,0.12),rgba(255,255,255,0.035))] p-5">
           <div className="flex items-start gap-3">
             <div className="rounded-2xl bg-emerald-300/12 p-3 text-emerald-200">
               <Gauge className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm text-mist/58">Seçilen profil</p>
+              <p className="text-sm text-mist-3">Seçilen profil</p>
               <h3 className="mt-1 text-2xl font-semibold text-white">{profile.label}</h3>
             </div>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl border border-white/8 bg-white/[0.05] p-4">
-              <p className="text-xs text-mist/54">Aylık ayrılabilecek örnek tutar</p>
+              <p className="text-xs text-mist-3">Aylık ayrılabilecek örnek tutar</p>
               <p className="mt-2 text-3xl font-semibold text-emerald-200">{formatLira(suggestedAmount)}</p>
-              <p className="mt-2 text-xs leading-5 text-mist/54">
+              <p className="mt-2 text-xs leading-5 text-mist-3">
                 Gelirin yaklaşık %{Math.round(profile.monthlyShare * 100)} kadarı.
               </p>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.05] p-4">
-              <p className="text-xs text-mist/54">Önce kenarda durması iyi olan para</p>
+              <p className="text-xs text-mist-3">Önce kenarda durması iyi olan para</p>
               <p className="mt-2 text-3xl font-semibold text-cyan-200">{formatLira(safetyAmount)}</p>
-              <p className="mt-2 text-xs leading-5 text-mist/54">
+              <p className="mt-2 text-xs leading-5 text-mist-3">
                 En az 3 aylık gelir kadar acil durum alanı.
               </p>
             </div>
           </div>
 
-          <div className="mt-5 space-y-3 text-sm leading-6 text-mist/68">
+          <div className="mt-5 space-y-3 text-sm leading-6 text-mist-2">
             <p>{profile.tone}</p>
             <p>{profile.mix}</p>
             <p className="flex gap-2 rounded-2xl border border-amber-200/14 bg-amber-300/8 p-3 text-amber-50/84">

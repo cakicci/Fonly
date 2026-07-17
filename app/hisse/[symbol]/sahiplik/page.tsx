@@ -20,7 +20,7 @@ export default async function HisseSahiplikPage({ params }: { params: Params }) 
         </div>
         <div>
           <h2 className="text-sm font-semibold text-white">Sahiplik verisi yok</h2>
-          <p className="mt-1 text-sm text-mist/55">
+          <p className="mt-1 text-sm text-mist-3">
             Yahoo Finance {symbol} için sahiplik kompozisyonu sunmuyor. Bu hisse
             için ortaklık yapısı KAP entegrasyonuyla (Faz 6.5) eklenecek.
           </p>

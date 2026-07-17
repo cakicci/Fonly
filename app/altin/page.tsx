@@ -48,7 +48,7 @@ function GoldRow({ item }: { item: GoldTypeItem }) {
           </div>
           <div className="min-w-0">
             <div className="truncate text-sm font-semibold text-white">{item.nameShort}</div>
-            <div className="truncate text-[11px] text-mist/45">
+            <div className="truncate text-[11px] text-mist-3">
               {GOLD_CATEGORY_LABELS[item.category]}
             </div>
           </div>
@@ -59,7 +59,7 @@ function GoldRow({ item }: { item: GoldTypeItem }) {
       <td className="px-3 py-3 text-right">
         <FlashPrice value={item.rawValue} className="text-sm font-semibold text-white">
           {item.value}
-          <span className="ml-1 text-xs font-normal text-mist/45">TL</span>
+          <span className="ml-1 text-xs font-normal text-mist-3">TL</span>
         </FlashPrice>
       </td>
 
@@ -75,18 +75,18 @@ function GoldRow({ item }: { item: GoldTypeItem }) {
             {item.changePercent}
           </span>
         ) : (
-          <span className="text-sm text-mist/30">—</span>
+          <span className="text-sm text-mist-3">—</span>
         )}
       </td>
 
       {/* Alış */}
-      <td className="px-3 py-3 text-right text-sm tabular-nums text-mist/70">
-        {item.buying != null ? fmtTr(item.buying) : <span className="text-mist/30">—</span>}
+      <td className="px-3 py-3 text-right text-sm tabular-nums text-mist-2">
+        {item.buying != null ? fmtTr(item.buying) : <span className="text-mist-3">—</span>}
       </td>
 
       {/* Satış */}
-      <td className="py-3 pl-3 pr-4 text-right text-sm tabular-nums text-mist/70">
-        {item.selling != null ? fmtTr(item.selling) : <span className="text-mist/30">—</span>}
+      <td className="py-3 pl-3 pr-4 text-right text-sm tabular-nums text-mist-2">
+        {item.selling != null ? fmtTr(item.selling) : <span className="text-mist-3">—</span>}
       </td>
     </tr>
   );
@@ -174,7 +174,7 @@ export default function AltinPage() {
         {/* Breadcrumb */}
         <Link
           href="/"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-mist/50 transition hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Ana Sayfa
@@ -187,7 +187,7 @@ export default function AltinPage() {
             <h1 className="mt-1.5 text-3xl font-semibold text-white sm:text-4xl">
               Altın Fiyatları
             </h1>
-            <p className="mt-2 text-sm text-mist/50">
+            <p className="mt-2 text-sm text-mist-3">
               Gram, çeyrek, antika sikkeler, ayar altınlar ve gümüş — alış/satış fiyatları ile birlikte.
             </p>
           </div>
@@ -206,7 +206,7 @@ export default function AltinPage() {
                 className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
                   tab === key
                     ? "bg-amber-300/15 text-amber-100"
-                    : "text-mist/60 hover:text-white"
+                    : "text-mist-3 hover:text-white"
                 }`}
               >
                 {label}
@@ -215,13 +215,13 @@ export default function AltinPage() {
           </div>
 
           <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 sm:w-72">
-            <Search className="h-4 w-4 shrink-0 text-mist/40" />
+            <Search className="h-4 w-4 shrink-0 text-mist-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ara (gram, cumhuriyet, gümüş)"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist/35"
+              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
             />
           </div>
         </div>
@@ -230,7 +230,7 @@ export default function AltinPage() {
         <div className="overflow-x-auto rounded-2xl border border-white/8 bg-white/[0.02]">
           <table className="w-full min-w-[640px] border-collapse">
             <thead>
-              <tr className="border-b border-white/10 bg-white/[0.03] text-[11px] font-semibold uppercase tracking-wider text-mist/45">
+              <tr className="border-b border-white/10 bg-white/[0.03] text-[11px] font-semibold uppercase tracking-wider text-mist-3">
                 <th className="py-3 pl-4 pr-3 text-left">Sembol</th>
                 <th className="px-3 py-3 text-right">Fiyat</th>
                 <th className="px-3 py-3 text-right">Fark (%)</th>
@@ -243,7 +243,7 @@ export default function AltinPage() {
                 Array.from({ length: 6 }).map((_, i) => <RowSkeleton key={i} />)
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-sm text-mist/40">
+                  <td colSpan={5} className="py-12 text-center text-sm text-mist-3">
                     Sonuç bulunamadı.
                   </td>
                 </tr>
@@ -256,7 +256,7 @@ export default function AltinPage() {
 
         {/* Son güncelleme */}
         {data?.updatedAt && !loading && (
-          <p className="mt-6 text-center text-xs text-mist/28">
+          <p className="mt-6 text-center text-xs text-mist-3">
             Son güncelleme:{" "}
             {new Date(data.updatedAt).toLocaleTimeString("tr-TR", {
               hour: "2-digit", minute: "2-digit", second: "2-digit"

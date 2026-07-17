@@ -25,7 +25,7 @@ function StockRow({ stock }: { stock: BistStock }) {
     >
       <div className="min-w-0">
         <p className="text-xs font-semibold text-white">{stock.symbol}</p>
-        <p className="mt-0.5 truncate text-[10px] text-mist/50">{stock.name}</p>
+        <p className="mt-0.5 truncate text-[10px] text-mist-3">{stock.name}</p>
       </div>
       <div className="shrink-0 text-right">
         <FlashPrice value={stock.raw} className="text-xs font-semibold text-white">
@@ -98,13 +98,13 @@ export function BistPanel() {
   }, [stocks, query]);
 
   return (
-    <aside className="glass-card sticky top-6 flex w-64 shrink-0 flex-col rounded-[1.5rem] lg:max-h-[calc(100vh-3rem)]">
+    <aside className="glass-card sticky top-6 order-3 flex w-full max-h-[70vh] flex-col rounded-panel lg:order-1 lg:w-64 lg:max-h-[calc(100vh-3rem)]">
 
       {/* Başlık */}
       <div className="flex items-center justify-between gap-2 p-4 pb-3">
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <p className="text-xs text-mist/50">Borsa İstanbul</p>
+            <p className="text-xs text-mist-3">Borsa İstanbul</p>
             <LiveDot active={!loading} />
           </div>
           <h2 className="mt-0.5 text-base font-semibold text-white">Tüm Hisseler</h2>
@@ -113,19 +113,19 @@ export function BistPanel() {
 
       {/* Arama */}
       <div className="mx-3 mb-2 flex items-center gap-2 rounded-xl border border-white/8 bg-white/[0.04] px-3 py-2">
-        <Search className="h-3.5 w-3.5 shrink-0 text-mist/40" />
+        <Search className="h-3.5 w-3.5 shrink-0 text-mist-3" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Ara... (THYAO, BİM)"
-          className="w-full bg-transparent text-xs text-white outline-none placeholder:text-mist/30"
+          className="w-full bg-transparent text-xs text-white outline-none placeholder:text-mist-3"
         />
       </div>
 
       {/* Hisse sayısı */}
       {!loading && (
-        <p className="px-4 pb-1 text-[10px] text-mist/36">
+        <p className="px-4 pb-1 text-[10px] text-mist-3">
           {filtered.length} hisse gösteriliyor
         </p>
       )}
@@ -135,7 +135,7 @@ export function BistPanel() {
         {loading ? (
           <SkeletonRows />
         ) : filtered.length === 0 ? (
-          <p className="px-4 py-8 text-center text-xs text-mist/40">Sonuç bulunamadı.</p>
+          <p className="px-4 py-8 text-center text-xs text-mist-3">Sonuç bulunamadı.</p>
         ) : (
           filtered.map((stock) => <StockRow key={stock.symbol} stock={stock} />)
         )}
@@ -143,7 +143,7 @@ export function BistPanel() {
 
       {/* Son güncelleme */}
       {updatedAt && !loading && (
-        <p className="p-3 text-center text-[10px] text-mist/28">
+        <p className="p-3 text-center text-[10px] text-mist-3">
           {new Date(updatedAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
         </p>
       )}

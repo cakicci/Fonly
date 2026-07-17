@@ -82,7 +82,7 @@ export function AlertBadge() {
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Kapat"
-                className="rounded-lg p-1.5 text-mist/55 transition hover:bg-white/5 hover:text-white"
+                className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -113,11 +113,11 @@ export function AlertBadge() {
                       >
                         {type?.toUpperCase()} · {code.toUpperCase()}
                       </Link>
-                      <p className="text-[11px] text-mist/55">{conditionLabel}</p>
+                      <p className="text-[11px] text-mist-3">{conditionLabel}</p>
                     </div>
                     <button
                       onClick={() => acknowledge(a.id)}
-                      className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-mist/65 transition hover:bg-white/[0.08] hover:text-white"
+                      className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-white"
                     >
                       Tamam
                     </button>

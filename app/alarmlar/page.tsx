@@ -18,14 +18,14 @@ export default async function AlertsPage() {
       <div className="mx-auto max-w-3xl">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-xs text-mist/50 transition hover:text-mist/80"
+          className="inline-flex items-center gap-1.5 text-xs text-mist-3 transition hover:text-mist-2"
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Panele dön
         </Link>
 
         <header className="mb-6 mt-3">
           <h1 className="text-2xl font-semibold text-white sm:text-3xl">Fiyat Alarmlarım</h1>
-          <p className="mt-1 text-sm text-mist/55">
+          <p className="mt-1 text-sm text-mist-3">
             Kurduğun tüm alarmları tek yerden gör ve yönet. Yeni alarmı varlık sayfalarından ekleyebilirsin.
           </p>
         </header>

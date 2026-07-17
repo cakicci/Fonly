@@ -26,11 +26,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 const ACCENT: Record<string, { border: string; bg: string; text: string; iconBg: string }> = {
-  "dusuk-riskli":  { border: "border-emerald-200/16", bg: "bg-[linear-gradient(135deg,rgba(45,227,168,0.07),rgba(12,24,22,0.97))]", text: "text-emerald-200", iconBg: "bg-emerald-300/12" },
-  "orta-riskli":   { border: "border-amber-200/16",   bg: "bg-[linear-gradient(135deg,rgba(251,191,36,0.07),rgba(12,24,22,0.97))]",  text: "text-amber-200",   iconBg: "bg-amber-300/12"   },
-  "yuksek-riskli": { border: "border-rose-200/16",    bg: "bg-[linear-gradient(135deg,rgba(253,164,175,0.07),rgba(12,24,22,0.97))]", text: "text-rose-200",    iconBg: "bg-rose-300/12"    },
-  "uzun-vadeli":   { border: "border-cyan-200/16",    bg: "bg-[linear-gradient(135deg,rgba(165,243,252,0.07),rgba(12,24,22,0.97))]", text: "text-cyan-200",    iconBg: "bg-cyan-300/12"    },
-  "kisa-vadeli":   { border: "border-violet-200/16",  bg: "bg-[linear-gradient(135deg,rgba(196,181,253,0.07),rgba(12,24,22,0.97))]", text: "text-violet-200",  iconBg: "bg-violet-300/12"  },
+  "dusuk-riskli":  { border: "border-emerald-200/16", bg: "bg-[linear-gradient(135deg,rgba(45,227,168,0.07),rgba(11,16,38,0.97))]", text: "text-emerald-200", iconBg: "bg-emerald-300/12" },
+  "orta-riskli":   { border: "border-amber-200/16",   bg: "bg-[linear-gradient(135deg,rgba(251,191,36,0.07),rgba(11,16,38,0.97))]",  text: "text-amber-200",   iconBg: "bg-amber-300/12"   },
+  "yuksek-riskli": { border: "border-rose-200/16",    bg: "bg-[linear-gradient(135deg,rgba(253,164,175,0.07),rgba(11,16,38,0.97))]", text: "text-rose-200",    iconBg: "bg-rose-300/12"    },
+  "uzun-vadeli":   { border: "border-cyan-200/16",    bg: "bg-[linear-gradient(135deg,rgba(165,243,252,0.07),rgba(11,16,38,0.97))]", text: "text-cyan-200",    iconBg: "bg-cyan-300/12"    },
+  "kisa-vadeli":   { border: "border-violet-200/16",  bg: "bg-[linear-gradient(135deg,rgba(196,181,253,0.07),rgba(11,16,38,0.97))]", text: "text-violet-200",  iconBg: "bg-violet-300/12"  },
 };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
@@ -93,7 +93,7 @@ export default async function KategoriPage({ params }: { params: Params }) {
       <div className="mx-auto max-w-5xl space-y-6">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <Link href="/#categories" className="transition hover:text-white">Kategoriler</Link>
@@ -102,7 +102,7 @@ export default async function KategoriPage({ params }: { params: Params }) {
         </nav>
 
         {/* Hero */}
-        <div className={`rounded-[1.75rem] border p-6 sm:p-8 ${accent.border} ${accent.bg}`}>
+        <div className={`rounded-section border p-6 sm:p-8 ${accent.border} ${accent.bg}`}>
           <div className="flex flex-wrap items-start gap-5">
             <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${accent.iconBg} ${accent.text}`}>
               <Icon className="h-7 w-7" />
@@ -110,7 +110,7 @@ export default async function KategoriPage({ params }: { params: Params }) {
             <div className="flex-1">
               <p className={`text-sm font-medium ${accent.text}`}>Yatırım kategorisi</p>
               <h1 className="mt-1 text-3xl font-semibold text-white sm:text-4xl">{cat.title}</h1>
-              <p className="mt-3 max-w-2xl text-base leading-7 text-mist/65">{cat.description}</p>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-mist-2">{cat.description}</p>
               <p className={`mt-4 text-sm font-medium ${accent.text}`}>
                 {premium
                   ? `${stocksTyped.length} hisse listeleniyor`
@@ -127,7 +127,7 @@ export default async function KategoriPage({ params }: { params: Params }) {
               key={c.key}
               href={`/kategori/${c.key}`}
               className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium
-                         text-mist/55 transition hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
+                         text-mist-3 transition hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
             >
               {c.title}
             </Link>
@@ -137,7 +137,7 @@ export default async function KategoriPage({ params }: { params: Params }) {
         {/* Hisse listesi */}
         {stocksTyped.length === 0 && hiddenCount === 0 ? (
           <div className="rounded-2xl border border-white/8 bg-white/[0.03] py-16 text-center">
-            <p className="text-sm text-mist/45">Bu kategoride henüz hisse eklenmemiş.</p>
+            <p className="text-sm text-mist-3">Bu kategoride henüz hisse eklenmemiş.</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -155,7 +155,7 @@ export default async function KategoriPage({ params }: { params: Params }) {
         )}
 
         {/* Disclaimer */}
-        <p className="px-2 text-xs leading-5 text-mist/35">
+        <p className="px-2 text-xs leading-5 text-mist-3">
           Bu liste algoritmik kategorilemeye dayanır ve yatırım tavsiyesi değildir.
           Tüm yatırım kararları kullanıcının sorumluluğundadır.
         </p>
@@ -165,7 +165,7 @@ export default async function KategoriPage({ params }: { params: Params }) {
           <Link
             href="/#categories"
             className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04]
-                       px-4 py-2.5 text-sm text-mist/55 transition hover:bg-white/[0.08] hover:text-white"
+                       px-4 py-2.5 text-sm text-mist-3 transition hover:bg-white/[0.08] hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
             Tüm kategoriler

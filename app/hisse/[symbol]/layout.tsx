@@ -44,7 +44,7 @@ export default async function HisseLayout({
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <Link href="/hisseler" className="transition hover:text-white">Hisseler</Link>

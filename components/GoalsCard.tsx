@@ -92,12 +92,12 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
   }
 
   return (
-    <article className="glass-card rounded-[1.5rem] p-5">
+    <article className="glass-card rounded-panel p-5">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-emerald-200" />
           <h3 className="text-sm font-semibold text-white">Hedeflerim</h3>
-          {goals.length > 0 && <span className="text-xs text-mist/40">({goals.length})</span>}
+          {goals.length > 0 && <span className="text-xs text-mist-3">({goals.length})</span>}
         </div>
         <button
           onClick={() => {
@@ -139,7 +139,7 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-300/85 px-4 py-2 text-sm font-semibold text-ink transition hover:bg-emerald-200 disabled:opacity-60"
+            className="btn btn-sm btn-primary"
           >
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
             Hedefi kaydet
@@ -163,7 +163,7 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium text-white">{g.title}</p>
-                    <p className="mt-0.5 text-[11px] tabular-nums text-mist/50">
+                    <p className="mt-0.5 text-[11px] tabular-nums text-mist-3">
                       {formatLira(portfolioValue >= g.target ? g.target : portfolioValue)} /{" "}
                       {formatLira(g.target)}
                       {g.targetDate && ` · ${formatDate(g.targetDate)}`}
@@ -173,7 +173,7 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
                     onClick={() => remove(g.id)}
                     disabled={deletingId === g.id}
                     aria-label="Hedefi sil"
-                    className="shrink-0 rounded-lg p-1.5 text-mist/40 transition hover:bg-rose-300/10 hover:text-rose-300 disabled:opacity-50"
+                    className="shrink-0 rounded-lg p-1.5 text-mist-3 transition hover:bg-rose-300/10 hover:text-rose-300 disabled:opacity-50"
                   >
                     {deletingId === g.id ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -190,7 +190,7 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
                   />
                 </div>
 
-                <p className="mt-1.5 flex items-center gap-1.5 text-[11px] text-mist/55">
+                <p className="mt-1.5 flex items-center gap-1.5 text-[11px] text-mist-3">
                   {reached ? (
                     <>
                       <Check className="h-3.5 w-3.5 text-emerald-300" />
@@ -198,7 +198,7 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
                     </>
                   ) : (
                     <>
-                      <span className="tabular-nums text-mist/65">%{pct.toFixed(0)}</span>
+                      <span className="tabular-nums text-mist-2">%{pct.toFixed(0)}</span>
                       <span>· kalan {formatLira(remaining)}</span>
                       {months != null && <span>· bu tempoyla ~{months} ay</span>}
                     </>
@@ -210,7 +210,7 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
         </ul>
       ) : (
         !open && (
-          <p className="text-xs leading-5 text-mist/50">
+          <p className="text-xs leading-5 text-mist-3">
             Bir birikim hedefi koy (örn. &quot;1 yılda 100.000 ₺&quot;), portföyün ilerledikçe ne kadar
             yaklaştığını burada gör.
           </p>

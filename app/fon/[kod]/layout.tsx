@@ -52,7 +52,7 @@ export default async function FonLayout({
         </span>
       )}
       {semsiye && (
-        <span className="inline-flex items-center rounded-lg border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium text-mist/60">
+        <span className="inline-flex items-center rounded-lg border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium text-mist-3">
           {semsiye.replace(" Şemsiye Fonu", "")}
         </span>
       )}
@@ -62,7 +62,7 @@ export default async function FonLayout({
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <Link href="/fonlar" className="transition hover:text-white">Fonlar</Link>
@@ -108,7 +108,7 @@ export default async function FonLayout({
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2.5">
-      <p className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-mist/40">
+      <p className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-mist-3">
         {icon}
         {label}
       </p>

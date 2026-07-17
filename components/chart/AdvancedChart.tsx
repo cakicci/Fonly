@@ -343,13 +343,13 @@ export function AdvancedChart({
     <div className="relative w-full">
       {hoverOhlc && (
         <div className="pointer-events-none absolute left-2 top-2 z-10 rounded-lg border border-white/10 bg-ink/85 px-3 py-1.5 text-xs font-mono backdrop-blur-sm">
-          <span className="text-mist/50">O</span>{" "}
+          <span className="text-mist-3">O</span>{" "}
           <span className="text-white">{fmtTooltip(hoverOhlc.open, assetKind)}</span>
-          <span className="ml-2 text-mist/50">H</span>{" "}
+          <span className="ml-2 text-mist-3">H</span>{" "}
           <span className="text-emerald-300">{fmtTooltip(hoverOhlc.high, assetKind)}</span>
-          <span className="ml-2 text-mist/50">L</span>{" "}
+          <span className="ml-2 text-mist-3">L</span>{" "}
           <span className="text-rose-300">{fmtTooltip(hoverOhlc.low, assetKind)}</span>
-          <span className="ml-2 text-mist/50">C</span>{" "}
+          <span className="ml-2 text-mist-3">C</span>{" "}
           <span className="text-white">{fmtTooltip(hoverOhlc.close, assetKind)}{unit}</span>
         </div>
       )}

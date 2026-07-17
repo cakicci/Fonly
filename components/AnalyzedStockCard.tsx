@@ -33,7 +33,7 @@ export function AnalyzedStockCard({ stock }: { stock: AnalyzedStock }) {
       href={`/hisse/${stock.symbol.toLowerCase()}`}
       className="group block h-full"
     >
-      <article className="glass-card h-full rounded-[1.25rem] p-5 transition group-hover:-translate-y-0.5 group-hover:border-white/16">
+      <article className="glass-card glass-card-interactive h-full rounded-card p-5">
 
         {/* Üst satır: sembol + isim + rozet */}
         <div className="flex items-start justify-between gap-4">
@@ -73,11 +73,11 @@ export function AnalyzedStockCard({ stock }: { stock: AnalyzedStock }) {
 
         {/* Uzun açıklama */}
         {stock.aiExplanation && (
-          <p className="mt-3 text-sm leading-6 text-mist/66">{stock.aiExplanation}</p>
+          <p className="mt-3 text-sm leading-6 text-mist-2">{stock.aiExplanation}</p>
         )}
 
         {/* Footer: kaynak + tarih */}
-        <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/8 pt-3 text-[11px] text-mist/45">
+        <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/8 pt-3 text-[11px] text-mist-3">
           <span>{isAI ? "AI analizi" : "Hazır içerik"}</span>
           <span>Güncelleme: {formatRelative(stock.analyzedAt)}</span>
         </div>

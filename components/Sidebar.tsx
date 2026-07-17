@@ -9,9 +9,9 @@ const markets = [
 
 export function Sidebar() {
   return (
-    <aside className="glass-card sticky top-6 rounded-[1.5rem] p-5 lg:max-h-[calc(100vh-3rem)]">
+    <aside className="glass-card sticky top-6 rounded-panel p-5 lg:max-h-[calc(100vh-3rem)]">
       <div className="mb-5">
-        <p className="text-sm text-mist/58">Piyasa özeti</p>
+        <p className="text-sm text-mist-3">Piyasa özeti</p>
         <h2 className="mt-1 text-xl font-semibold text-white">Bugün ne oluyor?</h2>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
@@ -26,10 +26,10 @@ export function Sidebar() {
             >
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="rounded-xl bg-white/7 p-2 text-mist/74">
+                  <span className="rounded-xl bg-white/7 p-2 text-mist-2">
                     <Icon className="h-4 w-4" />
                   </span>
-                  <span className="text-sm font-medium text-mist/80">{market.name}</span>
+                  <span className="text-sm font-medium text-mist-2">{market.name}</span>
                 </div>
                 <span
                   className={

@@ -47,13 +47,13 @@ export default function DevCheckoutPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4">
-      <div className="glass-card w-full max-w-md rounded-3xl p-7 ring-1 ring-white/10">
+      <div className="glass-card w-full max-w-md rounded-3xl p-7">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-200">
           <Sparkles className="h-3.5 w-3.5" />
           Dev ödeme simülasyonu
         </div>
         <h1 className="text-xl font-semibold text-white">Ödemeyi onayla</h1>
-        <p className="mt-2 text-sm leading-relaxed text-mist/60">
+        <p className="mt-2 text-sm leading-relaxed text-mist-3">
           Bu, gerçek bir ödeme değildir. Geliştirme ortamında abonelik akışını uçtan uca
           test etmek için kullanılır. Onayladığında FonlyPro aboneliğin aktive edilir.
         </p>
@@ -68,7 +68,7 @@ export default function DevCheckoutPage() {
           type="button"
           onClick={confirm}
           disabled={!token || status === "processing"}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-300/80 to-emerald-300/80 px-4 py-3 text-sm font-semibold text-ink transition hover:from-fuchsia-200 hover:to-emerald-200 disabled:opacity-60"
+          className="btn btn-lg btn-premium mt-6 w-full"
         >
           {status === "processing" ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -82,7 +82,7 @@ export default function DevCheckoutPage() {
 
         <a
           href="/premium"
-          className="mt-3 block text-center text-xs text-mist/45 hover:text-mist/70"
+          className="mt-3 block text-center text-xs text-mist-3 hover:text-mist-2"
         >
           Vazgeç
         </a>

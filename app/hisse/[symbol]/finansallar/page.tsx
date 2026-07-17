@@ -20,7 +20,7 @@ export default async function HisseFinansallarPage({ params }: { params: Params 
         </div>
         <div>
           <h2 className="text-sm font-semibold text-white">Veri yüklenemedi</h2>
-          <p className="mt-1 text-sm text-mist/55">
+          <p className="mt-1 text-sm text-mist-3">
             Yahoo Finance şu anda {symbol} için temel veri sunmuyor. Birkaç dakika sonra yeniden deneyin.
           </p>
         </div>

@@ -42,9 +42,9 @@ export default async function HisseGenelPage({ params }: { params: Params }) {
             key:   "comparison",
             label: "Altın Karşılaştırma",
             content: (
-              <div className="glass-card rounded-[1.75rem] p-6">
+              <div className="glass-card rounded-section p-6">
                 <h2 className="mb-1 text-lg font-semibold text-white">Gram Altına Göre Performans</h2>
-                <p className="mb-5 text-xs text-mist/45">
+                <p className="mb-5 text-xs text-mist-3">
                   Yüzdesel değişim — {meta.name} vs Gram Altın (dönem başı = 0%)
                 </p>
                 <PriceChart slug={slug} />
@@ -62,10 +62,10 @@ export default async function HisseGenelPage({ params }: { params: Params }) {
             content: (
               <div className="space-y-4">
                 <div className="rounded-2xl border border-white/6 bg-white/[0.02] p-5">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-mist/35">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-mist-3">
                     Gram altın neden karşılaştırılıyor?
                   </p>
-                  <p className="text-sm leading-6 text-mist/58">
+                  <p className="text-sm leading-6 text-mist-3">
                     Türkiye&apos;de en yaygın bilinen yatırım aracı gram altındır. Hisse senedinin getirisi,
                     gram altına kıyasla değerlendirildiğinde &quot;gerçek anlamda kazandım mı?&quot; sorusunu
                     yanıtlamak kolaylaşır.
@@ -75,7 +75,7 @@ export default async function HisseGenelPage({ params }: { params: Params }) {
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-rose-200/60">
                     Risk uyarısı
                   </p>
-                  <p className="text-sm leading-6 text-mist/55">
+                  <p className="text-sm leading-6 text-mist-3">
                     Hisse senetleri yüksek risk içerebilir. Gösterilen veriler geçmiş performansa aittir
                     ve gelecekteki kazancı garanti etmez.
                   </p>

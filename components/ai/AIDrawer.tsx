@@ -74,13 +74,13 @@ export function AIDrawer({ type, context, label, onClose }: AIDrawerProps) {
             </div>
             <div>
               <h2 className="text-sm font-semibold text-white">{label}</h2>
-              <p className="text-[11px] text-mist/45">{context.assetName}</p>
+              <p className="text-[11px] text-mist-3">{context.assetName}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             aria-label="Kapat"
-            className="rounded-lg p-1.5 text-mist/55 transition hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>
@@ -88,7 +88,7 @@ export function AIDrawer({ type, context, label, onClose }: AIDrawerProps) {
 
         <div className="p-5">
           {loading && (
-            <div className="flex items-center gap-2 text-sm text-mist/55">
+            <div className="flex items-center gap-2 text-sm text-mist-3">
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-fuchsia-300/30 border-t-fuchsia-300" />
               AI analiz ediyor...
             </div>
@@ -103,18 +103,18 @@ export function AIDrawer({ type, context, label, onClose }: AIDrawerProps) {
           {!loading && data && !error && (
             <div className="space-y-3">
               <div className="rounded-xl border border-fuchsia-300/20 bg-fuchsia-300/[0.04] p-4">
-                <p className="whitespace-pre-line text-sm leading-6 text-mist/75">
+                <p className="whitespace-pre-line text-sm leading-6 text-mist-2">
                   {data.content ?? data.message ?? "İçerik bulunamadı."}
                 </p>
               </div>
               {data.status === "coming_soon" && (
-                <p className="text-[11px] leading-relaxed text-mist/40">
+                <p className="text-[11px] leading-relaxed text-mist-3">
                   AI motoru henüz devreye girmedi. Aboneliğin aktif, motor hazır olduğunda
                   bu özellikleri otomatik kullanabileceksin.
                 </p>
               )}
               {data.status === "ok" && (
-                <p className="text-[11px] leading-relaxed text-mist/40">
+                <p className="text-[11px] leading-relaxed text-mist-3">
                   AI içerik üretildi. Bilgiler bilgilendirme amaçlıdır, yatırım tavsiyesi değildir.
                 </p>
               )}

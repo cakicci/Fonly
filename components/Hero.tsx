@@ -80,7 +80,10 @@ export function Hero() {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
+    // Hareket azaltma tercihi olan kullanıcıda otomatik döngü çalışmaz;
+    // noktalarla elle gezinme açık kalır.
     if (paused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % SLIDES.length);
     }, 2500);
@@ -88,7 +91,7 @@ export function Hero() {
   }, [paused]);
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] border border-line bg-[linear-gradient(135deg,rgba(16,35,31,0.96),rgba(6,18,16,0.88))] px-5 py-8 shadow-card sm:px-8 lg:px-10 lg:py-12">
+    <section className="relative overflow-hidden rounded-hero border border-line bg-hero px-5 py-8 shadow-card sm:px-8 lg:px-10 lg:py-12">
       <div className="absolute left-8 top-8 h-40 w-40 rounded-full bg-emerald-400/20 blur-3xl" />
       <div className="absolute bottom-8 right-12 h-48 w-48 rounded-full bg-cyan-400/10 blur-3xl" />
 
@@ -102,21 +105,15 @@ export function Hero() {
           <h1 className="text-4xl font-semibold leading-tight tracking-normal text-white sm:text-5xl lg:text-6xl">
             Finans bilmeden yatırım dünyasını keşfet.
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-7 text-mist/76 sm:text-lg">
+          <p className="mt-5 max-w-xl text-base leading-7 text-mist-2 sm:text-lg">
             Fonları ve hisseleri herkesin anlayacağı şekilde analiz et.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/risk-test"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-emerald-300 px-5 py-3 text-sm font-semibold text-ink shadow-glow transition hover:bg-emerald-200"
-            >
+            <Link href="/risk-test" className="btn btn-lg btn-primary shadow-glow">
               <Target className="h-4 w-4" />
               Risk Testine Başla
             </Link>
-            <Link
-              href="/hisseler"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition hover:bg-white/10"
-            >
+            <Link href="/hisseler" className="btn btn-lg btn-secondary">
               Hisseleri İncele
               <TrendingUp className="h-4 w-4" />
             </Link>
@@ -125,10 +122,8 @@ export function Hero() {
 
         {/* Sağ: döngüsel özellik kartları */}
         <div
-          className={`glass-card rounded-[1.5rem] p-5 sm:p-6 transition-all duration-500 ${
-            SLIDES[current].highlight
-              ? "border-emerald-200/28 shadow-[0_0_32px_rgba(52,211,153,0.08)]"
-              : ""
+          className={`glass-card glass-sheen rounded-panel p-5 sm:p-6 ${
+            SLIDES[current].highlight ? "glass-tint-positive" : ""
           }`}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
@@ -152,7 +147,7 @@ export function Hero() {
                     <Icon className="h-5 w-5" />
                   </div>
                   <p className="text-lg font-semibold text-white">{slide.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-mist/64">{slide.description}</p>
+                  <p className="mt-2 text-sm leading-6 text-mist-2">{slide.description}</p>
                 </div>
               );
             })}

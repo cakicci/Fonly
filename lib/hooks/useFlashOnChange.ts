@@ -4,17 +4,18 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Bir sayısal değer değiştiğinde kısa süreli "up"/"down" sinyali döner.
- * Investing.com tarzı yeşil/kırmızı flash efekti için kullanılır.
+ * Yeşil/kırmızı fiyat flaşı için kullanılır.
  *
  * - İlk değer ya da `null/undefined` flash tetiklemez (mount'ta her şey yanıp sönmesin).
  * - Aynı değere set edilirse flash atlanır.
- * - `blinkCount` kere arka arkaya yanıp söner; süre bitmeden tekrar değişirse
- *   önceki tüm timeout'lar temizlenip yenisi başlar.
+ * - Varsayılan tek nabız (Faz 2: liquid glass yumuşatması — eski 3'lü blink
+ *   dikkat dağıtıyordu); süre bitmeden tekrar değişirse önceki tüm timeout'lar
+ *   temizlenip yenisi başlar. Çoklu blink isteyen çağıran `blinkCount` verir.
  */
 export function useFlashOnChange(
   value: number | null | undefined,
-  onMs = 380,
-  blinkCount = 3
+  onMs = 500,
+  blinkCount = 1
 ): "up" | "down" | null {
   const prevRef = useRef<number | null>(null);
   const [flash, setFlash] = useState<"up" | "down" | null>(null);
@@ -52,8 +53,8 @@ export function useFlashOnChange(
  */
 export function useFlashClass(
   value: number | null | undefined,
-  onMs = 400,
-  blinkCount = 3
+  onMs = 500,
+  blinkCount = 1
 ): string {
   const flash = useFlashOnChange(value, onMs, blinkCount);
   if (!flash) return "";

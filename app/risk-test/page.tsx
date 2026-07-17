@@ -23,7 +23,7 @@ export default async function RiskTestPage() {
           <h1 className="mt-2 text-3xl font-semibold text-white sm:text-4xl">
             Sana uygun riski keşfet
           </h1>
-          <p className="mt-3 text-sm leading-6 text-mist/64">
+          <p className="mt-3 text-sm leading-6 text-mist-2">
             5 kısa soru ile yatırım tarzına en uygun risk grubunu belirleyelim.
           </p>
         </div>

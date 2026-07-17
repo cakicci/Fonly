@@ -53,7 +53,7 @@ function CustomTooltip({
 
   return (
     <div className="rounded-xl border border-white/10 bg-surface px-3 py-2 text-xs shadow-lg">
-      <p className="mb-1.5 text-mist/50">{date}</p>
+      <p className="mb-1.5 text-mist-3">{date}</p>
       {payload.map((p, i) => (
         <p
           key={i}
@@ -135,7 +135,7 @@ export function PriceChart({ slug, defaultPeriod = "1y" }: Props) {
               {assetChange >= 0 ? "+" : ""}{assetChange.toFixed(2)}%
             </span>
           )}
-          <span className="text-xs text-mist/40">seçili dönemde</span>
+          <span className="text-xs text-mist-3">seçili dönemde</span>
         </div>
 
         <div className="flex rounded-xl border border-white/8 bg-white/[0.03] p-0.5">
@@ -146,7 +146,7 @@ export function PriceChart({ slug, defaultPeriod = "1y" }: Props) {
               className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                 period === p.key
                   ? "bg-emerald-300 text-ink"
-                  : "text-mist/50 hover:text-white"
+                  : "text-mist-3 hover:text-white"
               }`}
             >
               {p.label}
@@ -161,7 +161,7 @@ export function PriceChart({ slug, defaultPeriod = "1y" }: Props) {
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-emerald-300 border-t-transparent" />
         </div>
       ) : error || chartData.length === 0 ? (
-        <div className="flex h-52 items-center justify-center text-sm text-mist/40">
+        <div className="flex h-52 items-center justify-center text-sm text-mist-3">
           Veri yüklenemedi. Lütfen daha sonra tekrar deneyin.
         </div>
       ) : (
@@ -237,7 +237,7 @@ export function PriceChart({ slug, defaultPeriod = "1y" }: Props) {
         <div className="mt-3 flex flex-wrap items-center gap-4 text-xs">
           <div className="flex items-center gap-1.5">
             <div className={`h-0.5 w-4 rounded-full ${positive ? "bg-emerald-300" : "bg-rose-300"}`} />
-            <span className="text-mist/60">{data.asset.name}</span>
+            <span className="text-mist-3">{data.asset.name}</span>
             <span className={`font-semibold ${positive ? "text-emerald-300" : "text-rose-300"}`}>
               {assetChange >= 0 ? "+" : ""}{assetChange.toFixed(2)}%
             </span>
@@ -248,7 +248,7 @@ export function PriceChart({ slug, defaultPeriod = "1y" }: Props) {
             className={`flex items-center gap-1.5 transition ${showComp ? "" : "opacity-40"}`}
           >
             <div className="w-4 border-t-2 border-dashed border-amber-300 opacity-80" />
-            <span className="text-mist/60">{data.comp.name}</span>
+            <span className="text-mist-3">{data.comp.name}</span>
             <span className={`font-semibold ${compChange >= 0 ? "text-amber-300" : "text-rose-300"}`}>
               {compChange >= 0 ? "+" : ""}{compChange.toFixed(2)}%
             </span>

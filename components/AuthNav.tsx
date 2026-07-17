@@ -9,7 +9,7 @@ export async function AuthNav() {
     return (
       <Link
         href="/login"
-        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-4 py-2 text-sm font-semibold text-mist transition hover:bg-white/10"
+        className="btn btn-sm btn-secondary px-4"
       >
         <LogIn className="h-4 w-4" />
         Giriş Yap
@@ -21,7 +21,7 @@ export async function AuthNav() {
     <div className="flex items-center gap-3">
       <Link
         href="/dashboard"
-        className="hidden items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-2 text-sm text-mist/72 transition hover:text-white sm:inline-flex"
+        className="hidden items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-2 text-sm text-mist-2 transition hover:text-white sm:inline-flex"
       >
         <UserRound className="h-4 w-4" />
         {session.user.name ?? session.user.email ?? "Hesabım"}
@@ -32,7 +32,7 @@ export async function AuthNav() {
           await signOut({ redirectTo: "/" });
         }}
       >
-        <button className="inline-flex min-h-10 items-center justify-center gap-2 rounded-2xl border border-mist/14 bg-white/5 px-4 py-2 text-sm font-semibold text-mist transition hover:bg-white/10">
+        <button className="btn btn-sm btn-secondary px-4">
           <LogOut className="h-4 w-4" />
           Çıkış Yap
         </button>

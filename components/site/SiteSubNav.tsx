@@ -33,21 +33,21 @@ export function SiteSubNav() {
                 className={`inline-flex items-center rounded-lg px-2.5 py-1 font-semibold transition ${
                   pathname === "/"
                     ? "bg-emerald-300/15 text-emerald-100"
-                    : "text-mist/72 hover:bg-white/[0.04] hover:text-white"
+                    : "text-mist-2 hover:bg-white/[0.04] hover:text-white"
                 }`}
               >
                 Ana Sayfa
               </Link>
             </li>
-            <li className="text-mist/20">|</li>
+            <li className="text-mist-3">|</li>
             {SUB_NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
               return (
                 <li key={item.label} className="shrink-0">
                   {item.comingSoon ? (
-                    <span className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg px-2.5 py-1 text-mist/35">
+                    <span className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg px-2.5 py-1 text-mist-3">
                       {item.label}
-                      <span className="rounded-md border border-white/8 bg-white/[0.03] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-mist/50">
+                      <span className="rounded-md border border-white/8 bg-white/[0.03] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-mist-3">
                         Yakında
                       </span>
                     </span>
@@ -57,7 +57,7 @@ export function SiteSubNav() {
                       className={`inline-flex items-center rounded-lg px-2.5 py-1 transition ${
                         active
                           ? "text-emerald-200"
-                          : "text-mist/65 hover:bg-white/[0.04] hover:text-white"
+                          : "text-mist-2 hover:bg-white/[0.04] hover:text-white"
                       }`}
                     >
                       {item.label}

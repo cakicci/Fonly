@@ -43,7 +43,7 @@ export function MainNav() {
           "inline-flex items-center gap-1 rounded-xl px-3 py-2 text-sm font-medium transition";
         const idleClasses = item.highlight
           ? "bg-gradient-to-r from-fuchsia-300/10 to-emerald-300/10 ring-1 ring-fuchsia-300/25 hover:from-fuchsia-300/20 hover:to-emerald-300/20"
-          : "text-mist/72 hover:bg-white/[0.04] hover:text-white";
+          : "text-mist-2 hover:bg-white/[0.04] hover:text-white";
 
         const renderLabel = (label: string) =>
           item.highlight ? (
@@ -83,13 +83,13 @@ export function MainNav() {
                       key={sub.href}
                       href={sub.href}
                       onClick={() => setOpenMega(null)}
-                      className="flex items-start gap-3 rounded-xl px-3 py-2.5 text-sm text-mist/80 transition hover:bg-white/[0.04] hover:text-white"
+                      className="flex items-start gap-3 rounded-xl px-3 py-2.5 text-sm text-mist-2 transition hover:bg-white/[0.04] hover:text-white"
                     >
                       <div>
                         <div className="font-medium text-white">
                           {sub.label}
                         </div>
-                        <div className="mt-0.5 text-xs text-mist/55">
+                        <div className="mt-0.5 text-xs text-mist-3">
                           {sub.description}
                         </div>
                       </div>

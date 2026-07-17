@@ -56,7 +56,7 @@ export function AIButton({
 
   const variantCls = variant === "primary"
     ? "border-fuchsia-300/30 bg-gradient-to-r from-fuchsia-300/12 to-emerald-300/12 text-fuchsia-100 hover:from-fuchsia-300/22 hover:to-emerald-300/22"
-    : "border-white/8 bg-white/[0.02] text-mist/55 hover:bg-white/[0.05] hover:text-white";
+    : "border-white/8 bg-white/[0.02] text-mist-3 hover:bg-white/[0.05] hover:text-white";
 
   const showLock = status !== "loading"
     && session?.user

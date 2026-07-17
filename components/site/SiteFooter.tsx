@@ -26,18 +26,18 @@ export function SiteFooter() {
               <Image src="/Fonly_Logo.png" alt="Fonly" width={28} height={28} className="rounded-lg" />
               <span className="text-lg font-semibold text-white">Fonly</span>
             </Link>
-            <p className="mt-3 text-xs leading-5 text-mist/45">
+            <p className="mt-3 text-xs leading-5 text-mist-3">
               Fonları, hisseleri ve piyasaları finans bilgisi az olan kullanıcılar
               için sade Türkçe ile açıklayan yatırım rehberi.
             </p>
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-mist/40">Piyasalar</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-mist-3">Piyasalar</p>
             <ul className="mt-3 space-y-2">
               {MARKET_LINKS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-mist/60 transition hover:text-white">
+                  <Link href={item.href} className="text-sm text-mist-3 transition hover:text-white">
                     {item.label}
                   </Link>
                 </li>
@@ -46,11 +46,11 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-mist/40">Fonly</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-mist-3">Fonly</p>
             <ul className="mt-3 space-y-2">
               {APP_LINKS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-mist/60 transition hover:text-white">
+                  <Link href={item.href} className="text-sm text-mist-3 transition hover:text-white">
                     {item.label}
                   </Link>
                 </li>
@@ -59,13 +59,13 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-mist/40">Yasal</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-mist-3">Yasal</p>
             <ul className="mt-3 space-y-2">
               {LEGAL_PAGES.map((page) => (
                 <li key={page.slug}>
                   <Link
                     href={`/yasal/${page.slug}`}
-                    className="text-sm text-mist/60 transition hover:text-white"
+                    className="text-sm text-mist-3 transition hover:text-white"
                   >
                     {page.shortTitle}
                   </Link>
@@ -76,15 +76,15 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-10 border-t border-white/6 pt-6">
-          <p className="text-xs leading-5 text-mist/35">
+          <p className="text-xs leading-5 text-mist-3">
             Fonly&apos;deki veriler ve analizler yalnızca bilgilendirme amaçlıdır,{" "}
-            <Link href="/yasal/yasal-uyari" className="underline decoration-mist/25 underline-offset-2 transition hover:text-mist/60">
+            <Link href="/yasal/yasal-uyari" className="underline decoration-mist/25 underline-offset-2 transition hover:text-mist-3">
               yatırım tavsiyesi değildir
             </Link>
             . Fiyat verileri gecikmeli olabilir; doğruluğu garanti edilmez. Yatırım
             kararı vermeden önce yetkili bir kuruluştan profesyonel destek almanız önerilir.
           </p>
-          <p className="mt-3 text-xs text-mist/30">
+          <p className="mt-3 text-xs text-mist-3">
             © {new Date().getFullYear()} Fonly. Tüm hakları saklıdır.
           </p>
         </div>

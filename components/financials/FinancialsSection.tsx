@@ -67,7 +67,7 @@ export function FinancialsSection({ data }: FinancialsSectionProps) {
                 className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-medium transition ${
                   active
                     ? "bg-emerald-300/15 text-emerald-100"
-                    : "text-mist/55 hover:bg-white/[0.04] hover:text-white"
+                    : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
                 }`}
               >
                 {t.label}
@@ -81,7 +81,7 @@ export function FinancialsSection({ data }: FinancialsSectionProps) {
       {tab === "ratios"  && <RatiosGrid      stats={data.stats}  />}
       {tab === "balance" && <BalanceSheetStub />}
 
-      <p className="text-[11px] leading-relaxed text-mist/35">
+      <p className="text-[11px] leading-relaxed text-mist-3">
         Veri kaynağı: Yahoo Finance. Tutarlar şirketin raporladığı para
         biriminde (TL) ve geçmiş döneme ait gerçekleşmelerdir. Yatırım
         tavsiyesi değildir.
@@ -120,7 +120,7 @@ function IncomeTable({ years }: { years: IncomeYear[] }) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+            <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
               <th className="pb-3 pr-4 font-medium">Hesap Kalemi</th>
               {years.map(y => (
                 <th key={y.endDate} className="pb-3 pl-3 text-right font-medium tabular-nums">
@@ -132,7 +132,7 @@ function IncomeTable({ years }: { years: IncomeYear[] }) {
           <tbody className="divide-y divide-white/5">
             {INCOME_ROWS.map(row => (
               <tr key={row.label}>
-                <td className={`py-2.5 pr-4 ${row.bold ? "font-semibold text-white" : "text-mist/60"}`}>
+                <td className={`py-2.5 pr-4 ${row.bold ? "font-semibold text-white" : "text-mist-3"}`}>
                   {row.label}
                 </td>
                 {years.map(y => {
@@ -141,7 +141,7 @@ function IncomeTable({ years }: { years: IncomeYear[] }) {
                     <td
                       key={y.endDate}
                       className={`py-2.5 pl-3 text-right tabular-nums ${
-                        row.bold ? "font-semibold text-white" : "text-mist/85"
+                        row.bold ? "font-semibold text-white" : "text-mist-2"
                       }`}
                     >
                       {fmtMoney(v)}
@@ -249,7 +249,7 @@ function RatiosGrid({ stats }: { stats: KeyStatistics }) {
                 key={r.label}
                 className="flex items-baseline justify-between gap-3 border-b border-white/[0.04] pb-2 last:border-0 last:pb-0"
               >
-                <dt className="text-sm text-mist/60">{r.label}</dt>
+                <dt className="text-sm text-mist-3">{r.label}</dt>
                 <dd className="text-sm font-medium tabular-nums text-white">
                   {formatStat(r.value(stats), r.fmt)}
                 </dd>
@@ -275,18 +275,18 @@ function BalanceSheetStub() {
           <h3 className="text-base font-semibold text-white">
             Bilanço ve Nakit Akışı Detayı
           </h3>
-          <p className="text-sm leading-6 text-mist/65">
+          <p className="text-sm leading-6 text-mist-2">
             Yahoo Finance, Türk hisseleri için detaylı bilanço ve nakit akışı
             kalemlerini sağlamıyor — yalnızca özet veriler (toplam nakit, toplam
             borç, serbest nakit akışı vb.) ulaşılabiliyor; bu özetler{" "}
             <span className="font-medium text-white">Anahtar Oranlar</span> sekmesinde gösteriliyor.
           </p>
-          <p className="text-sm leading-6 text-mist/55">
+          <p className="text-sm leading-6 text-mist-3">
             Tam dönen/duran varlık, kısa/uzun vadeli yükümlülük ve işletme/yatırım/finansman
             faaliyetlerinden nakit akışı kalemleri, ileride KAP entegrasyonuyla
             eklenecek.
           </p>
-          <span className="inline-flex items-center rounded-full border border-white/8 bg-white/[0.025] px-3 py-1 text-[11px] text-mist/45">
+          <span className="inline-flex items-center rounded-full border border-white/8 bg-white/[0.025] px-3 py-1 text-[11px] text-mist-3">
             Yol haritası: Faz 4.5 — KAP / İş Yatırım entegrasyonu
           </span>
         </div>
@@ -299,7 +299,7 @@ function BalanceSheetStub() {
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className="glass-card rounded-2xl p-8 text-center text-sm text-mist/45">
+    <div className="glass-card rounded-2xl p-8 text-center text-sm text-mist-3">
       {text}
     </div>
   );

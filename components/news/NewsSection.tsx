@@ -26,9 +26,9 @@ export function NewsSection({ result }: Props) {
   if (!result.configured) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
-        <Newspaper className="mx-auto mb-3 h-6 w-6 text-mist/40" />
+        <Newspaper className="mx-auto mb-3 h-6 w-6 text-mist-3" />
         <p className="text-sm font-medium text-white">Haberler şu an yüklenemiyor</p>
-        <p className="mt-1 text-xs text-mist/45">
+        <p className="mt-1 text-xs text-mist-3">
           Birkaç dakika sonra tekrar deneyebilirsiniz.
         </p>
       </div>
@@ -38,9 +38,9 @@ export function NewsSection({ result }: Props) {
   if (result.articles.length === 0) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
-        <Newspaper className="mx-auto mb-3 h-6 w-6 text-mist/40" />
+        <Newspaper className="mx-auto mb-3 h-6 w-6 text-mist-3" />
         <p className="text-sm font-medium text-white">Haber bulunamadı</p>
-        <p className="mt-1 text-xs text-mist/45">
+        <p className="mt-1 text-xs text-mist-3">
           {result.assetLabel ? `“${result.assetLabel}” için ` : ""}son zamanda yayınlanmış bir haber tespit edilmedi.
         </p>
       </div>
@@ -65,7 +65,7 @@ export function NewsSection({ result }: Props) {
           href={item.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="glass-card group flex gap-4 rounded-2xl p-4 transition hover:bg-white/[0.03]"
+          className="glass-card glass-card-interactive group flex gap-4 rounded-2xl p-4"
         >
           {item.imageUrl && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -78,10 +78,10 @@ export function NewsSection({ result }: Props) {
           )}
           <div className="min-w-0 flex-1">
             <div className="mb-1.5 flex flex-wrap items-center gap-2 text-[11px]">
-              <span className="rounded-md bg-white/8 px-2 py-0.5 font-medium text-mist/70">
+              <span className="rounded-md bg-white/8 px-2 py-0.5 font-medium text-mist-2">
                 {item.source}
               </span>
-              <span className="inline-flex items-center gap-1 text-mist/45">
+              <span className="inline-flex items-center gap-1 text-mist-3">
                 <Calendar className="h-3 w-3" />
                 {fmtDateTime(item.publishedAt)}
               </span>
@@ -90,11 +90,11 @@ export function NewsSection({ result }: Props) {
               {item.title}
             </h3>
             {item.description && (
-              <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-mist/55">
+              <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-mist-3">
                 {item.description}
               </p>
             )}
-            <span className="mt-2 inline-flex items-center gap-1 text-[11px] text-mist/40 group-hover:text-emerald-200">
+            <span className="mt-2 inline-flex items-center gap-1 text-[11px] text-mist-3 group-hover:text-emerald-200">
               Kaynağa git
               <ExternalLink className="h-3 w-3" />
             </span>
@@ -102,7 +102,7 @@ export function NewsSection({ result }: Props) {
         </a>
       ))}
 
-      <p className="text-[11px] text-mist/35">
+      <p className="text-[11px] text-mist-3">
         Kaynaklar: Bloomberg HT, Habertürk Ekonomi. İçeriklerden dış yayıncılar sorumludur.
       </p>
     </div>

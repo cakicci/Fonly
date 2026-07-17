@@ -43,7 +43,7 @@ export default async function AltinLayout({
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
-        <nav className="flex items-center gap-2 text-sm text-mist/45">
+        <nav className="flex items-center gap-2 text-sm text-mist-3">
           <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
           <span>/</span>
           <Link href="/altin" className="transition hover:text-white">Altın</Link>
@@ -77,7 +77,7 @@ export default async function AltinLayout({
                 Alış
               </p>
               <p className="mt-0.5 text-base font-semibold text-white">
-                {fmtAsset(buying, goldKind)} <span className="text-xs font-normal text-mist/45">TL</span>
+                {fmtAsset(buying, goldKind)} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
             <div className="rounded-xl border border-rose-200/14 bg-rose-300/[0.04] px-4 py-3">
@@ -86,12 +86,12 @@ export default async function AltinLayout({
                 Satış
               </p>
               <p className="mt-0.5 text-base font-semibold text-white">
-                {fmtAsset(selling, goldKind)} <span className="text-xs font-normal text-mist/45">TL</span>
+                {fmtAsset(selling, goldKind)} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
             {spreadPct != null && (
               <div className="rounded-xl border border-white/8 bg-white/[0.025] px-4 py-3">
-                <p className="text-[10px] font-medium uppercase tracking-wider text-mist/40">Makas</p>
+                <p className="text-[10px] font-medium uppercase tracking-wider text-mist-3">Makas</p>
                 <p className="mt-0.5 text-base font-semibold text-white">%{fmtPercent(spreadPct)}</p>
               </div>
             )}
@@ -107,7 +107,7 @@ export default async function AltinLayout({
               className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${
                 g.type === goldType.type
                   ? "border-amber-300/40 bg-amber-300/12 text-amber-200"
-                  : "border-white/8 text-mist/50 hover:border-white/20 hover:text-white"
+                  : "border-white/8 text-mist-3 hover:border-white/20 hover:text-white"
               }`}
             >
               {g.nameShort}

@@ -49,13 +49,13 @@ function ChartTooltip({
         {new Date(label).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" })}
       </p>
       {value != null && (
-        <p className="mt-1 flex items-center gap-1.5 text-mist/80">
+        <p className="mt-1 flex items-center gap-1.5 text-mist-2">
           <span className="h-2 w-2 rounded-full" style={{ background: COLOR_VALUE }} />
           Değer: {tl(value)} ₺
         </p>
       )}
       {cost != null && (
-        <p className="mt-0.5 flex items-center gap-1.5 text-mist/80">
+        <p className="mt-0.5 flex items-center gap-1.5 text-mist-2">
           <span className="h-2 w-2 rounded-full" style={{ background: COLOR_COST }} />
           Maliyet: {tl(cost)} ₺
         </p>
@@ -93,12 +93,12 @@ export function PortfolioValueChart() {
   if (!loading && points.length < 2) return null; // grafik çizecek veri yok
 
   return (
-    <section className="glass-card rounded-2xl p-5 ring-1 ring-white/8">
+    <section className="glass-card rounded-2xl p-5">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-sm font-semibold text-white">Portföy değeri</h2>
           {/* Legend — iki seri: renk + metin (metin, metin token'ında) */}
-          <div className="mt-1 flex items-center gap-4 text-xs text-mist/55">
+          <div className="mt-1 flex items-center gap-4 text-xs text-mist-3">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full" style={{ background: COLOR_VALUE }} />
               Değer
@@ -116,7 +116,7 @@ export function PortfolioValueChart() {
               type="button"
               onClick={() => setRange(r)}
               className={`rounded-[10px] px-3 py-1 text-xs font-semibold uppercase transition ${
-                range === r ? "bg-white/10 text-white" : "text-mist/50 hover:text-white"
+                range === r ? "bg-white/10 text-white" : "text-mist-3 hover:text-white"
               }`}
             >
               {r === "3a" ? "3 Ay" : "1 Yıl"}
@@ -126,7 +126,7 @@ export function PortfolioValueChart() {
       </div>
 
       {loading ? (
-        <div className="flex h-56 items-center justify-center text-sm text-mist/50">
+        <div className="flex h-56 items-center justify-center text-sm text-mist-3">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Grafik hazırlanıyor…
         </div>
       ) : (

@@ -54,7 +54,7 @@ export function WatchlistDrawer({
           <button
             onClick={onClose}
             aria-label="Kapat"
-            className="rounded-lg p-1.5 text-mist/55 transition hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>
@@ -88,13 +88,13 @@ export function WatchlistDrawer({
                     className="group flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2.5 transition hover:bg-white/[0.05]"
                   >
                     <Link href={href} onClick={onClose} className="flex-1 truncate text-sm font-medium text-white">
-                      <span className="text-xs text-mist/40 uppercase tracking-wider mr-2">{type}</span>
+                      <span className="text-xs text-mist-3 uppercase tracking-wider mr-2">{type}</span>
                       {code.toUpperCase()}
                     </Link>
                     <button
                       onClick={() => remove(slug)}
                       aria-label={`${code} listeden çıkar`}
-                      className="rounded-lg p-1.5 text-mist/35 opacity-0 transition group-hover:opacity-100 hover:bg-white/8 hover:text-rose-300"
+                      className="rounded-lg p-1.5 text-mist-3 opacity-0 transition group-hover:opacity-100 hover:bg-white/8 hover:text-rose-300"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -118,14 +118,14 @@ function EmptyState({
 }) {
   return (
     <div className="flex h-full flex-col items-center justify-center px-6 py-10 text-center">
-      <Star className="mb-4 h-10 w-10 text-mist/20" />
+      <Star className="mb-4 h-10 w-10 text-mist-3" />
       <p className="text-base font-medium text-white">{title}</p>
-      <p className="mt-2 text-sm leading-relaxed text-mist/45">{hint}</p>
+      <p className="mt-2 text-sm leading-relaxed text-mist-3">{hint}</p>
       {cta && (
         <Link
           href={cta.href}
           onClick={cta.onClick}
-          className="mt-5 rounded-xl bg-emerald-300 px-4 py-2 text-sm font-semibold text-ink shadow-glow transition hover:bg-emerald-200"
+          className="btn btn-sm btn-primary mt-5 shadow-glow"
         >
           {cta.label}
         </Link>

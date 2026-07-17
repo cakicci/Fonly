@@ -32,7 +32,7 @@ export default async function FonGetirilerPage({ params }: { params: Params }) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+              <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
                 <th className="pb-3 pr-4 font-medium">Dönem</th>
                 <th className="pb-3 pr-4 font-medium">Açıklama</th>
                 <th className="pb-3 font-medium text-right">Getiri</th>
@@ -41,14 +41,14 @@ export default async function FonGetirilerPage({ params }: { params: Params }) {
             <tbody className="divide-y divide-white/5">
               {periods.map(p => {
                 const tone = p.value == null
-                  ? "text-mist/40"
+                  ? "text-mist-3"
                   : p.value >= 0
                     ? "text-emerald-300"
                     : "text-rose-300";
                 return (
                   <tr key={p.label}>
                     <td className="py-2.5 pr-4 font-medium text-white">{p.label}</td>
-                    <td className="py-2.5 pr-4 text-mist/55">{p.description}</td>
+                    <td className="py-2.5 pr-4 text-mist-3">{p.description}</td>
                     <td className={`py-2.5 text-right tabular-nums font-semibold ${tone}`}>
                       {fmtPct(p.value)}
                     </td>
@@ -60,7 +60,7 @@ export default async function FonGetirilerPage({ params }: { params: Params }) {
         </div>
       </div>
 
-      <p className="text-[11px] leading-relaxed text-mist/35">
+      <p className="text-[11px] leading-relaxed text-mist-3">
         Veri kaynağı: TEFAS · fonGetiriBazliBilgiGetir. Getiriler nominal TL bazındadır; enflasyondan arındırılmamıştır.
         3 ve 5 yıllık değerler kümülatif (yıllıklandırılmamış) getiridir.
       </p>

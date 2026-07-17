@@ -53,13 +53,13 @@ export default async function IyzicoCheckoutPage({
       <div className="mx-auto max-w-xl">
         <Link
           href="/premium"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-mist/55 transition hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Premium sayfasına dön
         </Link>
 
-        <div className="glass-card rounded-[1.75rem] p-6">
+        <div className="glass-card rounded-section p-6">
           <div className="mb-5">
             <p className="flex items-center gap-2 text-sm font-medium text-emerald-200">
               <ShieldCheck className="h-4 w-4" />
@@ -67,9 +67,9 @@ export default async function IyzicoCheckoutPage({
             </p>
             <h1 className="mt-2 text-2xl font-semibold text-white">
               FonlyPro {plan.name} — {plan.priceLabel}
-              <span className="text-base font-normal text-mist/45">{plan.period}</span>
+              <span className="text-base font-normal text-mist-3">{plan.period}</span>
             </h1>
-            <p className="mt-2 text-xs leading-5 text-mist/45">
+            <p className="mt-2 text-xs leading-5 text-mist-3">
               Kart bilgilerin Fonly&apos;ye ulaşmaz; ödeme iyzico&apos;nun güvenli altyapısında
               gerçekleşir. Aboneliğini dilediğin zaman Hesabım &gt; Abonelik&apos;ten
               iptal edebilirsin.

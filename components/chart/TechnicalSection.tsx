@@ -42,13 +42,15 @@ const TF_TABS: TfTab[] = [
   { key: "1Mo",  label: "Aylık"     },
 ];
 
+// Ton, glass-tint-* varyantlarıyla verilir — glass-card üzerinde bg-/ring-
+// utility'leri render olmaz (MASTER: Gölge & Efekt, bilinen sınır).
 const VERDICT_TONE: Record<TechnicalSummary["verdict"],
-  { bg: string; ring: string; text: string }> = {
-  strong_buy:  { bg: "from-emerald-300/25 to-emerald-300/5",  ring: "ring-emerald-300/40", text: "text-emerald-100" },
-  buy:         { bg: "from-emerald-300/15 to-emerald-300/0",  ring: "ring-emerald-300/25", text: "text-emerald-200" },
-  neutral:     { bg: "from-amber-200/12 to-amber-200/0",      ring: "ring-amber-200/25",   text: "text-amber-100"   },
-  sell:        { bg: "from-rose-300/15 to-rose-300/0",        ring: "ring-rose-300/25",    text: "text-rose-200"    },
-  strong_sell: { bg: "from-rose-300/25 to-rose-300/5",        ring: "ring-rose-300/40",    text: "text-rose-100"    },
+  { tint: string; text: string }> = {
+  strong_buy:  { tint: "glass-tint-positive", text: "text-emerald-100" },
+  buy:         { tint: "glass-tint-positive", text: "text-emerald-200" },
+  neutral:     { tint: "glass-tint-neutral",  text: "text-amber-100"   },
+  sell:        { tint: "glass-tint-negative", text: "text-rose-200"    },
+  strong_sell: { tint: "glass-tint-negative", text: "text-rose-100"    },
 };
 
 const SIGNAL_TONE: Record<TechnicalSignal, string> = {
@@ -136,8 +138,8 @@ export function TechnicalSection({
                   active
                     ? "bg-emerald-300/15 text-emerald-100"
                     : locked
-                      ? "text-mist/45 hover:bg-fuchsia-300/8 hover:text-fuchsia-200"
-                      : "text-mist/55 hover:bg-white/[0.04] hover:text-white"
+                      ? "text-mist-3 hover:bg-fuchsia-300/8 hover:text-fuchsia-200"
+                      : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
                 }`}
               >
                 <span>{tab.label}</span>
@@ -165,12 +167,12 @@ export function TechnicalSection({
           </div>
         </>
       ) : (
-        <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 text-center text-sm text-mist/45">
+        <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 text-center text-sm text-mist-3">
           Bu zaman dilimi için yeterli veri yok. Daha uzun bir aralık seçmeyi deneyin.
         </div>
       )}
 
-      <p className="text-[11px] leading-relaxed text-mist/35">
+      <p className="text-[11px] leading-relaxed text-mist-3">
         Teknik özet otomatik kurallarla üretilir ve yatırım tavsiyesi değildir.
         Hareketli ortalamalar (SMA & EMA: 5/10/20/50/100/200) ve klasik göstergeler
         (RSI, MACD, Stoch, Williams %R, CCI, ADX, Bollinger) sinyallerinin sayımına
@@ -195,16 +197,16 @@ function VerdictCard({ summary }: { summary: TechnicalSummary }) {
   const total = buy + sell + neutral;
 
   return (
-    <div className={`glass-card rounded-2xl bg-gradient-to-br ${tone.bg} p-6 ring-1 ${tone.ring}`}>
+    <div className={`glass-card ${tone.tint} rounded-2xl p-6`}>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-mist/45">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-mist-3">
             Genel Teknik Görünüm
           </p>
           <p className={`mt-1 text-3xl font-semibold ${tone.text}`}>
             {VERDICT_LABEL[summary.verdict]}
           </p>
-          <p className="mt-1 text-xs text-mist/55">
+          <p className="mt-1 text-xs text-mist-3">
             {total} göstergeye dayalı
           </p>
         </div>
@@ -247,7 +249,7 @@ function MovingAveragesCard({ summary }: { summary: TechnicalSummary }) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+            <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
               <th className="pb-2 font-medium">Periyod</th>
               <th className="pb-2 font-medium">SMA</th>
               <th className="pb-2 font-medium text-right">Sinyal</th>
@@ -258,12 +260,12 @@ function MovingAveragesCard({ summary }: { summary: TechnicalSummary }) {
           <tbody className="divide-y divide-white/5">
             {summary.ma.map(row => (
               <tr key={row.period}>
-                <td className="py-2 text-mist/60">MA{row.period}</td>
-                <td className="py-2 tabular-nums text-mist/85">{row.smaValue}</td>
+                <td className="py-2 text-mist-3">MA{row.period}</td>
+                <td className="py-2 tabular-nums text-mist-2">{row.smaValue}</td>
                 <td className="py-2 text-right">
                   <SignalChip signal={row.smaSignal} />
                 </td>
-                <td className="py-2 tabular-nums text-mist/85">{row.emaValue}</td>
+                <td className="py-2 tabular-nums text-mist-2">{row.emaValue}</td>
                 <td className="py-2 text-right">
                   <SignalChip signal={row.emaSignal} />
                 </td>
@@ -293,7 +295,7 @@ function IndicatorsCard({ summary }: { summary: TechnicalSummary }) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-[11px] uppercase tracking-wider text-mist/40">
+            <tr className="text-left text-[11px] uppercase tracking-wider text-mist-3">
               <th className="pb-2 font-medium">Gösterge</th>
               <th className="pb-2 font-medium">Değer</th>
               <th className="pb-2 font-medium text-right">Sinyal</th>
@@ -302,11 +304,11 @@ function IndicatorsCard({ summary }: { summary: TechnicalSummary }) {
           <tbody className="divide-y divide-white/5">
             {summary.indicators.map(ind => (
               <tr key={ind.name}>
-                <td className="py-2 text-mist/60">{ind.name}</td>
-                <td className="py-2 tabular-nums text-mist/85">{ind.value}</td>
+                <td className="py-2 text-mist-3">{ind.name}</td>
+                <td className="py-2 tabular-nums text-mist-2">{ind.value}</td>
                 <td className="py-2 text-right">
                   {ind.name.startsWith("ATR") ? (
-                    <span className="text-[11px] text-mist/40">—</span>
+                    <span className="text-[11px] text-mist-3">—</span>
                   ) : (
                     <SignalChip signal={ind.signal} />
                   )}
@@ -324,7 +326,7 @@ function IndicatorsCard({ summary }: { summary: TechnicalSummary }) {
 
 function SignalChip({ signal }: { signal: TechnicalSignal | null }) {
   if (signal == null) {
-    return <span className="text-[11px] text-mist/35">—</span>;
+    return <span className="text-[11px] text-mist-3">—</span>;
   }
   const Icon = signal === "buy" ? TrendingUp
             : signal === "sell" ? TrendingDown

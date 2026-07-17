@@ -81,7 +81,7 @@ function Row({
     <>
       <div className="flex items-center gap-1.5 min-w-0">
         {flag && <span className="text-xs shrink-0">{flag}</span>}
-        <span className={`truncate text-sm ${highlight ? "font-medium text-white" : "text-mist/64"}`}>
+        <span className={`truncate text-sm ${highlight ? "font-medium text-white" : "text-mist-2"}`}>
           {label}
         </span>
       </div>
@@ -150,13 +150,13 @@ export function MarketSidebar() {
   const hisseler = data?.borsa.slice(1) ?? [];
 
   return (
-    <aside className="glass-card sticky top-6 flex flex-col gap-4 rounded-[1.5rem] p-5 lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto">
+    <aside className="glass-card sticky top-6 order-2 flex flex-col gap-4 rounded-panel p-5 lg:order-3 lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto">
 
       {/* Başlık */}
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <p className="text-sm text-mist/58">Piyasa özeti</p>
+            <p className="text-sm text-mist-3">Piyasa özeti</p>
             {!isLoading && <LiveDot />}
           </div>
           <h2 className="mt-1 text-xl font-semibold text-white">Bugün ne oluyor?</h2>
@@ -236,7 +236,7 @@ export function MarketSidebar() {
         {/* Hisseler */}
         {(isLoading || hisseler.length > 0) && (
           <>
-            <p className="mt-4 mb-1 text-[10px] font-semibold uppercase tracking-wider text-mist/36">
+            <p className="mt-4 mb-1 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
               Popüler hisseler
             </p>
             <div className="divide-y divide-white/6">
@@ -268,18 +268,18 @@ export function MarketSidebar() {
 
       {/* ── Günün İpucu ── */}
       <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-mist/50">
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-mist-3">
           <Lightbulb className="h-3.5 w-3.5 text-yellow-300/70" />
           Günün ipucu
         </div>
-        <p className="mt-2 text-xs leading-5 text-mist/60">
+        <p className="mt-2 text-xs leading-5 text-mist-3">
           {TIPS[tipIndex]}
         </p>
       </div>
 
       {/* Son güncelleme */}
       {data?.updatedAt && !isLoading && (
-        <p className="text-center text-xs text-mist/28">
+        <p className="text-center text-xs text-mist-3">
           {new Date(data.updatedAt).toLocaleTimeString("tr-TR", {
             hour: "2-digit", minute: "2-digit", second: "2-digit"
           })}

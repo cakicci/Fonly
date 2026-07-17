@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>FonlyPro Hero — Spotlight Center</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1920px; height: 600px; overflow: hidden; }
+  body {
+    font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    background:
+      radial-gradient(ellipse 900px 420px at 50% 118%, rgba(45, 227, 168, 0.16), transparent),
+      radial-gradient(circle at 8% 10%, rgba(232, 121, 249, 0.10), transparent 26rem),
+      radial-gradient(circle at 92% 12%, rgba(86, 173, 255, 0.10), transparent 26rem),
+      linear-gradient(180deg, #070b1d 0%, #0b1026 60%, #0d1430 100%);
+    color: #d8f7ee;
+    position: relative;
+  }
+  /* concentric glow rings behind headline */
+  .rings { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(216,247,238,0.06); }
+  .r1 { width: 560px; height: 560px; }
+  .r2 { width: 860px; height: 860px; border-color: rgba(216,247,238,0.045); }
+  .r3 { width: 1180px; height: 1180px; border-color: rgba(216,247,238,0.03); }
+  /* sparse "stars" */
+  .spark { position: absolute; width: 5px; height: 5px; border-radius: 50%; }
+  .s1 { top: 110px; left: 320px; background: #6ee7b7; box-shadow: 0 0 14px #6ee7b7; }
+  .s2 { top: 420px; left: 460px; background: #e879f9; box-shadow: 0 0 14px #e879f9; opacity: 0.8; }
+  .s3 { top: 150px; right: 380px; background: #67e8f9; box-shadow: 0 0 14px #67e8f9; opacity: 0.8; }
+  .s4 { top: 440px; right: 300px; background: #fde68a; box-shadow: 0 0 14px #fde68a; opacity: 0.7; }
+  .wrap {
+    position: relative; z-index: 2; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 0 200px;
+  }
+  .brandline { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .logo {
+    width: 44px; height: 44px; object-fit: contain;
+    filter: drop-shadow(0 0 16px rgba(34, 211, 238, 0.45));
+  }
+  .brand { font-size: 22px; font-weight: 700; color: #ecfff9; }
+  .brand .pro {
+    background: linear-gradient(90deg, #e879f9, #c084fc);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  h1 {
+    font-size: 76px; font-weight: 850; line-height: 1.05;
+    letter-spacing: -0.03em; color: #ecfff9; margin-bottom: 20px;
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, #a7f3d0 0%, #6ee7b7 40%, #67e8f9 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { font-size: 22px; line-height: 1.5; color: rgba(216,247,238,0.68); max-width: 880px; margin-bottom: 30px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #6ee7b7, #34d399);
+    color: #06281c; font-weight: 700; font-size: 19px;
+    border-radius: 16px; padding: 17px 36px; margin-bottom: 34px;
+    box-shadow: 0 0 50px rgba(40, 230, 164, 0.35);
+  }
+  .cta svg { width: 20px; height: 20px; }
+  .chips { display: flex; gap: 14px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 9px;
+    border: 1px solid rgba(216,247,238,0.12);
+    background: linear-gradient(145deg, rgba(19,28,55,0.88), rgba(10,16,36,0.72));
+    backdrop-filter: blur(18px);
+    border-radius: 999px; padding: 11px 22px;
+    font-size: 15.5px; font-weight: 600; color: rgba(216,247,238,0.85);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  .chip .ic { font-size: 15px; }
+  .c-em  .ic { color: #6ee7b7; }
+  .c-fu  .ic { color: #e879f9; }
+  .c-cy  .ic { color: #67e8f9; }
+  .c-am  .ic { color: #fde68a; }
+</style>
+</head>
+<body>
+  <div class="rings">
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+  </div>
+  <div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div><div class="spark s4"></div>
+  <div class="wrap">
+    <div class="brandline">
+      <img class="logo" src="fonly-logo.png" alt="Fonly logosu">
+      <div class="brand">Fonly<span class="pro">Pro</span></div>
+    </div>
+    <h1>Yatırımın yeni beyni:<br><em>yapay zekâ destekli analiz</em></h1>
+    <p class="sub">AI teknik analiz, şirket özetleri, haber akışı ve anlık soru-cevap — fon, döviz, altın ve hisselerin tamamı için tek abonelik.</p>
+    <span class="cta">Premium'a Geç
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </span>
+    <div class="chips">
+      <span class="chip c-em"><span class="ic">▲</span>AI teknik analiz</span>
+      <span class="chip c-am"><span class="ic">✦</span>Haber özetleri</span>
+      <span class="chip c-cy"><span class="ic">💬</span>Anlık soru-cevap</span>
+      <span class="chip c-fu"><span class="ic">◈</span>Temettü değerlendirmesi</span>
+    </div>
+  </div>
+</body>
+</html>

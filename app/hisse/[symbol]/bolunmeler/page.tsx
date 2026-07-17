@@ -20,7 +20,7 @@ export default async function HisseBolunmelerPage({ params }: { params: Params }
         </div>
         <div>
           <h2 className="text-sm font-semibold text-white">Bölünme verisi alınamadı</h2>
-          <p className="mt-1 text-sm text-mist/55">
+          <p className="mt-1 text-sm text-mist-3">
             Yahoo Finance şu anda {symbol} için olay verisi sunmuyor.
           </p>
         </div>

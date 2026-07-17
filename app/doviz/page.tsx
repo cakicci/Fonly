@@ -49,15 +49,15 @@ function CurrencyCard({ item }: { item: CurrencyItem }) {
         </span>
       </div>
 
-      <p className="text-[11px] font-semibold text-mist/40">
+      <p className="text-[11px] font-semibold text-mist-3">
         {item.code}
         {item.displayPer > 1 ? ` (${item.displayPer})` : ""}
       </p>
-      <p className="mt-0.5 truncate text-sm font-medium text-mist/70">{item.shortName}</p>
+      <p className="mt-0.5 truncate text-sm font-medium text-mist-2">{item.shortName}</p>
 
       <FlashPrice value={item.rawValue} className="mt-4 text-2xl font-semibold text-white">
         {item.value}
-        <span className="ml-1 text-sm font-normal text-mist/40">TL</span>
+        <span className="ml-1 text-sm font-normal text-mist-3">TL</span>
       </FlashPrice>
     </Link>
   );
@@ -127,7 +127,7 @@ export default function DovizPage() {
         {/* Breadcrumb */}
         <Link
           href="/"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-mist/50 transition hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Ana Sayfa
@@ -140,7 +140,7 @@ export default function DovizPage() {
             <h1 className="mt-1.5 text-3xl font-semibold text-white sm:text-4xl">
               Döviz Kurları
             </h1>
-            <p className="mt-2 text-sm text-mist/50">
+            <p className="mt-2 text-sm text-mist-3">
               Tüm kurlar Türk Lirası (TL) cinsinden. JPY, IQD ve HUF 100 birim; IDR 1000 birim olarak gösterilir.
             </p>
           </div>
@@ -157,7 +157,7 @@ export default function DovizPage() {
               className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
                 tab === "major"
                   ? "bg-cyan-300/15 text-cyan-100"
-                  : "text-mist/60 hover:text-white"
+                  : "text-mist-3 hover:text-white"
               }`}
             >
               Yaygın 8
@@ -167,7 +167,7 @@ export default function DovizPage() {
               className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
                 tab === "other"
                   ? "bg-cyan-300/15 text-cyan-100"
-                  : "text-mist/60 hover:text-white"
+                  : "text-mist-3 hover:text-white"
               }`}
             >
               Diğer Dövizler
@@ -175,13 +175,13 @@ export default function DovizPage() {
           </div>
 
           <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 sm:w-72">
-            <Search className="h-4 w-4 shrink-0 text-mist/40" />
+            <Search className="h-4 w-4 shrink-0 text-mist-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ara (USD, ruble, riyal)"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist/35"
+              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
             />
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function DovizPage() {
             {Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)}
           </div>
         ) : filtered.length === 0 ? (
-          <p className="py-16 text-center text-sm text-mist/40">Sonuç bulunamadı.</p>
+          <p className="py-16 text-center text-sm text-mist-3">Sonuç bulunamadı.</p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {filtered.map(item => <CurrencyCard key={item.code} item={item} />)}
@@ -201,7 +201,7 @@ export default function DovizPage() {
 
         {/* Son güncelleme */}
         {data?.updatedAt && !loading && (
-          <p className="mt-6 text-center text-xs text-mist/28">
+          <p className="mt-6 text-center text-xs text-mist-3">
             Son güncelleme:{" "}
             {new Date(data.updatedAt).toLocaleTimeString("tr-TR", {
               hour: "2-digit", minute: "2-digit", second: "2-digit"
