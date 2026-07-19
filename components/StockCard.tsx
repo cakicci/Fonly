@@ -22,7 +22,7 @@ export function StockCard({ stock }: StockCardProps) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-emerald-200">{stock.symbol}</p>
-            <h3 className="mt-1 text-xl font-semibold text-white">{stock.name}</h3>
+            <h3 className="mt-1 text-xl font-semibold text-mist">{stock.name}</h3>
             <p className="mt-1 text-sm text-mist-3">Geçmiş performans özeti</p>
           </div>
           <div
@@ -47,10 +47,10 @@ export function StockCard({ stock }: StockCardProps) {
         </div>
 
         {/* Fiyat satırı */}
-        <div className="mt-5 flex items-end justify-between gap-4 border-t border-white/8 pt-5">
+        <div className="mt-5 flex items-end justify-between gap-4 border-t border-line pt-5">
           <div>
             <p className="text-xs text-mist-3">Fiyat</p>
-            <p className="mt-1 text-2xl font-semibold text-white">{stock.price}</p>
+            <p className="mt-1 text-2xl font-semibold text-mist">{stock.price}</p>
           </div>
           <p className={isPositive ? "font-semibold text-emerald-200" : "font-semibold text-rose-200"}>
             {stock.dailyChange}
@@ -59,11 +59,11 @@ export function StockCard({ stock }: StockCardProps) {
 
         {/* 5 yıl + altın kıyası */}
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-3">
+          <div className="rounded-2xl border border-line bg-white/[0.04] p-3">
             <p className="text-xs text-mist-3">5 yılda hisse</p>
             <p className="mt-1 text-xl font-semibold text-emerald-200">{stock.fiveYearReturn}</p>
           </div>
-          <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-3">
+          <div className="rounded-2xl border border-line bg-white/[0.04] p-3">
             <p className="text-xs text-mist-3">Altınla kıyas</p>
             <p className="mt-1 text-sm leading-5 text-mist-2">{stock.goldComparison}</p>
           </div>

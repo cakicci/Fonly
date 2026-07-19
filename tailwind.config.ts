@@ -16,31 +16,50 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: "#0b1026",
-          deep: "#070b1d",
-          light: "#101a3a"
+          DEFAULT: "var(--bg)",
+          deep: "var(--bg-deep)",
+          light: "var(--bg-light)",
+          // Tema-bağımsız sabit: parlak accent üzerinde duran metin (ör. rozet
+          // ikon kutuları) her iki modda da koyu kalmalı — bkz. text-ink-fixed.
+          fixed: "#0b1026"
         },
         mist: {
-          DEFAULT: "#d8f7ee",
+          DEFAULT: "var(--text)",
           // Metin hiyerarşisi yalnız bu 3 kademe: mist (birincil),
           // mist-2 (ikincil/gövde), mist-3 (etiket/meta).
-          2: "rgba(216, 247, 238, 0.7)",
-          3: "rgba(216, 247, 238, 0.5)"
+          2: "var(--text-2)",
+          3: "var(--text-3)"
         },
         surface: {
-          DEFAULT: "#10172f",
-          2: "rgba(255, 255, 255, 0.04)"
+          DEFAULT: "var(--surface)",
+          2: "var(--surface-2)"
         },
         line: {
-          DEFAULT: "rgba(216, 247, 238, 0.12)",
-          strong: "rgba(216, 247, 238, 0.2)"
+          DEFAULT: "var(--line)",
+          strong: "var(--line-strong)"
         },
         accent: {
-          DEFAULT: "#6ee7b7", // emerald-300 — primary CTA
-          soft: "#a7f3d0" // emerald-200 — vurgu metni
+          DEFAULT: "var(--accent)", // emerald-300 (dark) / emerald-700 (light) — primary CTA
+          soft: "var(--accent-soft)" // emerald-200 (dark) / emerald-800 (light) — vurgu/hover
         },
-        positive: "#6ee7b7", // kâr/artış (emerald-300)
-        negative: "#fda4af" // zarar/satış (rose-300)
+        positive: "var(--positive)", // kâr/artış
+        negative: "var(--negative)", // zarar/satış
+
+        // "Aktif rozet" / kimlik metni: bg-{hue}-300/opacity + text-{hue}-100
+        // veya text-{hue}-200 ikilisinin bu iki pastel kademesi tema-bağımlı
+        // hale getirilir (dark: Tailwind varsayılanı, light: okunur -700 tonu).
+        // Diğer tüm shade'ler (50-900, 300 dahil) dokunulmadan Tailwind
+        // varsayılanından gelir — theme.extend yalnız 100/200'ü ezer.
+        // İstisna: components/Hero.tsx (1) ve app/premium/page.tsx'teki kalıcı
+        // koyu ada içindeki kullanımlar (3) bilinçli olarak bu token'ları
+        // DEĞİL, ham hex'i kullanır — bkz. dosyalardaki yorumlar.
+        emerald: { 100: "var(--chip-emerald-100)", 200: "var(--chip-emerald-200)" },
+        rose: { 100: "var(--chip-rose-100)", 200: "var(--chip-rose-200)" },
+        amber: { 100: "var(--chip-amber-100)", 200: "var(--chip-amber-200)" },
+        cyan: { 100: "var(--chip-cyan-100)", 200: "var(--chip-cyan-200)" },
+        fuchsia: { 100: "var(--chip-fuchsia-100)", 200: "var(--chip-fuchsia-200)" },
+        violet: { 100: "var(--chip-violet-100)", 200: "var(--chip-violet-200)" },
+        sky: { 100: "var(--chip-sky-100)", 200: "var(--chip-sky-200)" }
       },
       borderRadius: {
         card: "1.25rem", // içerik kartları
@@ -53,8 +72,8 @@ const config: Config = {
         cta: "var(--gradient-cta)" // emerald parıltılı CTA bölümü
       },
       boxShadow: {
-        glow: "0 0 44px rgba(40, 230, 164, 0.18)",
-        card: "0 20px 80px rgba(0, 0, 0, 0.28)"
+        glow: "0 0 44px var(--shadow-glow-color)",
+        card: "0 20px 80px var(--shadow-card-color)"
       },
       transitionDuration: {
         fast: "150ms",

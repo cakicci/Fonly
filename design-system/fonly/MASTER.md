@@ -11,33 +11,69 @@
 
 **Proje:** Fonly — döviz/altın/BIST/TEFAS takibi, finans bilgisi az kullanıcılar için sade Türkçe
 **Kategori:** Fintech / yatırım takibi
-**Tema:** Dark-only (bilinçli karar; light mode YOK ve eklenmeyecek)
+**Tema:** Dual — koyu (varsayılan) + açık, next-themes ile `<html data-theme>` üzerinden tek
+tuşla geçiş (2026-07-19 karar değişikliği; önceki "dark-only" Faz 0 kararının yerini aldı).
+Koyu palet değişmeden kaldı; açık palet `:root[data-theme="light"]` override'ıyla eklendi.
 
 ---
 
 ## Renk Token'ları
 
-| Rol | Değer | Tailwind | CSS Variable |
-|-----|-------|----------|--------------|
-| Zemin (derin) | `#070b1d` | `ink-deep` | `--bg-deep` |
-| Zemin | `#0b1026` | `ink` | `--bg` |
-| Zemin (açık uç) | `#101a3a` | `ink-light` | `--bg-light` |
-| Yüzey (kart/panel) | `#10172f` | `surface` | `--surface` |
-| Yüzey 2 (iç kutu) | `rgba(255,255,255,0.04)` | `surface-2` | `--surface-2` |
-| Metin (birincil) | `#d8f7ee` | `mist` | `--text` |
-| Metin (ikincil) | `rgba(216,247,238,0.7)` | `mist-2` | `--text-2` |
-| Metin (soluk) | `rgba(216,247,238,0.5)` | `mist-3` | `--text-3` |
-| Çizgi/kenarlık | `rgba(216,247,238,0.12)` | `line` | `--line` |
-| Çizgi (güçlü) | `rgba(216,247,238,0.2)` | `line-strong` | `--line-strong` |
-| Vurgu / CTA | `#6ee7b7` (emerald-300) | `accent` | `--accent` |
-| Vurgu (açık) | `#a7f3d0` (emerald-200) | `accent-soft` | `--accent-soft` |
-| Pozitif (kâr/artış) | `#6ee7b7` | `positive` | `--positive` |
-| Negatif (zarar/satış) | `#fda4af` (rose-300) | `negative` | `--negative` |
+Tüm token'lar `tailwind.config.ts`'te ilgili CSS değişkenine (`var(--x)`) işaret eder — koyu
+değer `:root`'ta varsayılan, açık değer `:root[data-theme="light"]` override'ında. Bileşen
+kodu değişmez (`bg-ink`, `text-mist`, `border-line` vb.); yalnız aktif `data-theme` değişir.
+
+| Rol | Tailwind | CSS Variable | Koyu (varsayılan) | Açık |
+|-----|----------|--------------|--------------------|------|
+| Zemin (derin) | `ink-deep` | `--bg-deep` | `#070b1d` | `#eef2fa` |
+| Zemin | `ink` | `--bg` | `#0b1026` | `#f6f8fc` |
+| Zemin (açık uç) | `ink-light` | `--bg-light` | `#101a3a` | `#ffffff` |
+| Zemin (sabit) | `ink-fixed` | — (sabit, tema-bağımsız) | `#0b1026` | `#0b1026` |
+| Yüzey (kart/panel) | `surface` | `--surface` | `#10172f` | `#ffffff` |
+| Yüzey 2 (iç kutu) | `surface-2` | `--surface-2` | `rgba(255,255,255,0.04)` | `rgba(11,16,38,0.035)` |
+| Metin (birincil) | `mist` | `--text` | `#d8f7ee` | `#0b1026` |
+| Metin (ikincil) | `mist-2` | `--text-2` | `rgba(216,247,238,0.7)` | `rgba(11,16,38,0.72)` |
+| Metin (soluk) | `mist-3` | `--text-3` | `rgba(216,247,238,0.5)` | `rgba(11,16,38,0.6)` |
+| Çizgi/kenarlık | `line` | `--line` | `rgba(216,247,238,0.12)` | `rgba(11,16,38,0.12)` |
+| Çizgi (güçlü) | `line-strong` | `--line-strong` | `rgba(216,247,238,0.2)` | `rgba(11,16,38,0.2)` |
+| Vurgu / CTA | `accent` | `--accent` | `#6ee7b7` (emerald-300) | `#047857` (emerald-700) |
+| Vurgu (açık/hover) | `accent-soft` | `--accent-soft` | `#a7f3d0` (emerald-200) | `#065f46` (emerald-800) |
+| Pozitif (kâr/artış) | `positive` | `--positive` | `#6ee7b7` | `#047857` |
+| Negatif (zarar/satış) | `negative` | `--negative` | `#fda4af` (rose-300) | `#be123c` (rose-700) |
+
+**`ink.fixed` (`text-ink-fixed`):** `ink` artık zemin rengine bağlı (`var(--bg)`) — açık modda
+near-white olur. Parlak-ama-tema-bağımsız pastel bir zemin üzerinde duran metin (rozet/ikon
+kutuları, `bg-emerald-300`/`bg-rose-300`/`bg-amber-300` gibi ham Tailwind fill'leri) her iki
+modda da koyu kalmalı; bu durumda `text-ink` değil `text-ink-fixed` kullanılır. `.btn-primary`/
+`.btn-danger`/`.btn-premium` gibi `accent`/`negative`/gradient token'ları üzerinde duran metin
+ise `text-ink` kalır (bunlar zaten tema ile birlikte koyulaşıyor, kontrast korunuyor).
+
+**Açık modda kontrast notu:** Pastel `emerald-300`/`rose-300` beyaz zeminde metin/dolgu olarak
+kullanılamaz (~1.5:1) — bu yüzden `accent`/`positive`/`negative` açık modda emerald-700/rose-700
+gibi doygun tonlara döner (WCAG ≥4.5:1 hedefiyle hesaplandı), pastel tonlar YALNIZ dark modda
+kullanılabilir varsayımıyla kalır.
 
 **Varlık türü vurguları (konvansiyon, değişmez):**
 - Döviz → `cyan-200` · Altın + "Yakında" rozetleri → `amber-200` · Premium/AI → `fuchsia` (yalnız rozet/gate, gradyan değil)
+- Bu ham Tailwind vurgu renkleri (emerald/rose/cyan/amber/fuchsia opacity tint'leri) henüz
+  token'a bağlı değil — koyu zemine göre ayarlanmış, açık modda tek tek görsel QA ile
+  düzeltiliyor (bkz. Teslim Öncesi Kontrol).
 
 **Metin hiyerarşisi kuralı:** Yalnız 3 kademe kullan: `text-mist` (başlık/değer), `text-mist-2` (gövde/açıklama), `text-mist-3` (etiket/meta). ~~`text-mist/28`…`text-mist/85` gibi serbest opacity~~ **yasak** — /45 altı kademeler WCAG 4.5:1 kontrastı geçmez.
+
+## Tema Geçişi (Light/Dark)
+
+- **Mekanizma:** `next-themes` (`components/Providers.tsx`, `attribute="data-theme"`,
+  `defaultTheme="system"`, `enableSystem`, `disableTransitionOnChange`). İlk ziyarette OS
+  tercihini takip eder; kullanıcı `components/site/ThemeToggle.tsx` ile tek tuşla açık/koyu
+  arasında geçip localStorage'a kaydeder.
+- **Toggle konumu:** `SiteHeader.tsx`'te `AuthNav`/`MobileMenu` yanında (her ekran boyutunda
+  görünür), ayrıca `MobileMenu.tsx` drawer'ının üst satırında mirror edilir.
+- Yeni bileşen yazarken tema kontrolü GENELDE gerekmez — `bg-ink`/`text-mist`/`border-line`/
+  `.glass-card` gibi token tabanlı class'lar otomatik tema değiştirir. Yalnız chart kütüphaneleri
+  gibi JS'e ham renk geçen yerlerde (`lightweight-charts`, `recharts`) `useTheme()` +
+  `lib/hooks/useMounted.ts` guard'ıyla manuel dallanma gerekir (bkz. `AdvancedChart.tsx`,
+  `PriceChart.tsx`, `PortfolioValueChart.tsx`).
 
 ## Tipografi
 
@@ -60,11 +96,11 @@ Serbest `rounded-[Xrem]` değeri **eklenmez**; bu dörtlüden seçilir.
 
 ## Gölge & Efekt
 
-| Token | Değer | Kullanım |
-|-------|-------|----------|
-| `shadow-glow` | `0 0 44px rgba(40,230,164,0.18)` | Primary CTA, vurgulu kart |
-| `shadow-card` | `0 20px 80px rgba(0,0,0,0.28)` | Glass kartlar |
-| `.glass-card` | lacivert gradyan + liquid glass v2 (aşağıda) + `line` kenarlık | Tek kart stili; inline kopyalama yasak |
+| Token | Değer (koyu / açık) | Kullanım |
+|-------|----------------------|----------|
+| `shadow-glow` | `var(--shadow-glow-color)`: `rgba(40,230,164,0.18)` / `rgba(4,120,87,0.18)` | Primary CTA, vurgulu kart |
+| `shadow-card` | `var(--shadow-card-color)`: `rgba(0,0,0,0.28)` / `rgba(15,23,42,0.1)` | Glass kartlar |
+| `.glass-card` | `--glass-fill-1`/`--glass-fill-2` gradyan dolgu (koyu: lacivert / açık: beyaz-near-white) + liquid glass v2 (aşağıda) + `line` kenarlık | Tek kart stili; inline kopyalama yasak |
 
 **Liquid glass v2 (2026-07-08, Faz 0):** `.glass-card` artık şunları class içinden verir —
 bileşene ayrıca `transition` utility'si eklemek gerekmez:
@@ -134,14 +170,15 @@ Yeni UI yazarken utility kopyalamak yerine bunlar kullanılır:
 | `.btn` | Her butonun tabanı (flex, cursor, disabled durumu) — tek başına kullanılmaz |
 | `.btn-lg` / `.btn-sm` | Boyut: 48px hero/form CTA · 44px satır içi aksiyon |
 | `.btn-primary` | Tek primary CTA (accent zemin, ink metin); vurgu gerekirse `shadow-glow` eklenir |
-| `.btn-secondary` | İkincil aksiyon (line kenarlık + beyaz %5 zemin) |
-| `.btn-ghost` | Sessiz aksiyon (yalnız hover zemini) |
-| `.btn-danger` | Yıkıcı aksiyon (negative zemin); primary'den uzak konumlandır |
-| `.badge-pill` | Rozet iskeleti; renk çifti çağıranda (örn. `border-emerald-300/20 bg-emerald-300/10 text-emerald-100`) |
-| `.section-card` | Sayfa bölümü sarmalayıcısı (`rounded-section` + line + beyaz %2.5 zemin) |
-| `.glass-card` | Kart zemini (blur'lu lacivert gradyan, geçiş gömülü) |
+| `.btn-secondary` | İkincil aksiyon (line kenarlık + beyaz %5 zemin; açık modda `[data-theme="light"]` override lacivert %4 zemine döner) |
+| `.btn-ghost` | Sessiz aksiyon (yalnız hover zemini; açık mod override'ı var) |
+| `.btn-danger` | Yıkıcı aksiyon (negative zemin); primary'den uzak konumlandır. Hover'ı açık modda `rose-800`'e override edilir (pastel `rose-200` beyazda okunmuyordu) |
+| `.btn-premium` | Fuchsia→emerald gradyan CTA; açık modda daha doygun bir gradyana (`#c026d3`→`#047857`) override edilir |
+| `.badge-pill` | Rozet iskeleti; renk çifti çağıranda (örn. `border-emerald-300/20 bg-emerald-300/10 text-emerald-100`) — açık modda tek tek QA gerekir (token'a bağlı değil) |
+| `.section-card` | Sayfa bölümü sarmalayıcısı (`rounded-section` + line + beyaz %2.5 zemin; açık mod override'ı var) |
+| `.glass-card` | Kart zemini (`--glass-fill-1/2` gradyan dolgu, geçiş gömülü) — dolgu ve gölge artık CSS değişkeni, tema ile otomatik değişir |
 | `.glass-card-interactive` | Tıklanabilir kart: hover kalkış + ışıma + press (yalnız `.glass-card` ile) |
-| `.glass-tint-{positive\|negative\|neutral\|premium}` | Tonlu cam — glass-card'a renk vermenin TEK yolu (utility ezilir) |
+| `.glass-tint-{positive\|negative\|neutral\|premium}` | Tonlu cam — glass-card'a renk vermenin TEK yolu (utility ezilir); her varyantın `[data-theme="light"]` override'ı var (doygun/koyu hue ailesi) |
 | `.glass-sheen` | Hover'da ışık süpürmesi — YALNIZ hero + premium vitrin kartı |
 | `.animate-enter` | Kademeli liste girişi; `style={{ "--enter-index": Math.min(i, 12) }}` ile |
 | `bg-hero` / `bg-cta` | Vitrin gradyanları (`--gradient-hero` / `--gradient-cta`) |
@@ -150,6 +187,12 @@ Yeni UI yazarken utility kopyalamak yerine bunlar kullanılır:
 
 **Gradyan kuralı:** Vurgu tonu değişebilir (varlık türü konvansiyonu) ama koyu taban her zaman
 lacivert ailedir: `rgba(11,16,38,x)`. Yeşilimsi tabanlar (`rgba(12,24,22)`, `rgba(16,35,31)`) yasak.
+
+**Açık mod istisnası — Hero/RegisterCTA:** `--gradient-hero`/`--gradient-cta` (`bg-hero`/`bg-cta`)
+kasıtlı olarak her iki modda da AYNI koyu değeri kullanır, `[data-theme="light"]` override'ı
+YOK. Tek tüketicileri `Hero.tsx` ve `RegisterCTA.tsx`, ikisi de üzerine ham `text-white` yazıyor
+— bilinçli bir "koyu spotlight kart" adası. Bu iki bileşene light-mode gradyanı eklenmeye
+çalışılmamalı; üzerlerindeki `text-white` de bu yüzden bozuk değil.
 
 ## Sayfa Deseni
 
@@ -170,6 +213,8 @@ lacivert ailedir: `rgba(11,16,38,x)`. Yeşilimsi tabanlar (`rgba(12,24,22)`, `rg
 ## Teslim Öncesi Kontrol
 
 - [ ] Metin kontrastı ≥4.5:1 (koyu zeminde ayrıca doğrula)
+- [ ] Açık modda da kontrol edildi (`data-theme="light"` toggle ile) — özellikle ham
+      `emerald`/`rose`/`cyan`/`amber`/`fuchsia` opacity tint'leri token'a bağlı değil
 - [ ] Focus görünür, klavye ile tüm akış yürünebilir
 - [ ] `prefers-reduced-motion` ile test edildi
 - [ ] 375px / 768px / 1024px / 1440px kırılımları kontrol edildi

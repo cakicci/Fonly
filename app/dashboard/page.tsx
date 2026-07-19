@@ -18,6 +18,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isPremium } from "@/lib/auth/premium";
 import { getQuotesForSlugs, type Quote } from "@/lib/portfolio/price";
+import { computeContributionStreak } from "@/lib/portfolio/streak";
 import {
   aggregatePositions,
   portfolioSummary,
@@ -39,7 +40,10 @@ import {
 } from "@/components/PersonalRecommendations";
 import { OnboardingChecklist, type OnboardingStep } from "@/components/OnboardingChecklist";
 import { GoalsCard } from "@/components/GoalsCard";
+import { SavingsProjectionCalculator } from "@/components/SavingsProjectionCalculator";
 import { DashboardCustomizer } from "@/components/DashboardCustomizer";
+import { NetWorthCard } from "@/components/NetWorthCard";
+import { PremiumGate } from "@/components/billing/PremiumGate";
 import { parseDashboardLayout, widgetLabel, type WidgetKey } from "@/lib/dashboard/widgets";
 
 export const metadata: Metadata = {
@@ -109,13 +113,13 @@ export default async function DashboardPage() {
 
   const userId = session.user.id;
 
-  const [user, lots, watchlist, alerts, premium, goals, triggered] = await Promise.all([
+  const [user, lots, watchlist, alerts, premium, goals, triggered, otherAssets] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: { riskProfile: true, monthlyIncome: true, dashboardLayout: true },
     }),
     prisma.portfolioLot.findMany({
-      where: { userId },
+      where: { userId, isDemo: false },
       select: { slug: true, side: true, quantity: true, unitCost: true, boughtAt: true },
     }),
     prisma.watchlist.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, select: { slug: true } }),
@@ -132,6 +136,7 @@ export default async function DashboardPage() {
       take: 5,
       select: { id: true, slug: true, condition: true, threshold: true, triggeredAt: true },
     }),
+    prisma.otherAsset.findMany({ where: { userId }, orderBy: { createdAt: "desc" } }),
   ]);
 
   const riskProfile = (user?.riskProfile ?? null) as "low" | "medium" | "high" | null;
@@ -173,6 +178,7 @@ export default async function DashboardPage() {
   const summary = portfolioSummary(positions);
   const daily = portfolioDailyChange(positions, changeMap);
   const hasPortfolio = lots.length > 0;
+  const contributionStreak = computeContributionStreak(lots);
 
   const pnlColor =
     summary.pnl > 0 ? "text-emerald-300" : summary.pnl < 0 ? "text-rose-300" : "text-mist-2";
@@ -256,6 +262,13 @@ export default async function DashboardPage() {
     targetDate: g.targetDate ? g.targetDate.toISOString() : null,
   }));
 
+  const otherAssetItems = otherAssets.map((a) => ({
+    id:    a.id,
+    name:  a.name,
+    kind:  a.kind,
+    value: a.value,
+  }));
+
   // Kullanıcı yerleşimi: widget sırası + gizlenenler.
   const layout = parseDashboardLayout(user?.dashboardLayout ?? null);
   const customizerWidgets = layout.order.map((k) => ({
@@ -279,7 +292,7 @@ export default async function DashboardPage() {
                     Toplam portföy değeri
                   </div>
                   <div className="mt-2 flex flex-wrap items-baseline gap-3">
-                    <h2 className="text-4xl font-semibold tabular-nums text-white sm:text-5xl">
+                    <h2 className="text-4xl font-semibold tabular-nums text-mist sm:text-5xl">
                       {formatLira(summary.value)}
                     </h2>
                     {daily.changePct != null && (
@@ -342,27 +355,45 @@ export default async function DashboardPage() {
               </div>
             </div>
           ) : (
-            <Link
-              href="/portfoy"
-              className="glass-card glass-card-interactive group flex flex-col gap-4 rounded-section p-6 sm:flex-row sm:items-center sm:justify-between"
-            >
+            <div className="glass-card flex flex-col gap-4 rounded-section p-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-300/12 text-emerald-200">
                   <WalletCards className="h-6 w-6" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Portföyün boş</h2>
+                  <h2 className="text-lg font-semibold text-mist">Portföyün boş</h2>
                   <p className="mt-1 text-sm text-mist-3">
                     İlk alımını ekle, kâr/zararını canlı fiyatlarla takip et.
                   </p>
+                  <Link
+                    href="/portfoy?mode=demo"
+                    className="mt-1.5 inline-flex items-center gap-1 text-xs font-medium text-fuchsia-200 hover:text-fuchsia-100"
+                  >
+                    🧪 Önce risk almadan deneme portföyünde dene
+                  </Link>
                 </div>
               </div>
-              <span className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-emerald-200 group-hover:text-emerald-100">
+              <Link
+                href="/portfoy"
+                className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-emerald-200 hover:text-emerald-100"
+              >
                 Alım ekle <ArrowUpRight className="h-4 w-4" />
-              </span>
-            </Link>
+              </Link>
+            </div>
           )}
         </section>
+    ),
+
+    // Net değer — portföy + portföy dışı varlık/borç kalemleri (Premium)
+    netWorth: (
+      <section key="netWorth">
+        <PremiumGate feature="Net Değer Takibi">
+          <NetWorthCard
+            initialItems={premium ? otherAssetItems : []}
+            portfolioValue={summary.value}
+          />
+        </PremiumGate>
+      </section>
     ),
 
     // Varlık dağılımı + pozisyon performansı
@@ -371,7 +402,7 @@ export default async function DashboardPage() {
         <section key="allocation" className="grid gap-4 md:grid-cols-2">
             {/* Varlık dağılımı */}
             <article className="glass-card rounded-panel p-5">
-              <h3 className="text-sm font-semibold text-white">Varlık dağılımı</h3>
+              <h3 className="text-sm font-semibold text-mist">Varlık dağılımı</h3>
               <div className="mt-4 flex h-2.5 w-full overflow-hidden rounded-full bg-white/[0.04]">
                 {allocEntries.map(([type, value]) => (
                   <div
@@ -399,7 +430,7 @@ export default async function DashboardPage() {
 
             {/* En iyi / en kötü pozisyon */}
             <article className="glass-card rounded-panel p-5">
-              <h3 className="text-sm font-semibold text-white">Pozisyon performansı</h3>
+              <h3 className="text-sm font-semibold text-mist">Pozisyon performansı</h3>
               <div className="mt-4 space-y-3">
                 {bestPosition && (
                   <Link
@@ -408,7 +439,7 @@ export default async function DashboardPage() {
                   >
                     <div className="min-w-0">
                       <p className="text-[11px] text-mist-3">En çok kazandıran</p>
-                      <p className="truncate text-sm font-medium text-white">
+                      <p className="truncate text-sm font-medium text-mist">
                         {assetDisplayName(bestPosition.slug)}
                       </p>
                     </div>
@@ -424,7 +455,7 @@ export default async function DashboardPage() {
                   >
                     <div className="min-w-0">
                       <p className="text-[11px] text-mist-3">En çok kaybettiren</p>
-                      <p className="truncate text-sm font-medium text-white">
+                      <p className="truncate text-sm font-medium text-mist">
                         {assetDisplayName(worstPosition.slug)}
                       </p>
                     </div>
@@ -440,18 +471,20 @@ export default async function DashboardPage() {
 
     // Hedefler + Senin için gelişmeler
     goals: (
-      <section key="goals" className={`grid gap-4 ${triggered.length > 0 ? "md:grid-cols-2" : ""}`}>
+      <section key="goals" className="space-y-4">
+        <div className={`grid gap-4 ${triggered.length > 0 ? "md:grid-cols-2" : ""}`}>
         <GoalsCard
           initialGoals={goalItems}
           portfolioValue={summary.value}
           monthlySuggested={suggestedAmount}
+          contributionStreak={contributionStreak}
         />
 
           {triggered.length > 0 && (
             <article className="glass-card rounded-panel p-5">
               <div className="mb-4 flex items-center gap-2">
                 <Activity className="h-4 w-4 text-emerald-200" />
-                <h3 className="text-sm font-semibold text-white">Senin için gelişmeler</h3>
+                <h3 className="text-sm font-semibold text-mist">Senin için gelişmeler</h3>
               </div>
               <ul className="space-y-2.5">
                 {triggered.map((t) => (
@@ -460,8 +493,8 @@ export default async function DashboardPage() {
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-300/12 text-emerald-200">
                         <BellRing className="h-3.5 w-3.5" />
                       </span>
-                      <Link href={assetHref(t.slug)} className="truncate text-mist-2 hover:text-white">
-                        <span className="font-medium text-white">{assetDisplayName(t.slug)}</span>{" "}
+                      <Link href={assetHref(t.slug)} className="truncate text-mist-2 hover:text-mist">
+                        <span className="font-medium text-mist">{assetDisplayName(t.slug)}</span>{" "}
                         {conditionLabel(t.condition)} {formatPrice(t.threshold)} eşiğini geçti
                       </Link>
                     </div>
@@ -473,6 +506,9 @@ export default async function DashboardPage() {
               </ul>
             </article>
           )}
+        </div>
+
+        <SavingsProjectionCalculator />
       </section>
     ),
 
@@ -501,7 +537,7 @@ export default async function DashboardPage() {
             </div>
             <p className="text-sm text-mist-3">Aylık ayrılabilir tutar</p>
             {suggestedAmount ? (
-              <h2 className="mt-2 text-2xl font-semibold text-white">{formatLira(suggestedAmount)}</h2>
+              <h2 className="mt-2 text-2xl font-semibold text-mist">{formatLira(suggestedAmount)}</h2>
             ) : (
               <h2 className="mt-2 text-2xl font-semibold text-mist-3">Belirlenmedi</h2>
             )}
@@ -520,7 +556,7 @@ export default async function DashboardPage() {
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 text-amber-200" />
-                <h3 className="text-sm font-semibold text-white">İzleme Listem</h3>
+                <h3 className="text-sm font-semibold text-mist">İzleme Listem</h3>
                 <span className="text-xs text-mist-3">({watchlist.length})</span>
               </div>
             </div>
@@ -532,7 +568,7 @@ export default async function DashboardPage() {
                     <li key={w.slug} className="flex items-center justify-between gap-3 text-xs">
                       <Link
                         href={assetHref(w.slug)}
-                        className="truncate text-mist-2 hover:text-white"
+                        className="truncate text-mist-2 hover:text-mist"
                       >
                         {w.name}
                       </Link>
@@ -573,7 +609,7 @@ export default async function DashboardPage() {
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <BellRing className="h-4 w-4 text-cyan-200" />
-                <h3 className="text-sm font-semibold text-white">Aktif Alarmlar</h3>
+                <h3 className="text-sm font-semibold text-mist">Aktif Alarmlar</h3>
                 <span className="text-xs text-mist-3">({alerts.length})</span>
               </div>
               {alerts.length > 0 && (
@@ -587,7 +623,7 @@ export default async function DashboardPage() {
                 {alertItems.slice(0, 4).map((a) => (
                   <li key={a.id} className="flex items-center justify-between gap-3 text-xs">
                     <div className="min-w-0">
-                      <Link href={assetHref(a.slug)} className="text-mist-2 hover:text-white">
+                      <Link href={assetHref(a.slug)} className="text-mist-2 hover:text-mist">
                         {assetDisplayName(a.slug)}
                       </Link>
                       <p className="mt-0.5 text-[11px] tabular-nums text-mist-3">
@@ -596,7 +632,7 @@ export default async function DashboardPage() {
                       </p>
                     </div>
                     {a.distancePct != null ? (
-                      <span className="shrink-0 rounded-full border border-white/8 bg-white/[0.04] px-2 py-0.5 tabular-nums text-mist-2">
+                      <span className="shrink-0 rounded-full border border-line bg-white/[0.04] px-2 py-0.5 tabular-nums text-mist-2">
                         %{Math.abs(a.distancePct).toFixed(1)} kaldı
                       </span>
                     ) : (
@@ -643,7 +679,7 @@ export default async function DashboardPage() {
                 </span>
               ) : null}
             </div>
-            <h1 className="mt-2 text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="mt-2 text-3xl font-semibold text-mist sm:text-4xl">
               {greeting()}, {session.user.name ?? "Fonly kullanıcısı"}
             </h1>
           </div>

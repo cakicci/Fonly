@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Bell, X } from "lucide-react";
-import { parseAssetSlug } from "@/lib/chart/timeframe";
+import { assetDisplayName, assetHref } from "@/lib/portfolio/asset";
 
 interface TriggeredAlert {
   id:          number;
   slug:        string;
+  triggerType: "price" | "percent_change" | string;
   condition:   "above" | "below";
   threshold:   number;
   triggeredAt: string;
@@ -16,6 +17,8 @@ interface TriggeredAlert {
 }
 
 const POLL_MS = 60_000; // dakikada bir kontrol
+
+const fmtTL = (v: number) => v.toLocaleString("tr-TR", { maximumFractionDigits: 4 });
 
 /**
  * Sayfada sabit (sağ üst) bir küçük zil rozeti. Tetiklenip henüz onaylanmamış
@@ -74,7 +77,7 @@ export function AlertBadge() {
             className="w-full max-w-md overflow-hidden rounded-2xl border border-amber-300/30 bg-ink shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <header className="flex items-center justify-between border-b border-white/8 px-5 py-4">
+            <header className="flex items-center justify-between border-b border-line px-5 py-4">
               <h2 className="flex items-center gap-2 text-base font-semibold text-amber-100">
                 <Bell className="h-4 w-4" />
                 Tetiklenen Alarmlar
@@ -82,7 +85,7 @@ export function AlertBadge() {
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Kapat"
-                className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
+                className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-mist"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -90,15 +93,15 @@ export function AlertBadge() {
 
             <ul className="max-h-96 space-y-2 overflow-y-auto p-3">
               {items.map(a => {
-                const { type, code } = parseAssetSlug(a.slug);
-                const href = type === "fon" ? `/fon/${code.toLowerCase()}`
-                  : type === "hisse" ? `/hisse/${code.toLowerCase()}`
-                  : type === "altin" ? `/altin/${code.toLowerCase()}`
-                  : type === "doviz" ? `/doviz/${code.toLowerCase()}`
-                  : "/";
-                const conditionLabel = a.condition === "above"
-                  ? `${a.threshold.toFixed(2)} üstüne çıktı`
-                  : `${a.threshold.toFixed(2)} altına düştü`;
+                const name = assetDisplayName(a.slug);
+                const href = assetHref(a.slug);
+                const conditionLabel = a.triggerType === "percent_change"
+                  ? (a.condition === "above"
+                      ? `Bugün belirlediğin %${fmtTL(a.threshold)} değişimi geçti.`
+                      : `Bugün belirlediğin %${fmtTL(a.threshold)} düşüşü geçti.`)
+                  : (a.condition === "above"
+                      ? `Bugün belirlediğin ${fmtTL(a.threshold)} TL seviyesini geçti.`
+                      : `Bugün belirlediğin ${fmtTL(a.threshold)} TL seviyesinin altına indi.`);
 
                 return (
                   <li
@@ -109,15 +112,15 @@ export function AlertBadge() {
                       <Link
                         href={href}
                         onClick={() => setOpen(false)}
-                        className="block text-sm font-semibold text-white hover:text-amber-100"
+                        className="block text-sm font-semibold text-mist hover:text-amber-100"
                       >
-                        {type?.toUpperCase()} · {code.toUpperCase()}
+                        {name}
                       </Link>
                       <p className="text-[11px] text-mist-3">{conditionLabel}</p>
                     </div>
                     <button
                       onClick={() => acknowledge(a.id)}
-                      className="rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-white"
+                      className="rounded-lg border border-line bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-mist"
                     >
                       Tamam
                     </button>

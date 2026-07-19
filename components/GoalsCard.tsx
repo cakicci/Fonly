@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Target, Plus, Trash2, Loader2, X, Check } from "lucide-react";
+import { Target, Plus, Trash2, Loader2, X, Check, Flame } from "lucide-react";
 
 export interface GoalDTO {
   id: string;
@@ -16,6 +16,16 @@ interface GoalsCardProps {
   portfolioValue: number;
   /** Aylık ayrılabilir tutar (varsa) — tempo tahmini için. */
   monthlySuggested: number | null;
+  /** Kaç aydır kesintisiz alım yapıldığı (bkz. lib/portfolio/streak.ts). */
+  contributionStreak?: number;
+}
+
+function streakBadge(streak: number): { label: string; tone: string } | null {
+  if (streak >= 12) return { label: `💎 ${streak} ay üst üste — bir yılı geçtin!`, tone: "border-fuchsia-300/30 bg-fuchsia-300/10 text-fuchsia-200" };
+  if (streak >= 6)  return { label: `🏆 ${streak} ay üst üste — harika bir alışkanlık!`, tone: "border-amber-300/30 bg-amber-300/10 text-amber-200" };
+  if (streak >= 3)  return { label: `🔥 ${streak} ay üst üste katkı yaptın`, tone: "border-emerald-300/30 bg-emerald-300/10 text-emerald-200" };
+  if (streak >= 2)  return { label: `${streak} ay üst üste katkı yaptın, devam!`, tone: "border-cyan-300/30 bg-cyan-300/10 text-cyan-200" };
+  return null;
 }
 
 function formatLira(value: number): string {
@@ -32,7 +42,8 @@ function formatDate(iso: string): string {
   );
 }
 
-export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: GoalsCardProps) {
+export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested, contributionStreak = 0 }: GoalsCardProps) {
+  const badge = streakBadge(contributionStreak);
   const [goals, setGoals] = useState<GoalDTO[]>(initialGoals);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -96,7 +107,7 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-emerald-200" />
-          <h3 className="text-sm font-semibold text-white">Hedeflerim</h3>
+          <h3 className="text-sm font-semibold text-mist">Hedeflerim</h3>
           {goals.length > 0 && <span className="text-xs text-mist-3">({goals.length})</span>}
         </div>
         <button
@@ -111,14 +122,21 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
         </button>
       </div>
 
+      {badge && (
+        <div className={`mb-4 flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-medium ${badge.tone}`}>
+          <Flame className="h-3.5 w-3.5 shrink-0" />
+          {badge.label}
+        </div>
+      )}
+
       {open && (
-        <form onSubmit={submit} className="mb-4 grid gap-2.5 rounded-2xl border border-white/8 bg-white/[0.03] p-3">
+        <form onSubmit={submit} className="mb-4 grid gap-2.5 rounded-2xl border border-line bg-white/[0.03] p-3">
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Hedef adı (örn. Acil durum fonu)"
             maxLength={60}
-            className="w-full rounded-xl border border-white/10 bg-ink px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
+            className="w-full rounded-xl border border-line bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
           />
           <div className="grid gap-2.5 sm:grid-cols-2">
             <input
@@ -126,13 +144,13 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
               onChange={(e) => setTarget(e.target.value)}
               inputMode="numeric"
               placeholder="Hedef tutar (₺)"
-              className="w-full rounded-xl border border-white/10 bg-ink px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
+              className="w-full rounded-xl border border-line bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
             />
             <input
               value={date}
               onChange={(e) => setDate(e.target.value)}
               type="date"
-              className="w-full rounded-xl border border-white/10 bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
+              className="w-full rounded-xl border border-line bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
             />
           </div>
           {error && <p className="text-xs text-rose-300">{error}</p>}
@@ -159,10 +177,10 @@ export function GoalsCard({ initialGoals, portfolioValue, monthlySuggested }: Go
                 : null;
 
             return (
-              <li key={g.id} className="rounded-2xl border border-white/8 bg-white/[0.03] p-3">
+              <li key={g.id} className="rounded-2xl border border-line bg-white/[0.03] p-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-white">{g.title}</p>
+                    <p className="truncate text-sm font-medium text-mist">{g.title}</p>
                     <p className="mt-0.5 text-[11px] tabular-nums text-mist-3">
                       {formatLira(portfolioValue >= g.target ? g.target : portfolioValue)} /{" "}
                       {formatLira(g.target)}

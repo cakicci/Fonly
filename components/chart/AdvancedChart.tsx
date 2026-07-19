@@ -16,6 +16,7 @@ import {
   type HistogramData,
   type SeriesType,
 } from "lightweight-charts";
+import { useTheme } from "next-themes";
 import type { Candle, ChartType, IndicatorKey } from "@/types/chart";
 import { sma, ema, rsi, macd, bollinger } from "@/lib/chart/indicators";
 import { fmtAsset, priceFormatFor, type AssetKind } from "@/lib/format";
@@ -43,7 +44,7 @@ export interface AdvancedChartProps {
 }
 
 // ── Renkler (dark theme) ────────────────────────────────────────────────────
-const COLORS = {
+const DARK_COLORS = {
   bg:          "transparent",
   text:        "#9ca3af",
   grid:        "rgba(255,255,255,0.05)",
@@ -61,7 +62,7 @@ const COLORS = {
   volumeDown:  "rgba(251,113,133,0.5)",
 };
 
-const INDICATOR_COLORS: Record<IndicatorKey, string> = {
+const DARK_INDICATOR_COLORS: Record<IndicatorKey, string> = {
   sma20:     "#f59e0b",
   sma50:     "#3b82f6",
   sma200:    "#a855f7",
@@ -70,6 +71,36 @@ const INDICATOR_COLORS: Record<IndicatorKey, string> = {
   rsi14:     "#ec4899",
   macd:      "#10b981",
   bollinger: "#94a3b8",
+};
+
+// ── Renkler (light theme) ───────────────────────────────────────────────────
+const LIGHT_COLORS = {
+  bg:          "transparent",
+  text:        "#475569",
+  grid:        "rgba(11,16,38,0.06)",
+  border:      "rgba(11,16,38,0.12)",
+  up:          "#059669",
+  down:        "#e11d48",
+  upBorder:    "#059669",
+  downBorder:  "#e11d48",
+  upWick:      "#059669",
+  downWick:    "#e11d48",
+  lineMain:    "#059669",
+  areaTopMain: "rgba(5,150,105,0.22)",
+  areaBotMain: "rgba(5,150,105,0.02)",
+  volumeUp:    "rgba(5,150,105,0.45)",
+  volumeDown:  "rgba(225,29,72,0.45)",
+};
+
+const LIGHT_INDICATOR_COLORS: Record<IndicatorKey, string> = {
+  sma20:     "#d97706",
+  sma50:     "#2563eb",
+  sma200:    "#9333ea",
+  ema20:     "#b45309",
+  ema50:     "#0891b2",
+  rsi14:     "#db2777",
+  macd:      "#059669",
+  bollinger: "#64748b",
 };
 
 export function AdvancedChart({
@@ -87,6 +118,7 @@ export function AdvancedChart({
   const chartRef        = useRef<IChartApi | null>(null);
   const mainSeriesRef   = useRef<ISeriesApi<SeriesType> | null>(null);
   const [hoverOhlc, setHoverOhlc] = useState<Candle | null>(null);
+  const { resolvedTheme } = useTheme();
 
   // Effective chart type — fonlarda candle zorlamalı line
   const effectiveType: ChartType = isLineOnly && chartType === "candle" ? "line" : chartType;
@@ -94,6 +126,10 @@ export function AdvancedChart({
 
   useEffect(() => {
     if (!containerRef.current || data.length === 0) return;
+
+    const COLORS = resolvedTheme === "light" ? LIGHT_COLORS : DARK_COLORS;
+    const INDICATOR_COLORS = resolvedTheme === "light" ? LIGHT_INDICATOR_COLORS : DARK_INDICATOR_COLORS;
+    const bollingerBandColor = resolvedTheme === "light" ? "rgba(100,116,139,0.5)" : "rgba(148,163,184,0.6)";
 
     // İstanbul timezone'unda zaman gösterimi — Yahoo timestamp'leri UTC,
     // kullanıcıya TR saati lazım. tickMarkFormatter x-ekseninde, timeFormatter
@@ -252,12 +288,12 @@ export function AdvancedChart({
         });
         mid.setData(middle.map(p => ({ time: p.time as Time, value: p.value })));
         const up = chart.addSeries(LineSeries, {
-          color: "rgba(148,163,184,0.6)", lineWidth: 1,
+          color: bollingerBandColor, lineWidth: 1,
           lastValueVisible: false, priceLineVisible: false,
         });
         up.setData(upper.map(p => ({ time: p.time as Time, value: p.value })));
         const lo = chart.addSeries(LineSeries, {
-          color: "rgba(148,163,184,0.6)", lineWidth: 1,
+          color: bollingerBandColor, lineWidth: 1,
           lastValueVisible: false, priceLineVisible: false,
         });
         lo.setData(lower.map(p => ({ time: p.time as Time, value: p.value })));
@@ -318,7 +354,7 @@ export function AdvancedChart({
       chartRef.current = null;
       mainSeriesRef.current = null;
     };
-  }, [data, effectiveType, effectiveVolume, indicators, height, assetKind]);
+  }, [data, effectiveType, effectiveVolume, indicators, height, assetKind, resolvedTheme]);
 
   // ── Tick update — son mumu chart'ı yeniden oluşturmadan güncelle ──────────
   useEffect(() => {
@@ -342,15 +378,15 @@ export function AdvancedChart({
   return (
     <div className="relative w-full">
       {hoverOhlc && (
-        <div className="pointer-events-none absolute left-2 top-2 z-10 rounded-lg border border-white/10 bg-ink/85 px-3 py-1.5 text-xs font-mono backdrop-blur-sm">
+        <div className="pointer-events-none absolute left-2 top-2 z-10 rounded-lg border border-line bg-ink/85 px-3 py-1.5 text-xs font-mono backdrop-blur-sm">
           <span className="text-mist-3">O</span>{" "}
-          <span className="text-white">{fmtTooltip(hoverOhlc.open, assetKind)}</span>
+          <span className="text-mist">{fmtTooltip(hoverOhlc.open, assetKind)}</span>
           <span className="ml-2 text-mist-3">H</span>{" "}
           <span className="text-emerald-300">{fmtTooltip(hoverOhlc.high, assetKind)}</span>
           <span className="ml-2 text-mist-3">L</span>{" "}
           <span className="text-rose-300">{fmtTooltip(hoverOhlc.low, assetKind)}</span>
           <span className="ml-2 text-mist-3">C</span>{" "}
-          <span className="text-white">{fmtTooltip(hoverOhlc.close, assetKind)}{unit}</span>
+          <span className="text-mist">{fmtTooltip(hoverOhlc.close, assetKind)}{unit}</span>
         </div>
       )}
       <div ref={containerRef} className="w-full" style={{ height }} />

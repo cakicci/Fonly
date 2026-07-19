@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { auth } from "@/auth";
 import { AlertsManager } from "@/components/alerts/AlertsManager";
+import { PushNotificationToggle } from "@/components/alerts/PushNotificationToggle";
+import { PremiumGate } from "@/components/billing/PremiumGate";
 
 export const metadata: Metadata = {
   title: "Alarmlarım",
@@ -24,12 +26,15 @@ export default async function AlertsPage() {
         </Link>
 
         <header className="mb-6 mt-3">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">Fiyat Alarmlarım</h1>
+          <h1 className="text-2xl font-semibold text-mist sm:text-3xl">Fiyat Alarmlarım</h1>
           <p className="mt-1 text-sm text-mist-3">
             Kurduğun tüm alarmları tek yerden gör ve yönet. Yeni alarmı varlık sayfalarından ekleyebilirsin.
           </p>
         </header>
 
+        <PremiumGate feature="Anlık tarayıcı bildirimleri" preview>
+          <PushNotificationToggle />
+        </PremiumGate>
         <AlertsManager />
       </div>
     </main>

@@ -22,7 +22,7 @@ export function SiteSubNav() {
   return (
     <nav
       aria-label="Hızlı kategoriler"
-      className="border-t border-white/5 bg-ink/40"
+      className="border-t border-line bg-ink/40"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-x-auto">
@@ -33,7 +33,7 @@ export function SiteSubNav() {
                 className={`inline-flex items-center rounded-lg px-2.5 py-1 font-semibold transition ${
                   pathname === "/"
                     ? "bg-emerald-300/15 text-emerald-100"
-                    : "text-mist-2 hover:bg-white/[0.04] hover:text-white"
+                    : "text-mist-2 hover:bg-white/[0.04] hover:text-mist"
                 }`}
               >
                 Ana Sayfa
@@ -47,7 +47,7 @@ export function SiteSubNav() {
                   {item.comingSoon ? (
                     <span className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg px-2.5 py-1 text-mist-3">
                       {item.label}
-                      <span className="rounded-md border border-white/8 bg-white/[0.03] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-mist-3">
+                      <span className="rounded-md border border-line bg-white/[0.03] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-mist-3">
                         Yakında
                       </span>
                     </span>
@@ -57,7 +57,7 @@ export function SiteSubNav() {
                       className={`inline-flex items-center rounded-lg px-2.5 py-1 transition ${
                         active
                           ? "text-emerald-200"
-                          : "text-mist-2 hover:bg-white/[0.04] hover:text-white"
+                          : "text-mist-2 hover:bg-white/[0.04] hover:text-mist"
                       }`}
                     >
                       {item.label}

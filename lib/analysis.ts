@@ -11,6 +11,20 @@ export interface AnalysisParams {
   compName: string            // "Gram Altın" or "Dolar"
 }
 
+/**
+ * Kaba, yaklaşık yıllık gösterge oranlar — canlı/resmi veri DEĞİLDİR, TÜİK
+ * TÜFE ve TCMB ortalama mevduat faizine yakın yuvarlak bantlar olarak
+ * dönemsel elle güncellenir. Tek amacı, ham yüzdeyi günlük hayattan tanıdık
+ * bir referansla ("enflasyonun altında/üstünde") ilişkilendirmektir; kesin
+ * rakam iddiası taşımaz. Bu yüzden generateAnalysis'te üretilen cümle her
+ * zaman "kaba/yaklaşık" olduğunu açıkça belirtir.
+ *
+ * Yalnızca AnalysisCard'ın sabit range=1y çağrısıyla anlamlıdır (yıllık
+ * getiriyle kıyaslar); farklı dönem uzunluklarında kullanılmamalıdır.
+ */
+const ROUGH_ANNUAL_INFLATION_PCT = 45
+const ROUGH_ANNUAL_DEPOSIT_PCT   = 45
+
 export function generateAnalysis(p: AnalysisParams): string[] {
   const { type, assetName, changePercent, compChangePercent, compName } = p
 
@@ -47,7 +61,24 @@ export function generateAnalysis(p: AnalysisParams): string[] {
     )
   }
 
-  // 4 — Type-specific educational note
+  // 4 — Enflasyon/mevduat karşılaştırması (kaba, yaklaşık referans)
+  const vsInflation = changePercent - ROUGH_ANNUAL_INFLATION_PCT
+  lines.push(
+    vsInflation >= 0
+      ? `Günlük hayattan bir referansla: bu getiri, enflasyonun kabaca ${Math.abs(vsInflation).toFixed(0)} puan üzerinde kaldı — yani paranın alım gücü büyük olasılıkla arttı.`
+      : `Günlük hayattan bir referansla: bu getiri, enflasyonun kabaca ${Math.abs(vsInflation).toFixed(0)} puan altında kaldı — yani paranın alım gücü bu dönemde muhtemelen azaldı.`
+  )
+  const vsDeposit = changePercent - ROUGH_ANNUAL_DEPOSIT_PCT
+  lines.push(
+    vsDeposit >= 0
+      ? "Yaklaşık bir banka mevduatı faiziyle kıyaslandığında da bu getiri ona yakın ya da üzerinde kaldı."
+      : "Yaklaşık bir banka mevduatı faiziyle kıyaslandığında bu getiri onun biraz altında kaldı."
+  )
+  lines.push(
+    "Bu iki karşılaştırma güncel resmi verilerle değil, kaba/yaklaşık bir yıllık gösterge oranla yapılmıştır; kesin rakam olarak alınmamalıdır."
+  )
+
+  // 5 — Type-specific educational note
   if (type === "doviz") {
     lines.push(
       "Döviz, Türk yatırımcılar için TL'nin değer kaybına karşı bir koruma aracı olabilir. " +

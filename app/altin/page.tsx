@@ -8,6 +8,7 @@ import type { GoldTypeItem, MarketResponse } from "@/app/api/market/route";
 import { isMarketResponseFresh } from "@/lib/market-helpers";
 import { GOLD_CATEGORY_LABELS, type GoldCategory } from "@/data/gold-types";
 import { FlashPrice } from "@/components/FlashPrice";
+import { ConverterWidget } from "@/components/ConverterWidget";
 
 const POLL_MS = 30_000;
 type Tab = GoldCategory | "all";
@@ -34,20 +35,16 @@ function fmtTr(n: number, max = 2) {
 function GoldRow({ item }: { item: GoldTypeItem }) {
   const router = useRouter();
   const hasChange = item.changePercent !== "—";
-  const icon = item.category === "gumus" ? "🥈" : "🥇";
   return (
     <tr
       onClick={() => router.push(`/altin/${item.type}`)}
-      className="cursor-pointer border-b border-white/5 transition hover:bg-white/[0.03]"
+      className="cursor-pointer border-b border-line transition hover:bg-white/[0.03]"
     >
       {/* Sembol */}
       <td className="py-3 pl-4 pr-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-300/12 text-base">
-            {icon}
-          </div>
           <div className="min-w-0">
-            <div className="truncate text-sm font-semibold text-white">{item.nameShort}</div>
+            <div className="truncate text-sm font-semibold text-mist">{item.nameShort}</div>
             <div className="truncate text-[11px] text-mist-3">
               {GOLD_CATEGORY_LABELS[item.category]}
             </div>
@@ -57,7 +54,7 @@ function GoldRow({ item }: { item: GoldTypeItem }) {
 
       {/* Fiyat */}
       <td className="px-3 py-3 text-right">
-        <FlashPrice value={item.rawValue} className="text-sm font-semibold text-white">
+        <FlashPrice value={item.rawValue} className="text-sm font-semibold text-mist">
           {item.value}
           <span className="ml-1 text-xs font-normal text-mist-3">TL</span>
         </FlashPrice>
@@ -94,10 +91,9 @@ function GoldRow({ item }: { item: GoldTypeItem }) {
 
 function RowSkeleton() {
   return (
-    <tr className="border-b border-white/5">
+    <tr className="border-b border-line">
       <td className="py-4 pl-4 pr-3">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 animate-pulse rounded-lg bg-white/8" />
           <div className="space-y-1.5">
             <div className="h-3 w-24 animate-pulse rounded bg-white/8" />
             <div className="h-2.5 w-16 animate-pulse rounded bg-white/8" />
@@ -174,7 +170,7 @@ export default function AltinPage() {
         {/* Breadcrumb */}
         <Link
           href="/"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-mist"
         >
           <ArrowLeft className="h-4 w-4" />
           Ana Sayfa
@@ -184,7 +180,7 @@ export default function AltinPage() {
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-amber-200">Serbest Piyasa</p>
-            <h1 className="mt-1.5 text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="mt-1.5 text-3xl font-semibold text-mist sm:text-4xl">
               Altın Fiyatları
             </h1>
             <p className="mt-2 text-sm text-mist-3">
@@ -196,9 +192,14 @@ export default function AltinPage() {
           </div>
         </div>
 
+        {/* Hızlı çevirici */}
+        <div className="mb-6">
+          <ConverterWidget data={data} defaultToId="gold:gram" />
+        </div>
+
         {/* Sekmeler + arama */}
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="inline-flex flex-wrap gap-1 rounded-2xl border border-white/10 bg-white/[0.03] p-1">
+          <div className="inline-flex flex-wrap gap-1 rounded-2xl border border-line bg-white/[0.03] p-1">
             {tabs.map(({ key, label }) => (
               <button
                 key={key}
@@ -206,7 +207,7 @@ export default function AltinPage() {
                 className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
                   tab === key
                     ? "bg-amber-300/15 text-amber-100"
-                    : "text-mist-3 hover:text-white"
+                    : "text-mist-3 hover:text-mist"
                 }`}
               >
                 {label}
@@ -214,23 +215,23 @@ export default function AltinPage() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 sm:w-72">
+          <div className="flex items-center gap-2 rounded-2xl border border-line bg-white/[0.04] px-3 py-2 sm:w-72">
             <Search className="h-4 w-4 shrink-0 text-mist-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ara (gram, cumhuriyet, gümüş)"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-sm text-mist outline-none placeholder:text-mist-3"
             />
           </div>
         </div>
 
         {/* Tablo */}
-        <div className="overflow-x-auto rounded-2xl border border-white/8 bg-white/[0.02]">
+        <div className="overflow-x-auto rounded-2xl border border-line bg-white/[0.02]">
           <table className="w-full min-w-[640px] border-collapse">
             <thead>
-              <tr className="border-b border-white/10 bg-white/[0.03] text-[11px] font-semibold uppercase tracking-wider text-mist-3">
+              <tr className="border-b border-line bg-white/[0.03] text-[11px] font-semibold uppercase tracking-wider text-mist-3">
                 <th className="py-3 pl-4 pr-3 text-left">Sembol</th>
                 <th className="px-3 py-3 text-right">Fiyat</th>
                 <th className="px-3 py-3 text-right">Fark (%)</th>

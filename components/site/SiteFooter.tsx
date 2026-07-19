@@ -18,13 +18,13 @@ const APP_LINKS = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-16 border-t border-white/8 bg-black/20">
+    <footer className="mt-16 border-t border-line bg-black/20">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link href="/" className="inline-flex items-center gap-2">
               <Image src="/Fonly_Logo.png" alt="Fonly" width={28} height={28} className="rounded-lg" />
-              <span className="text-lg font-semibold text-white">Fonly</span>
+              <span className="text-lg font-semibold text-mist">Fonly</span>
             </Link>
             <p className="mt-3 text-xs leading-5 text-mist-3">
               Fonları, hisseleri ve piyasaları finans bilgisi az olan kullanıcılar
@@ -37,7 +37,7 @@ export function SiteFooter() {
             <ul className="mt-3 space-y-2">
               {MARKET_LINKS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-mist-3 transition hover:text-white">
+                  <Link href={item.href} className="text-sm text-mist-3 transition hover:text-mist">
                     {item.label}
                   </Link>
                 </li>
@@ -50,7 +50,7 @@ export function SiteFooter() {
             <ul className="mt-3 space-y-2">
               {APP_LINKS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-mist-3 transition hover:text-white">
+                  <Link href={item.href} className="text-sm text-mist-3 transition hover:text-mist">
                     {item.label}
                   </Link>
                 </li>
@@ -65,7 +65,7 @@ export function SiteFooter() {
                 <li key={page.slug}>
                   <Link
                     href={`/yasal/${page.slug}`}
-                    className="text-sm text-mist-3 transition hover:text-white"
+                    className="text-sm text-mist-3 transition hover:text-mist"
                   >
                     {page.shortTitle}
                   </Link>
@@ -75,7 +75,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/6 pt-6">
+        <div className="mt-10 border-t border-line pt-6">
           <p className="text-xs leading-5 text-mist-3">
             Fonly&apos;deki veriler ve analizler yalnızca bilgilendirme amaçlıdır,{" "}
             <Link href="/yasal/yasal-uyari" className="underline decoration-mist/25 underline-offset-2 transition hover:text-mist-3">

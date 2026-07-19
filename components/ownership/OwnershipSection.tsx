@@ -33,7 +33,7 @@ export function OwnershipSection({ data }: Props) {
     <div className="flex flex-col gap-4">
       {/* Kompozisyon bar */}
       <div className="glass-card rounded-2xl p-6">
-        <h3 className="mb-4 text-sm font-semibold text-white">Sahiplik Kompozisyonu</h3>
+        <h3 className="mb-4 text-sm font-semibold text-mist">Sahiplik Kompozisyonu</h3>
         <CompositionBar
           insiders={data.insidersPercent}
           institutions={data.institutionsPercent}
@@ -64,7 +64,7 @@ export function OwnershipSection({ data }: Props) {
 
       {/* Kurum aktivitesi */}
       <div className="glass-card rounded-2xl p-6">
-        <h3 className="mb-4 text-sm font-semibold text-white">Kurum Aktivitesi</h3>
+        <h3 className="mb-4 text-sm font-semibold text-mist">Kurum Aktivitesi</h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             icon={<Users className="h-3.5 w-3.5" />}
@@ -97,14 +97,14 @@ export function OwnershipSection({ data }: Props) {
           <Info className="h-4 w-4 text-amber-200" />
         </div>
         <div className="space-y-1.5">
-          <h3 className="text-sm font-semibold text-white">Detaylı kurum listesi</h3>
+          <h3 className="text-sm font-semibold text-mist">Detaylı kurum listesi</h3>
           <p className="text-sm leading-6 text-mist-2">
             Yahoo Finance, Türk hisselerinde tek tek kurumların ve fonların listesini
             sağlamıyor — sadece yukarıdaki toplu yüzdeler ve sayım veriliyor.
             En büyük hissedar tablosu KAP&apos;tan ortaklık yapısı bildirimlerinin
             entegrasyonuyla gelecek.
           </p>
-          <span className="inline-flex items-center rounded-full border border-white/8 bg-white/[0.025] px-3 py-1 text-[11px] text-mist-3">
+          <span className="inline-flex items-center rounded-full border border-line bg-white/[0.025] px-3 py-1 text-[11px] text-mist-3">
             Yol haritası: Faz 6.5 — KAP ortaklık yapısı
           </span>
         </div>
@@ -159,12 +159,12 @@ function CompositionLegend({
   color, label, value, hint,
 }: { color: string; label: string; value: string; hint: string }) {
   return (
-    <div className="rounded-xl border border-white/[0.04] bg-white/[0.015] p-3">
+    <div className="rounded-xl border border-line bg-white/[0.015] p-3">
       <div className="flex items-center gap-2">
         <span className={`h-2 w-2 rounded-full ${color}`} />
         <p className="text-[11px] font-medium uppercase tracking-wider text-mist-3">{label}</p>
       </div>
-      <p className="mt-1 text-lg font-semibold tabular-nums text-white">{value}</p>
+      <p className="mt-1 text-lg font-semibold tabular-nums text-mist">{value}</p>
       <p className="mt-1 text-[11px] leading-relaxed text-mist-3">{hint}</p>
     </div>
   );
@@ -182,9 +182,9 @@ function StatCard({
     ? "text-emerald-200"
     : tone === "sell"
       ? "text-rose-200"
-      : "text-white";
+      : "text-mist";
   return (
-    <div className="rounded-xl border border-white/[0.04] bg-white/[0.015] p-3">
+    <div className="rounded-xl border border-line bg-white/[0.015] p-3">
       <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-mist-3">
         {icon}
         {label}

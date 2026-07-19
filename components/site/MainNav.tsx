@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import { ChevronDown, Star } from "lucide-react";
 import { MAIN_NAV_ITEMS, type MainNavItem } from "@/lib/site-nav";
 import { useChartStore } from "@/lib/store/chartStore";
+import { useMounted } from "@/lib/hooks/useMounted";
 
 /**
  * Üst sıradaki ana menü:
@@ -17,6 +19,9 @@ export function MainNav() {
   const [openMega, setOpenMega] = useState<string | null>(null);
   const setDrawerOpen = useChartStore((s) => s.setDrawerOpen);
   const ref = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const mounted = useMounted();
+  const isLight = mounted && resolvedTheme === "light";
 
   useEffect(() => {
     function onClick(e: MouseEvent) {
@@ -42,8 +47,10 @@ export function MainNav() {
         const baseClasses =
           "inline-flex items-center gap-1 rounded-xl px-3 py-2 text-sm font-medium transition";
         const idleClasses = item.highlight
-          ? "bg-gradient-to-r from-fuchsia-300/10 to-emerald-300/10 ring-1 ring-fuchsia-300/25 hover:from-fuchsia-300/20 hover:to-emerald-300/20"
-          : "text-mist-2 hover:bg-white/[0.04] hover:text-white";
+          ? isLight
+            ? "bg-gradient-to-r from-fuchsia-500/10 to-emerald-500/10 ring-1 ring-fuchsia-500/25 hover:from-fuchsia-500/20 hover:to-emerald-500/20"
+            : "bg-gradient-to-r from-fuchsia-300/10 to-emerald-300/10 ring-1 ring-fuchsia-300/25 hover:from-fuchsia-300/20 hover:to-emerald-300/20"
+          : "text-mist-2 hover:bg-white/[0.04] hover:text-mist";
 
         const renderLabel = (label: string) =>
           item.highlight ? (
@@ -77,24 +84,26 @@ export function MainNav() {
                 />
               </button>
               {isOpen && (
-                <div className="glass-card absolute left-1/2 top-full z-50 mt-2 w-80 -translate-x-1/2 rounded-2xl p-2">
-                  {item.mega!.map((sub) => (
-                    <Link
-                      key={sub.href}
-                      href={sub.href}
-                      onClick={() => setOpenMega(null)}
-                      className="flex items-start gap-3 rounded-xl px-3 py-2.5 text-sm text-mist-2 transition hover:bg-white/[0.04] hover:text-white"
-                    >
-                      <div>
-                        <div className="font-medium text-white">
-                          {sub.label}
+                <div className="absolute left-1/2 top-full z-50 w-80 -translate-x-1/2 pt-2">
+                  <div className="glass-card rounded-2xl p-2">
+                    {item.mega!.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        onClick={() => setOpenMega(null)}
+                        className="flex items-start gap-3 rounded-xl px-3 py-2.5 text-sm text-mist-2 transition hover:bg-white/[0.04] hover:text-mist"
+                      >
+                        <div>
+                          <div className="font-medium text-mist">
+                            {sub.label}
+                          </div>
+                          <div className="mt-0.5 text-xs text-mist-3">
+                            {sub.description}
+                          </div>
                         </div>
-                        <div className="mt-0.5 text-xs text-mist-3">
-                          {sub.description}
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

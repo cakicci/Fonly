@@ -35,14 +35,14 @@ export function DangerZone() {
       {/* Veri indir */}
       <div className="glass-card flex flex-col gap-3 rounded-2xl p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm font-medium text-white">Verilerimi indir</p>
+          <p className="text-sm font-medium text-mist">Verilerimi indir</p>
           <p className="mt-1 text-xs text-mist-3">
             Hesabına ait tüm veriyi (profil, izleme listesi, alarmlar, portföy) JSON olarak indir.
           </p>
         </div>
         <a
           href="/api/user/export"
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-2 text-sm font-medium text-mist-2 transition hover:bg-white/[0.08]"
+          className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-line bg-white/[0.04] px-4 py-2 text-sm font-medium text-mist-2 transition hover:bg-white/[0.08]"
         >
           <Download className="h-4 w-4" />
           İndir (JSON)
@@ -65,12 +65,12 @@ export function DangerZone() {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             placeholder={CONFIRM_WORD}
-            className="w-full rounded-xl border border-rose-300/20 bg-ink px-3 py-2 text-sm text-white outline-none focus:border-rose-300/50 sm:max-w-[140px]"
+            className="w-full rounded-xl border border-rose-300/20 bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-rose-300/50 sm:max-w-[140px]"
           />
           <button
             onClick={deleteAccount}
             disabled={confirm.trim().toUpperCase() !== CONFIRM_WORD || deleting}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-400/90 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-400/90 px-4 py-2 text-sm font-semibold text-mist transition hover:bg-rose-400 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
             Hesabı kalıcı olarak sil

@@ -24,7 +24,7 @@ export function Tabs({
   return (
     <div className="space-y-4">
       <div
-        className="inline-flex max-w-full overflow-x-auto rounded-2xl border border-white/8 bg-white/[0.025] p-1"
+        className="inline-flex max-w-full overflow-x-auto rounded-2xl border border-line bg-white/[0.025] p-1"
         role="tablist"
       >
         {tabs.map(t => (
@@ -36,7 +36,7 @@ export function Tabs({
             className={`shrink-0 rounded-xl px-4 py-2 text-sm font-medium transition ${
               t.key === current.key
                 ? "bg-emerald-300/15 text-emerald-100"
-                : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
+                : "text-mist-3 hover:bg-white/[0.04] hover:text-mist"
             }`}
           >
             {t.label}

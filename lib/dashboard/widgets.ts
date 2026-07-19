@@ -11,6 +11,7 @@
 
 export const DASHBOARD_WIDGETS = [
   { key: "portfolio", label: "Portföy özeti" },
+  { key: "netWorth", label: "Net değer (Premium)" },
   { key: "allocation", label: "Varlık dağılımı & performans" },
   { key: "goals", label: "Hedefler & gelişmeler" },
   { key: "riskBudget", label: "Risk profili & bütçe" },

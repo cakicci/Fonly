@@ -184,7 +184,7 @@ export function ChartSection({
         timeframes={timeframes}
       />
 
-      <div className={`relative rounded-2xl border border-white/8 bg-white/[0.02] p-4 ${
+      <div className={`relative rounded-2xl border border-line bg-white/[0.02] p-4 ${
         isFullscreen ? "flex-1" : ""
       }`}>
         {loading ? (
@@ -196,7 +196,7 @@ export function ChartSection({
             <p className="text-sm text-mist-3">{error}</p>
             <button
               onClick={fetchData}
-              className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-white"
+              className="rounded-lg border border-line bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-mist"
             >
               Tekrar dene
             </button>

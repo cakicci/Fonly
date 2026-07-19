@@ -18,7 +18,7 @@ export default function NotFound() {
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-12">
       <div className="glass-card w-full max-w-lg rounded-section p-8 text-center">
         <p className="text-6xl font-bold text-emerald-300/40">404</p>
-        <h1 className="mt-4 text-2xl font-semibold text-white">Sayfa bulunamadı</h1>
+        <h1 className="mt-4 text-2xl font-semibold text-mist">Sayfa bulunamadı</h1>
         <p className="mt-3 text-sm leading-6 text-mist-2">
           Aradığın sayfa taşınmış, kaldırılmış ya da hiç var olmamış olabilir.
           Bir varlık kodu yazdıysan doğru yazıldığından emin ol.
@@ -29,7 +29,7 @@ export default function NotFound() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-white"
+              className="rounded-full border border-line bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-mist"
             >
               {item.label}
             </Link>

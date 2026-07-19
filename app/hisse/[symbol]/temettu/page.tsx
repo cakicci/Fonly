@@ -19,7 +19,7 @@ export default async function HisseTemettuPage({ params }: { params: Params }) {
           <AlertTriangle className="h-4 w-4 text-rose-200" />
         </div>
         <div>
-          <h2 className="text-sm font-semibold text-white">Temettü verisi alınamadı</h2>
+          <h2 className="text-sm font-semibold text-mist">Temettü verisi alınamadı</h2>
           <p className="mt-1 text-sm text-mist-3">
             Yahoo Finance şu anda {symbol} için temettü verisi sunmuyor.
           </p>

@@ -19,7 +19,7 @@ export default async function HisseFinansallarPage({ params }: { params: Params 
           <AlertTriangle className="h-4 w-4 text-rose-200" />
         </div>
         <div>
-          <h2 className="text-sm font-semibold text-white">Veri yüklenemedi</h2>
+          <h2 className="text-sm font-semibold text-mist">Veri yüklenemedi</h2>
           <p className="mt-1 text-sm text-mist-3">
             Yahoo Finance şu anda {symbol} için temel veri sunmuyor. Birkaç dakika sonra yeniden deneyin.
           </p>

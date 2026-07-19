@@ -59,7 +59,7 @@ export function RegisterForm({ googleEnabled = false }: RegisterFormProps) {
     <div className="glass-card mx-auto w-full max-w-md rounded-section p-6">
       <div className="mb-6">
         <p className="text-sm font-medium text-emerald-200">Fonly hesabı oluştur</p>
-        <h1 className="mt-2 text-3xl font-semibold text-white">Sade bir başlangıç yap</h1>
+        <h1 className="mt-2 text-3xl font-semibold text-mist">Sade bir başlangıç yap</h1>
         <p className="mt-3 text-sm leading-6 text-mist-2">
           Hesabın, risk ve bütçe rehberini kişisel hale getirmek için kullanılacak.
         </p>
@@ -68,14 +68,14 @@ export function RegisterForm({ googleEnabled = false }: RegisterFormProps) {
       <form className="space-y-4" onSubmit={handleSubmit}>
         <label className="block">
           <span className="text-sm font-medium text-mist-2">Ad</span>
-          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-line bg-white/[0.04] px-4 py-3">
             <UserRound className="h-5 w-5 text-mist-3" />
             <input
               value={name}
               onChange={(event) => setName(event.target.value)}
               required
               minLength={2}
-              className="w-full bg-transparent text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-mist outline-none placeholder:text-mist-3"
               placeholder="Adın"
             />
           </span>
@@ -83,14 +83,14 @@ export function RegisterForm({ googleEnabled = false }: RegisterFormProps) {
 
         <label className="block">
           <span className="text-sm font-medium text-mist-2">Email</span>
-          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-line bg-white/[0.04] px-4 py-3">
             <Mail className="h-5 w-5 text-mist-3" />
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              className="w-full bg-transparent text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-mist outline-none placeholder:text-mist-3"
               placeholder="ornek@mail.com"
             />
           </span>
@@ -98,7 +98,7 @@ export function RegisterForm({ googleEnabled = false }: RegisterFormProps) {
 
         <label className="block">
           <span className="text-sm font-medium text-mist-2">Şifre</span>
-          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-line bg-white/[0.04] px-4 py-3">
             <LockKeyhole className="h-5 w-5 text-mist-3" />
             <input
               type="password"
@@ -106,7 +106,7 @@ export function RegisterForm({ googleEnabled = false }: RegisterFormProps) {
               onChange={(event) => setPassword(event.target.value)}
               required
               minLength={8}
-              className="w-full bg-transparent text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-mist outline-none placeholder:text-mist-3"
               placeholder="En az 8 karakter"
             />
           </span>

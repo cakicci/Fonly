@@ -57,7 +57,7 @@ export default async function AccountPage() {
         </p>
         <Link
           href="/premium"
-          className="mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-300/80 to-emerald-300/80 px-4 py-2 text-sm font-semibold text-ink transition hover:from-fuchsia-200 hover:to-emerald-200"
+          className="mt-4 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-300/80 to-emerald-300/80 px-4 py-2 text-sm font-semibold text-ink-fixed transition hover:from-fuchsia-200 hover:to-emerald-200"
         >
           Premium’a yükselt
         </Link>
@@ -75,7 +75,7 @@ export default async function AccountPage() {
         </Link>
 
         <header className="mb-6 mt-3">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">Hesabım</h1>
+          <h1 className="text-2xl font-semibold text-mist sm:text-3xl">Hesabım</h1>
           <p className="mt-1 text-sm text-mist-3">Profil, güvenlik ve abonelik ayarların.</p>
         </header>
 

@@ -28,7 +28,7 @@ export default function ErrorPage({
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-300/10">
           <AlertTriangle className="h-7 w-7 text-rose-200" />
         </div>
-        <h1 className="mt-5 text-2xl font-semibold text-white">Bir şeyler ters gitti</h1>
+        <h1 className="mt-5 text-2xl font-semibold text-mist">Bir şeyler ters gitti</h1>
         <p className="mt-3 text-sm leading-6 text-mist-2">
           Sayfa yüklenirken beklenmedik bir hata oluştu. Piyasa verisi sağlayan
           kaynaklardan biri geçici olarak yanıt vermiyor olabilir — genellikle
@@ -49,7 +49,7 @@ export default function ErrorPage({
           </button>
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-2.5 text-sm font-semibold text-mist-2 transition hover:bg-white/[0.08] hover:text-white"
+            className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-line bg-white/[0.04] px-5 py-2.5 text-sm font-semibold text-mist-2 transition hover:bg-white/[0.08] hover:text-mist"
           >
             Ana sayfaya dön
           </Link>

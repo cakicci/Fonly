@@ -4,7 +4,8 @@ import { ReactNode } from "react";
 import { Users, Wallet, BarChart3, Trophy } from "lucide-react";
 import { AssetHeader } from "@/components/chart/AssetHeader";
 import { AssetHeaderActions } from "@/components/chart/AssetHeaderActions";
-import { SubNav } from "@/components/chart/SubNav";
+import { SubNavWithToggle } from "@/components/chart/SubNavWithToggle";
+import { MicroLessonCard } from "@/components/MicroLessonCard";
 import { fetchAllFundReturns, fetchFundDetail, tefasRiskToCategory } from "@/lib/tefas";
 import { fmtPercent } from "@/lib/format";
 import { RISK_COLORS, RISK_LABELS } from "@/data/stocks";
@@ -52,7 +53,7 @@ export default async function FonLayout({
         </span>
       )}
       {semsiye && (
-        <span className="inline-flex items-center rounded-lg border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium text-mist-3">
+        <span className="inline-flex items-center rounded-lg border border-line bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium text-mist-3">
           {semsiye.replace(" Şemsiye Fonu", "")}
         </span>
       )}
@@ -63,11 +64,11 @@ export default async function FonLayout({
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
         <nav className="flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <Link href="/fonlar" className="transition hover:text-white">Fonlar</Link>
+          <Link href="/fonlar" className="transition hover:text-mist">Fonlar</Link>
           <span>/</span>
-          <span className="text-white">{kod}</span>
+          <span className="text-mist">{kod}</span>
         </nav>
 
         <AssetHeader
@@ -90,6 +91,13 @@ export default async function FonLayout({
           }
         />
 
+        <MicroLessonCard
+          id="fon"
+          title="Fon nedir?"
+          body="Bir yatırım fonu, birçok kişinin parasını birleştirip profesyonel bir ekip tarafından hisse, tahvil veya döviz gibi araçlara yatırılmasıdır. TEFAS, Türkiye'deki neredeyse tüm fonların alınıp satıldığı ortak platformdur — gördüğün fiyat, o fonun bir payının günlük değeridir."
+          guideHref="/rehber/3"
+        />
+
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Stat icon={<Wallet className="h-3.5 w-3.5" />}     label="Portföy"       value={fmtTL(detail.portBuyukluk)} />
           <Stat icon={<Users className="h-3.5 w-3.5" />}      label="Yatırımcı"     value={detail.yatirimciSayi != null ? detail.yatirimciSayi.toLocaleString("tr-TR") : "—"} />
@@ -97,7 +105,7 @@ export default async function FonLayout({
           <Stat icon={<BarChart3 className="h-3.5 w-3.5" />}  label="Pazar payı"    value={detail.pazarPayi != null ? `%${fmtPercent(detail.pazarPayi)}` : "—"} />
         </div>
 
-        <SubNav basePath={`/fon/${kod}`} tabs={FON_SUBNAV} />
+        <SubNavWithToggle basePath={`/fon/${kod}`} tabs={FON_SUBNAV} />
 
         {children}
       </div>
@@ -107,12 +115,12 @@ export default async function FonLayout({
 
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2.5">
+    <div className="rounded-xl border border-line bg-white/[0.025] px-3 py-2.5">
       <p className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-mist-3">
         {icon}
         {label}
       </p>
-      <p className="mt-1 text-sm font-semibold text-white">{value}</p>
+      <p className="mt-1 text-sm font-semibold text-mist">{value}</p>
     </div>
   );
 }

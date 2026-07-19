@@ -29,9 +29,10 @@ export async function GET(request: NextRequest) {
   if (range !== "3a" && range !== "1y") {
     return NextResponse.json({ message: "Geçersiz aralık." }, { status: 400 });
   }
+  const isDemo = request.nextUrl.searchParams.get("demo") === "1";
 
   const lots = await prisma.portfolioLot.findMany({
-    where: { userId: session.user.id },
+    where: { userId: session.user.id, isDemo },
     select: { slug: true, side: true, quantity: true, unitCost: true, boughtAt: true },
   });
 

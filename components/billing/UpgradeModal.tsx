@@ -36,11 +36,11 @@ export function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
         onClick={onClose}
         aria-hidden
       />
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-2xl">
+      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-line bg-ink shadow-2xl">
         <button
           onClick={onClose}
           aria-label="Kapat"
-          className="absolute right-3 top-3 z-10 rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
+          className="absolute right-3 top-3 z-10 rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-mist"
         >
           <X className="h-4 w-4" />
         </button>
@@ -50,7 +50,7 @@ export function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
             <Sparkles className="h-3 w-3" />
             Premium özellik
           </div>
-          <h2 className="text-xl font-semibold text-white">{feature}</h2>
+          <h2 className="text-xl font-semibold text-mist">{feature}</h2>
           <p className="mt-1 text-sm text-mist-3">
             Yapay zekâ destekli analizler Premium aboneliğe özeldir.
           </p>
@@ -65,7 +65,7 @@ export function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
           ))}
         </div>
 
-        <div className="border-t border-white/8 px-6 py-4">
+        <div className="border-t border-line px-6 py-4">
           <Link
             href="/premium"
             className="btn btn-lg btn-premium w-full"

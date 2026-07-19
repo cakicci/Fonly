@@ -27,15 +27,15 @@ export default function LegalPage({ params }: { params: Params }) {
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <nav className="mb-6 flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <Link href="/yasal" className="transition hover:text-white">Yasal</Link>
+          <Link href="/yasal" className="transition hover:text-mist">Yasal</Link>
           <span>/</span>
-          <span className="text-white">{page.shortTitle}</span>
+          <span className="text-mist">{page.shortTitle}</span>
         </nav>
 
         <div className="glass-card rounded-section p-6 sm:p-8">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">{page.title}</h1>
+          <h1 className="text-2xl font-semibold text-mist sm:text-3xl">{page.title}</h1>
           <p className="mt-3 flex items-center gap-1.5 text-xs text-mist-3">
             <CalendarDays className="h-3.5 w-3.5" />
             Son güncelleme: {page.updatedAt}
@@ -45,7 +45,7 @@ export default function LegalPage({ params }: { params: Params }) {
             {page.sections.map((section, idx) => (
               <section key={idx}>
                 {section.heading ? (
-                  <h2 className="mb-2 text-base font-semibold text-white">{section.heading}</h2>
+                  <h2 className="mb-2 text-base font-semibold text-mist">{section.heading}</h2>
                 ) : null}
                 {section.paragraphs?.map((p, pIdx) => (
                   <p key={pIdx} className="mb-2 text-sm leading-6 text-mist-2">{p}</p>
@@ -70,7 +70,7 @@ export default function LegalPage({ params }: { params: Params }) {
             <Link
               key={p.slug}
               href={`/yasal/${p.slug}`}
-              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-white"
+              className="rounded-full border border-line bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.08] hover:text-mist"
             >
               {p.shortTitle}
             </Link>

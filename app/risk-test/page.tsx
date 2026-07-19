@@ -20,7 +20,7 @@ export default async function RiskTestPage() {
       <div className="mx-auto max-w-2xl">
         <div className="mb-8 text-center">
           <p className="text-sm font-medium text-emerald-200">Risk profili testi</p>
-          <h1 className="mt-2 text-3xl font-semibold text-white sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-semibold text-mist sm:text-4xl">
             Sana uygun riski keşfet
           </h1>
           <p className="mt-3 text-sm leading-6 text-mist-2">

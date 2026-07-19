@@ -4,6 +4,7 @@ import { GOLD_TYPE_MAP } from "@/data/gold-types";
 import { BIST_TICKERS } from "@/data/bist-tickers";
 import { fetchYahooHistory } from "@/lib/market-data";
 import { fetchFundHistory } from "@/lib/tefas";
+import { assetDisplayName } from "@/lib/portfolio/asset";
 import {
   FOREX_TICKER,
   FOREX_CROSS_TICKER,
@@ -12,7 +13,28 @@ import {
   alignMaps,
   buildGramAltinMap,
   buildExoticForexMap,
+  fetchDailySeries,
 } from "@/lib/history/series";
+
+/**
+ * "comp" query param'dan karşılaştırma serisini çözer. Verilmezse null döner —
+ * çağıran taraf tip bazlı varsayılana (gram altın / dolar) düşer.
+ * "xu100" özel değeri BIST 100 endeksine karşılık gelir (normal bir varlık
+ * slug'ı değil, bu yüzden fetchDailySeries kapsamı dışında).
+ */
+async function resolveComparator(
+  compParam: string | null,
+  range: string
+): Promise<{ map: Map<string, number>; name: string; unit: string } | null> {
+  if (!compParam) return null;
+  if (compParam === "xu100") {
+    const cfg = RANGE_CFG[range] ?? RANGE_CFG["1y"];
+    const map = await fetchYahooHistory("XU100.IS", cfg.range, cfg.interval);
+    return map ? { map, name: "BIST 100", unit: "puan" } : null;
+  }
+  const map = await fetchDailySeries(compParam, range);
+  return map ? { map, name: assetDisplayName(compParam), unit: "TL" } : null;
+}
 
 // ── Tipler ──────────────────────────────────────────────────────────────────
 
@@ -43,6 +65,8 @@ export async function GET(
   const slug  = params.slug;  // "doviz-USD", "altin-gram", "hisse-THYAO"
   const range = request.nextUrl.searchParams.get("range") ?? "1y";
   const cfg   = RANGE_CFG[range] ?? RANGE_CFG["1y"];
+  // "xu100" | "fon-AAK" | "hisse-GARAN" | "altin-gram" | "doviz-EUR" | null (varsayılana düş)
+  const compParam = request.nextUrl.searchParams.get("comp");
 
   const dashIdx = slug.indexOf("-");
   if (dashIdx === -1) return NextResponse.json({ error: "invalid slug" }, { status: 400 });
@@ -120,8 +144,16 @@ export async function GET(
     }
     assetName = fundLabel;
 
-    const gramAltinMap = buildGramAltinMap(gcMap, usdtryMap);
-    const aligned = alignMaps(fundMap, gramAltinMap);
+    const custom = await resolveComparator(compParam, range);
+    const compSeriesMap = custom?.map ?? buildGramAltinMap(gcMap, usdtryMap);
+    const compName = custom?.name ?? "Gram Altın";
+    const compUnit = custom?.unit ?? "TL";
+
+    if (compParam && !custom) {
+      return NextResponse.json({ error: "Karşılaştırma verisi bulunamadı" }, { status: 422 });
+    }
+
+    const aligned = alignMaps(fundMap, compSeriesMap);
 
     const points: HistoryPoint[]     = [];
     const compPoints: HistoryPoint[] = [];
@@ -145,7 +177,7 @@ export async function GET(
       points,
       compPoints,
       asset:   { code: code.toUpperCase(), name: assetName, unit: assetUnit },
-      comp:    { name: "Gram Altın", unit: "TL" },
+      comp:    { name: compName, unit: compUnit },
       summary: { changePercent, compChangePercent, latest, compLatest },
     });
   }
@@ -171,35 +203,33 @@ export async function GET(
     ? (crossMap ? buildExoticForexMap(crossMap, usdtryMap) : null)
     : mainMapRaw;
 
-  // Gram altın TL değerleri
+  // Gram altın TL değerleri (varsayılan karşılaştırma / altın'ın kendi ana serisi)
   const gramAltinMap = buildGramAltinMap(gcMap, usdtryMap);
+
+  // ── Ana varlığın kendi TL serisi ─────────────────────────────────────────
+  const mainSeriesMap = isGold
+    ? new Map([...gramAltinMap].map(([date, v]) => [date, v * goldWeight]))
+    : mainMap;
+  if (!mainSeriesMap) {
+    return NextResponse.json({ error: "data unavailable" }, { status: 503 });
+  }
+
+  // ── Karşılaştırma serisi — özel seçim varsa onu, yoksa tip bazlı varsayılan ─
+  const custom = await resolveComparator(compParam, range);
+  if (compParam && !custom) {
+    return NextResponse.json({ error: "Karşılaştırma verisi bulunamadı" }, { status: 422 });
+  }
+  const compSeriesMap = custom?.map ?? (isGold ? usdtryMap : gramAltinMap);
+  const compName = custom?.name ?? (isGold ? "Dolar" : "Gram Altın");
+  const compUnit = custom?.unit ?? "TL";
 
   // ── Noktaları oluştur ─────────────────────────────────────────────────────
   const points:     HistoryPoint[] = [];
   const compPoints: HistoryPoint[] = [];
-  let compName = "Gram Altın";
-  let compUnit = "TL";
-
-  if (isGold) {
-    // Ana: gram altın × ağırlık (TL), Karşılaştırma: Dolar/TL kuru
-    compName = "Dolar";
-    compUnit = "TL";
-
-    const aligned = alignMaps(gramAltinMap, usdtryMap);
-    for (const { date, mainVal: gramTRY, compVal: usdtry } of aligned) {
-      points.push({ date, value: gramTRY * goldWeight });
-      compPoints.push({ date, value: usdtry });
-    }
-
-  } else {
-    // Ana: varlık TL değeri, Karşılaştırma: gram altın TL
-    if (!mainMap) return NextResponse.json({ error: "data unavailable" }, { status: 503 });
-
-    const aligned = alignMaps(mainMap, gramAltinMap);
-    for (const { date, mainVal, compVal: goldTRY } of aligned) {
-      points.push({ date, value: mainVal });
-      compPoints.push({ date, value: goldTRY });
-    }
+  const aligned = alignMaps(mainSeriesMap, compSeriesMap);
+  for (const { date, mainVal, compVal } of aligned) {
+    points.push({ date, value: mainVal });
+    compPoints.push({ date, value: compVal });
   }
 
   if (points.length < 2) {

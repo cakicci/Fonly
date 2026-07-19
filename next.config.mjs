@@ -7,6 +7,17 @@ const nextConfig = {
     // Next 15'te varsayılan açık; 14'te experimental bayrak gerekiyor.
     instrumentationHook: true,
   },
+  webpack: (config, { isServer }) => {
+    // web-push (→ http_ece) Node'un yerleşik crypto modülünü kullanıyor.
+    // instrumentation.ts özel bir webpack hedefinde derleniyor ve
+    // serverComponentsExternalPackages onu kapsamıyor — "Can't resolve
+    // 'crypto'" hatasıyla tüm uygulama 500 dönüyordu. web-push'u native
+    // require olarak dışarıda bırakmak sorunu çözüyor (bkz. lib/push/send.ts).
+    if (isServer) {
+      config.externals = [...(config.externals || []), "web-push"];
+    }
+    return config;
+  },
 };
 
 export default withSentryConfig(nextConfig, {

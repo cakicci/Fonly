@@ -20,14 +20,14 @@ export function OnboardingChecklist({ steps }: { steps: OnboardingStep[] }) {
   const pct = Math.round((done / total) * 100);
 
   return (
-    <div className="rounded-section border border-emerald-200/15 bg-[linear-gradient(135deg,rgba(45,227,168,0.10),rgba(11,16,38,0.5))] p-5 sm:p-6">
+    <div className="rounded-section border border-emerald-200/15 bg-[linear-gradient(135deg,rgba(45,227,168,0.10),var(--bg))] p-5 sm:p-6">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-300/15 text-emerald-200">
             <Rocket className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-white">Fonly&apos;yi kurmayı tamamla</h2>
+            <h2 className="text-base font-semibold text-mist">Fonly&apos;yi kurmayı tamamla</h2>
             <p className="text-xs text-mist-3">{done}/{total} adım tamamlandı</p>
           </div>
         </div>
@@ -55,7 +55,7 @@ export function OnboardingChecklist({ steps }: { steps: OnboardingStep[] }) {
             <li key={s.label}>
               <Link
                 href={s.href}
-                className="group flex items-center justify-between gap-2 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2 text-sm text-mist-2 transition hover:border-emerald-300/30 hover:text-white"
+                className="group flex items-center justify-between gap-2 rounded-xl border border-line bg-white/[0.03] px-3 py-2 text-sm text-mist-2 transition hover:border-emerald-300/30 hover:text-mist"
               >
                 <span className="flex items-center gap-2">
                   <Circle className="h-4 w-4 shrink-0 text-mist-3" />

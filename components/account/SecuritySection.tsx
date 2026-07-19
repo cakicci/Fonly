@@ -56,7 +56,7 @@ export function SecuritySection({ hasPassword, googleConnected }: SecuritySectio
   return (
     <div className="space-y-4">
       <form onSubmit={submit} className="glass-card rounded-2xl p-6">
-        <div className="flex items-center gap-2 text-white">
+        <div className="flex items-center gap-2 text-mist">
           <KeyRound className="h-4 w-4 text-emerald-200" />
           <h2 className="text-sm font-semibold">{hasPassword ? "Şifre değiştir" : "Şifre belirle"}</h2>
         </div>
@@ -75,7 +75,7 @@ export function SecuritySection({ hasPassword, googleConnected }: SecuritySectio
                 value={current}
                 onChange={(e) => setCurrent(e.target.value)}
                 autoComplete="current-password"
-                className="mt-1 w-full rounded-xl border border-white/10 bg-ink px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
+                className="mt-1 w-full rounded-xl border border-line bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
               />
             </label>
           )}
@@ -86,7 +86,7 @@ export function SecuritySection({ hasPassword, googleConnected }: SecuritySectio
               value={next}
               onChange={(e) => setNext(e.target.value)}
               autoComplete="new-password"
-              className="mt-1 w-full rounded-xl border border-white/10 bg-ink px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
+              className="mt-1 w-full rounded-xl border border-line bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
             />
           </label>
           <label className="text-xs text-mist-3">
@@ -96,7 +96,7 @@ export function SecuritySection({ hasPassword, googleConnected }: SecuritySectio
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               autoComplete="new-password"
-              className="mt-1 w-full rounded-xl border border-white/10 bg-ink px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
+              className="mt-1 w-full rounded-xl border border-line bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
             />
           </label>
         </div>
@@ -117,7 +117,7 @@ export function SecuritySection({ hasPassword, googleConnected }: SecuritySectio
       <div className="glass-card flex items-center gap-3 rounded-2xl p-5">
         <ShieldCheck className={`h-5 w-5 ${googleConnected ? "text-emerald-200" : "text-mist-3"}`} />
         <div>
-          <p className="text-sm font-medium text-white">Google hesabı</p>
+          <p className="text-sm font-medium text-mist">Google hesabı</p>
           <p className="text-xs text-mist-3">
             {googleConnected ? "Bağlı — Google ile giriş yapabilirsin." : "Bağlı değil."}
           </p>

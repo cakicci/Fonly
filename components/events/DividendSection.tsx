@@ -32,7 +32,7 @@ export function DividendSection({ payments }: Props) {
   if (payments.length === 0) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
-        <p className="text-sm font-medium text-white">Bu hisse için temettü kaydı yok</p>
+        <p className="text-sm font-medium text-mist">Bu hisse için temettü kaydı yok</p>
         <p className="mt-1 text-xs text-mist-3">
           Yahoo Finance son 10 yıl içinde temettü ödemesi tespit etmedi.
         </p>
@@ -88,7 +88,7 @@ export function DividendSection({ payments }: Props) {
 
       {/* Yıllık özet tablo */}
       <div className="glass-card rounded-2xl p-5">
-        <h3 className="mb-4 text-sm font-semibold text-white">Yıllık Temettü</h3>
+        <h3 className="mb-4 text-sm font-semibold text-mist">Yıllık Temettü</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -101,9 +101,9 @@ export function DividendSection({ payments }: Props) {
             <tbody className="divide-y divide-white/5">
               {[...yearly].reverse().map(y => (
                 <tr key={y.year}>
-                  <td className="py-2.5 pr-4 font-medium text-white">{y.year}</td>
+                  <td className="py-2.5 pr-4 font-medium text-mist">{y.year}</td>
                   <td className="py-2.5 pr-4 text-right tabular-nums text-mist-3">{y.count}</td>
-                  <td className="py-2.5 text-right tabular-nums text-white">{fmtAmount(y.total)}</td>
+                  <td className="py-2.5 text-right tabular-nums text-mist">{fmtAmount(y.total)}</td>
                 </tr>
               ))}
             </tbody>
@@ -113,7 +113,7 @@ export function DividendSection({ payments }: Props) {
 
       {/* Detaylı tablo */}
       <div className="glass-card rounded-2xl p-5">
-        <h3 className="mb-4 text-sm font-semibold text-white">Tüm Ödemeler</h3>
+        <h3 className="mb-4 text-sm font-semibold text-mist">Tüm Ödemeler</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -159,7 +159,7 @@ function SummaryCard({
         {icon}
         {label}
       </div>
-      <p className="mt-2 text-lg font-semibold tabular-nums text-white">{value}</p>
+      <p className="mt-2 text-lg font-semibold tabular-nums text-mist">{value}</p>
       {subValue && <p className={`mt-1 text-[11px] ${subCls}`}>{subValue}</p>}
     </div>
   );

@@ -28,6 +28,29 @@
   --positive: #6ee7b7;
   --negative: #fda4af;
 
+  /* "Aktif rozet" metin rengi (bg-{hue}-300/opacity + text-{hue}-100 ikilisi) —
+     koyu zeminde pastel-100 okunur, açık zeminde aynı pastel dolgu üstünde
+     -100 neredeyse görünmez olur. tailwind.config.ts bu değişkenleri
+     emerald/rose/amber/cyan/fuchsia/violet/sky 100 kademesine bağlar; dark
+     değerler Tailwind'in orijinal -100 hex'leriyle birebir aynı (görsel fark yok). */
+  --chip-emerald-100: #d1fae5;
+  --chip-rose-100: #ffe4e6;
+  --chip-amber-100: #fef3c7;
+  --chip-cyan-100: #cffafe;
+  --chip-fuchsia-100: #fae8ff;
+  --chip-violet-100: #ede9fe;
+  --chip-sky-100: #e0f2fe;
+
+  /* Aynı sorun -200 kademesinde de var: varlık türü/rozet metni (döviz=cyan-200,
+     altın=amber-200, premium=fuchsia-200 vb. — MASTER: varlık türü konvansiyonu). */
+  --chip-emerald-200: #a7f3d0;
+  --chip-rose-200: #fecdd3;
+  --chip-amber-200: #fde68a;
+  --chip-cyan-200: #a5f3fc;
+  --chip-fuchsia-200: #f5d0fe;
+  --chip-violet-200: #ddd6fe;
+  --chip-sky-200: #bae6fd;
+
   --dur-fast: 150ms;
   --dur-base: 250ms;
   --dur-slow: 400ms;
@@ -37,13 +60,65 @@
   --glass-saturate: 150%;
   --glass-highlight: rgba(255, 255, 255, 0.07);
   --glass-glow: rgba(110, 231, 183, 0.07);
+  --glass-fill-1: rgba(19, 28, 55, 0.84);
+  --glass-fill-2: rgba(10, 16, 36, 0.66);
+  --shadow-card-color: rgba(0, 0, 0, 0.28);
+  --shadow-glow-color: rgba(40, 230, 164, 0.18);
 
   /* Vitrin gradyanları — tailwind.config.ts backgroundImage üzerinden
-     bg-hero / bg-cta olarak kullanılır. Koyu taban her zaman lacivert aile. */
+     bg-hero / bg-cta olarak kullanılır. Koyu taban her zaman lacivert aile.
+     Işık/karanlık moddan bağımsız sabit kalır (Hero/RegisterCTA kasıtlı koyu ada). */
   --gradient-hero: linear-gradient(135deg, rgba(18, 28, 56, 0.96), rgba(7, 11, 29, 0.88));
   --gradient-cta: linear-gradient(135deg, rgba(45, 227, 168, 0.16), rgba(11, 16, 38, 0.92));
 
   background: var(--bg);
+}
+
+/* Açık mod — next-themes <html data-theme="light"> ile aktifleşir.
+   Koyu palet değişmez kalır (yukarısı); yalnız burada override edilir. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-deep: #eef2fa;
+  --bg: #f6f8fc;
+  --bg-light: #ffffff;
+  --surface: #ffffff;
+  --surface-2: rgba(11, 16, 38, 0.035);
+
+  --text: #0b1026;
+  --text-2: rgba(11, 16, 38, 0.72);
+  --text-3: rgba(11, 16, 38, 0.6);
+
+  --line: rgba(11, 16, 38, 0.12);
+  --line-strong: rgba(11, 16, 38, 0.2);
+
+  --accent: #047857;
+  --accent-soft: #065f46;
+  --positive: #047857;
+  --negative: #be123c;
+
+  --glass-highlight: rgba(11, 16, 38, 0.06);
+  --glass-glow: rgba(4, 120, 87, 0.1);
+  --glass-fill-1: rgba(255, 255, 255, 0.82);
+  --glass-fill-2: rgba(246, 248, 252, 0.66);
+  --shadow-card-color: rgba(15, 23, 42, 0.1);
+  --shadow-glow-color: rgba(4, 120, 87, 0.18);
+
+  --chip-emerald-100: #047857;
+  --chip-rose-100: #be123c;
+  --chip-amber-100: #b45309;
+  --chip-cyan-100: #0e7490;
+  --chip-fuchsia-100: #a21caf;
+  --chip-violet-100: #6d28d9;
+  --chip-sky-100: #0369a1;
+
+  --chip-emerald-200: #047857;
+  --chip-rose-200: #be123c;
+  --chip-amber-200: #b45309;
+  --chip-cyan-200: #0e7490;
+  --chip-fuchsia-200: #a21caf;
+  --chip-violet-200: #6d28d9;
+  --chip-sky-200: #0369a1;
 }
 
 /* Faz 3 performans kademesi: mobil GPU'da backdrop-filter maliyeti yarıçapla
@@ -70,9 +145,18 @@ body {
     radial-gradient(circle at top left, rgba(31, 214, 157, 0.18), transparent 34rem),
     radial-gradient(circle at 86% 14%, rgba(86, 173, 255, 0.14), transparent 30rem),
     linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 52%, var(--bg-light) 100%);
-  color: #ecfff9;
+  color: var(--text);
   /* Canlı fiyat/yüzde güncellemelerinde rakam genişliği sabit kalsın (layout shift önler). */
   font-variant-numeric: tabular-nums;
+}
+
+/* Açık modda aynı parıltılar doygun kalırsa "oyuncaklaşma" anti-pattern'ine
+   girer (MASTER) — beyaz zeminde çok daha soluk bir iz yeterli. */
+[data-theme="light"] body {
+  background:
+    radial-gradient(circle at top left, rgba(16, 185, 129, 0.06), transparent 34rem),
+    radial-gradient(circle at 86% 14%, rgba(59, 130, 246, 0.05), transparent 30rem),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 52%, var(--bg-light) 100%);
 }
 
 button,
@@ -117,10 +201,10 @@ a {
   border: 1px solid var(--glass-border, var(--line));
   background:
     var(--glass-tint, none),
-    linear-gradient(145deg, rgba(19, 28, 55, 0.84), rgba(10, 16, 36, 0.66));
+    linear-gradient(145deg, var(--glass-fill-1), var(--glass-fill-2));
   box-shadow:
     inset 0 1px 0 var(--glass-highlight),
-    0 20px 80px rgba(0, 0, 0, 0.28);
+    0 20px 80px var(--shadow-card-color);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   transition:
@@ -188,6 +272,28 @@ a {
 .glass-tint-premium {
   --glass-tint: linear-gradient(135deg, rgba(240, 171, 252, 0.14), rgba(168, 85, 247, 0.05) 45%, rgba(52, 211, 153, 0.1));
   --glass-border: rgba(240, 171, 252, 0.3);
+}
+
+/* Açık mod tonlu cam — aynı varlık konvansiyonu, koyu/doygun hue ailesi
+   (pastel tonlar beyaz zeminde kontrast kaybediyor). */
+[data-theme="light"] .glass-tint-positive {
+  --glass-tint: linear-gradient(135deg, rgba(4, 120, 87, 0.1), rgba(4, 120, 87, 0.02) 55%, transparent);
+  --glass-border: rgba(4, 120, 87, 0.22);
+}
+
+[data-theme="light"] .glass-tint-negative {
+  --glass-tint: linear-gradient(135deg, rgba(190, 18, 60, 0.1), rgba(190, 18, 60, 0.02) 55%, transparent);
+  --glass-border: rgba(190, 18, 60, 0.22);
+}
+
+[data-theme="light"] .glass-tint-neutral {
+  --glass-tint: linear-gradient(135deg, rgba(180, 83, 9, 0.1), rgba(180, 83, 9, 0.02) 55%, transparent);
+  --glass-border: rgba(180, 83, 9, 0.2);
+}
+
+[data-theme="light"] .glass-tint-premium {
+  --glass-tint: linear-gradient(135deg, rgba(162, 28, 175, 0.12), rgba(126, 34, 206, 0.04) 45%, rgba(4, 120, 87, 0.08));
+  --glass-border: rgba(162, 28, 175, 0.24);
 }
 
 /* WCAG koruması (Faz 3): tonlu cam zemini aydınlattığı için mist-3 (0.5)
@@ -293,4 +399,34 @@ a {
   .section-card {
     @apply rounded-section border border-line bg-white/[0.025] p-5 sm:p-6;
   }
+}
+
+/* Açık mod bileşen override'ları — @apply içindeki bg-white/N ve pastel
+   hover renkleri koyu zemine göre ayarlanmış, beyaz zeminde tersine dönmeli. */
+[data-theme="light"] .btn-secondary {
+  background-color: rgba(11, 16, 38, 0.04);
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background-color: rgba(11, 16, 38, 0.08);
+}
+
+[data-theme="light"] .btn-ghost:hover {
+  background-color: rgba(11, 16, 38, 0.04);
+}
+
+[data-theme="light"] .section-card {
+  background-color: rgba(11, 16, 38, 0.02);
+}
+
+[data-theme="light"] .btn-danger:hover {
+  background-color: #9f1239;
+}
+
+[data-theme="light"] .btn-premium {
+  background-image: linear-gradient(to right, #c026d3, #047857);
+}
+
+[data-theme="light"] .btn-premium:hover {
+  background-image: linear-gradient(to right, #a21caf, #065f46);
 }

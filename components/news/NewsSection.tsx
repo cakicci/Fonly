@@ -27,7 +27,7 @@ export function NewsSection({ result }: Props) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
         <Newspaper className="mx-auto mb-3 h-6 w-6 text-mist-3" />
-        <p className="text-sm font-medium text-white">Haberler şu an yüklenemiyor</p>
+        <p className="text-sm font-medium text-mist">Haberler şu an yüklenemiyor</p>
         <p className="mt-1 text-xs text-mist-3">
           Birkaç dakika sonra tekrar deneyebilirsiniz.
         </p>
@@ -39,7 +39,7 @@ export function NewsSection({ result }: Props) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
         <Newspaper className="mx-auto mb-3 h-6 w-6 text-mist-3" />
-        <p className="text-sm font-medium text-white">Haber bulunamadı</p>
+        <p className="text-sm font-medium text-mist">Haber bulunamadı</p>
         <p className="mt-1 text-xs text-mist-3">
           {result.assetLabel ? `“${result.assetLabel}” için ` : ""}son zamanda yayınlanmış bir haber tespit edilmedi.
         </p>
@@ -86,7 +86,7 @@ export function NewsSection({ result }: Props) {
                 {fmtDateTime(item.publishedAt)}
               </span>
             </div>
-            <h3 className="text-sm font-semibold leading-snug text-white group-hover:text-emerald-100">
+            <h3 className="text-sm font-semibold leading-snug text-mist group-hover:text-emerald-100">
               {item.title}
             </h3>
             {item.description && (

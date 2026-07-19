@@ -42,7 +42,7 @@ export function ForgotPasswordForm() {
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-300/15">
             <MailCheck className="h-6 w-6 text-emerald-200" />
           </span>
-          <h1 className="mt-4 text-2xl font-semibold text-white">Posta kutunu kontrol et</h1>
+          <h1 className="mt-4 text-2xl font-semibold text-mist">Posta kutunu kontrol et</h1>
           <p className="mt-3 text-sm leading-6 text-mist-2">
             Eğer <span className="text-mist">{email}</span> adresi kayıtlıysa, şifre sıfırlama
             bağlantısını gönderdik. Bağlantı 1 saat geçerli. Gelen kutunda yoksa spam klasörüne bak.
@@ -63,7 +63,7 @@ export function ForgotPasswordForm() {
     <div className="glass-card mx-auto w-full max-w-md rounded-section p-6">
       <div className="mb-6">
         <p className="text-sm font-medium text-emerald-200">Şifre sıfırlama</p>
-        <h1 className="mt-2 text-3xl font-semibold text-white">Şifreni mi unuttun?</h1>
+        <h1 className="mt-2 text-3xl font-semibold text-mist">Şifreni mi unuttun?</h1>
         <p className="mt-3 text-sm leading-6 text-mist-2">
           Hesabının e-posta adresini gir, sana sıfırlama bağlantısı gönderelim.
         </p>
@@ -72,14 +72,14 @@ export function ForgotPasswordForm() {
       <form className="space-y-4" onSubmit={handleSubmit}>
         <label className="block">
           <span className="text-sm font-medium text-mist-2">Email</span>
-          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <span className="mt-2 flex items-center gap-3 rounded-2xl border border-line bg-white/[0.04] px-4 py-3">
             <Mail className="h-5 w-5 text-mist-3" />
             <input
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
-              className="w-full bg-transparent text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-mist outline-none placeholder:text-mist-3"
               placeholder="ornek@mail.com"
             />
           </span>

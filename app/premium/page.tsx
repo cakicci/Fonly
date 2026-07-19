@@ -84,7 +84,7 @@ export default async function PremiumPage() {
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       {/* Hero — "Data Stream" banner varyantı (assets/banners/fonlypro-ai) responsive hero olarak */}
       <section
-        className="relative mx-auto mt-6 max-w-6xl overflow-hidden rounded-3xl border border-white/8"
+        className="relative mx-auto mt-6 max-w-6xl overflow-hidden rounded-3xl border border-line"
         style={{
           background:
             "radial-gradient(circle at 100% 0%, rgba(232,121,249,0.13), transparent 30rem)," +
@@ -117,7 +117,7 @@ export default async function PremiumPage() {
                 anlamı FonlyPro çıkarır
               </span>
             </h1>
-            <p className="mt-5 max-w-lg text-sm leading-relaxed text-mist-2 sm:text-base">
+            <p className="mt-5 max-w-lg text-sm leading-relaxed text-white/70 sm:text-base">
               Yapay zekâ; grafiklerin, bilançoların ve haber akışının içinden senin için sonuç
               çıkarır.
             </p>
@@ -125,7 +125,7 @@ export default async function PremiumPage() {
               {HERO_FEATS.map(f => (
                 <li
                   key={f}
-                  className="flex items-center gap-3 text-sm font-medium text-mist-2 sm:text-[15px]"
+                  className="flex items-center gap-3 text-sm font-medium text-white/70 sm:text-[15px]"
                 >
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-emerald-300/35 bg-emerald-300/15">
                     <Check className="h-3.5 w-3.5 text-emerald-300" strokeWidth={3} />
@@ -142,7 +142,7 @@ export default async function PremiumPage() {
                 {premium ? "Aboneliğini yönet" : "Premium'a Geç"}
                 <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
               </a>
-              <span className="text-sm text-mist-3">Tek abonelik · tüm varlıklar</span>
+              <span className="text-sm text-white/50">Tek abonelik · tüm varlıklar</span>
             </div>
           </div>
 
@@ -151,12 +151,12 @@ export default async function PremiumPage() {
             <div className="rounded-[calc(1.5rem-1px)] bg-gradient-to-br from-[#131c37]/95 to-[#0a1024]/90 p-6 shadow-2xl backdrop-blur-xl sm:p-7">
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-2.5 text-sm font-bold text-white">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-fuchsia-300/35 bg-fuchsia-300/15 text-xs text-fuchsia-200">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-fuchsia-300/35 bg-fuchsia-300/15 text-xs text-[#f5d0fe]">
                     ✦
                   </span>
                   AI Analiz Motoru
                 </div>
-                <span className="rounded-full border border-amber-200/30 bg-amber-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-amber-200">
+                <span className="rounded-full border border-amber-200/30 bg-amber-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#fde68a]">
                   Yakında
                 </span>
               </div>
@@ -192,8 +192,8 @@ export default async function PremiumPage() {
                 <PanelRow k="RSI (14)" v="58,3 — nötr üstü" cls="text-cyan-300" />
                 <PanelRow k="AI güven skoru" v="%84" cls="text-fuchsia-300" />
               </div>
-              <p className="mt-4 text-xs leading-relaxed text-mist-3">
-                <strong className="font-semibold text-emerald-200">Örnek çıktı:</strong> AI motoru
+              <p className="mt-4 text-xs leading-relaxed text-white/50">
+                <strong className="font-semibold text-[#a7f3d0]">Örnek çıktı:</strong> AI motoru
                 bağlandığında analizler her varlık sayfasında otomatik görünecek.
               </p>
             </div>
@@ -225,7 +225,7 @@ export default async function PremiumPage() {
               )}
               <p className="text-sm font-semibold text-mist-2">{plan.name}</p>
               <div className="mt-2 flex items-baseline gap-1.5">
-                <span className="text-4xl font-semibold text-white">{plan.priceLabel}</span>
+                <span className="text-4xl font-semibold text-mist">{plan.priceLabel}</span>
                 <span className="text-sm text-mist-3">{plan.period}</span>
               </div>
               <p className="mt-1 text-xs text-mist-3">{plan.sub}</p>
@@ -243,7 +243,7 @@ export default async function PremiumPage() {
 
       {/* Features */}
       <section className="mx-auto mt-16 max-w-5xl">
-        <h2 className="text-center text-xl font-semibold text-white sm:text-2xl">
+        <h2 className="text-center text-xl font-semibold text-mist sm:text-2xl">
           FonlyPro ile gelen özellikler
         </h2>
         <p className="mt-2 text-center text-sm text-mist-3">
@@ -267,7 +267,7 @@ export default async function PremiumPage() {
                 <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia-300/20 to-emerald-300/15">
                   <Icon className="h-4 w-4 text-fuchsia-200" />
                 </div>
-                <h3 className="text-sm font-semibold text-white">{f.title}</h3>
+                <h3 className="text-sm font-semibold text-mist">{f.title}</h3>
                 <p className="mt-1.5 text-xs leading-relaxed text-mist-3">{f.desc}</p>
               </div>
             );
@@ -277,8 +277,8 @@ export default async function PremiumPage() {
 
       {/* FAQ teaser */}
       <section className="mx-auto mt-16 max-w-3xl">
-        <div className="rounded-3xl border border-white/8 bg-white/[0.02] p-6">
-          <h3 className="text-base font-semibold text-white">Sıkça sorulan sorular</h3>
+        <div className="rounded-3xl border border-line bg-white/[0.02] p-6">
+          <h3 className="text-base font-semibold text-mist">Sıkça sorulan sorular</h3>
           <div className="mt-4 space-y-4 text-sm">
             <Faq
               q="Aboneliği istediğim zaman iptal edebilir miyim?"
@@ -307,8 +307,8 @@ export default async function PremiumPage() {
 
 function PanelRow({ k, v, cls }: { k: string; v: string; cls: string }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3 text-sm">
-      <span className="font-medium text-mist-3">{k}</span>
+    <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm">
+      <span className="font-medium text-white/50">{k}</span>
       <span className={`font-bold tabular-nums ${cls}`}>{v}</span>
     </div>
   );

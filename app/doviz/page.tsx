@@ -7,6 +7,7 @@ import type { CurrencyItem, MarketResponse } from "@/app/api/market/route";
 import { isMarketResponseFresh } from "@/lib/market-helpers";
 import { CURRENCY_MAP } from "@/data/currencies";
 import { FlashPrice } from "@/components/FlashPrice";
+import { ConverterWidget } from "@/components/ConverterWidget";
 
 const POLL_MS = 5_000;
 type Tab = "major" | "other";
@@ -30,7 +31,7 @@ function CurrencyCard({ item }: { item: CurrencyItem }) {
   return (
     <Link
       href={`/doviz/${item.code.toLowerCase()}`}
-      className="group flex flex-col rounded-2xl border border-white/8 bg-white/[0.025] p-5
+      className="group flex flex-col rounded-2xl border border-line bg-white/[0.025] p-5
                  transition hover:border-cyan-200/25 hover:bg-white/[0.045]"
     >
       <div className="mb-3 flex items-center justify-between">
@@ -55,7 +56,7 @@ function CurrencyCard({ item }: { item: CurrencyItem }) {
       </p>
       <p className="mt-0.5 truncate text-sm font-medium text-mist-2">{item.shortName}</p>
 
-      <FlashPrice value={item.rawValue} className="mt-4 text-2xl font-semibold text-white">
+      <FlashPrice value={item.rawValue} className="mt-4 text-2xl font-semibold text-mist">
         {item.value}
         <span className="ml-1 text-sm font-normal text-mist-3">TL</span>
       </FlashPrice>
@@ -65,7 +66,7 @@ function CurrencyCard({ item }: { item: CurrencyItem }) {
 
 function CardSkeleton() {
   return (
-    <div className="animate-pulse rounded-2xl border border-white/8 bg-white/[0.025] p-5">
+    <div className="animate-pulse rounded-2xl border border-line bg-white/[0.025] p-5">
       <div className="mb-3 flex items-center justify-between">
         <div className="h-8 w-8 rounded-full bg-white/8" />
         <div className="h-3 w-12 rounded bg-white/8" />
@@ -127,7 +128,7 @@ export default function DovizPage() {
         {/* Breadcrumb */}
         <Link
           href="/"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-mist"
         >
           <ArrowLeft className="h-4 w-4" />
           Ana Sayfa
@@ -137,7 +138,7 @@ export default function DovizPage() {
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-cyan-200">Canlı kurlar</p>
-            <h1 className="mt-1.5 text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="mt-1.5 text-3xl font-semibold text-mist sm:text-4xl">
               Döviz Kurları
             </h1>
             <p className="mt-2 text-sm text-mist-3">
@@ -149,15 +150,20 @@ export default function DovizPage() {
           </div>
         </div>
 
+        {/* Hızlı çevirici */}
+        <div className="mb-6">
+          <ConverterWidget data={data} />
+        </div>
+
         {/* Sekmeler + arama */}
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="inline-flex rounded-2xl border border-white/10 bg-white/[0.03] p-1">
+          <div className="inline-flex rounded-2xl border border-line bg-white/[0.03] p-1">
             <button
               onClick={() => setTab("major")}
               className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
                 tab === "major"
                   ? "bg-cyan-300/15 text-cyan-100"
-                  : "text-mist-3 hover:text-white"
+                  : "text-mist-3 hover:text-mist"
               }`}
             >
               Yaygın 8
@@ -167,21 +173,21 @@ export default function DovizPage() {
               className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
                 tab === "other"
                   ? "bg-cyan-300/15 text-cyan-100"
-                  : "text-mist-3 hover:text-white"
+                  : "text-mist-3 hover:text-mist"
               }`}
             >
               Diğer Dövizler
             </button>
           </div>
 
-          <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 sm:w-72">
+          <div className="flex items-center gap-2 rounded-2xl border border-line bg-white/[0.04] px-3 py-2 sm:w-72">
             <Search className="h-4 w-4 shrink-0 text-mist-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ara (USD, ruble, riyal)"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-sm text-mist outline-none placeholder:text-mist-3"
             />
           </div>
         </div>

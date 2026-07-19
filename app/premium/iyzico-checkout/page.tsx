@@ -53,7 +53,7 @@ export default async function IyzicoCheckoutPage({
       <div className="mx-auto max-w-xl">
         <Link
           href="/premium"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-mist-3 transition hover:text-mist"
         >
           <ArrowLeft className="h-4 w-4" />
           Premium sayfasına dön
@@ -65,7 +65,7 @@ export default async function IyzicoCheckoutPage({
               <ShieldCheck className="h-4 w-4" />
               Güvenli ödeme — iyzico
             </p>
-            <h1 className="mt-2 text-2xl font-semibold text-white">
+            <h1 className="mt-2 text-2xl font-semibold text-mist">
               FonlyPro {plan.name} — {plan.priceLabel}
               <span className="text-base font-normal text-mist-3">{plan.period}</span>
             </h1>

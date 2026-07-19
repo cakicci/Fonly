@@ -44,7 +44,7 @@ export function TechnicalAISummary({
             <p className="text-[11px] font-semibold uppercase tracking-wider text-fuchsia-200/80">
               FonlyPro · AI Teknik Özet
             </p>
-            <h3 className="mt-0.5 text-sm font-semibold text-white">
+            <h3 className="mt-0.5 text-sm font-semibold text-mist">
               {displayName} {tfLabel ? `· ${tfLabel}` : ""} sinyallerini Türkçe yorumlat
             </h3>
             <p className="mt-1 max-w-xl text-xs leading-relaxed text-mist-3">

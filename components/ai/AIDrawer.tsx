@@ -66,21 +66,21 @@ export function AIDrawer({ type, context, label, onClose }: AIDrawerProps) {
     <div className="fixed inset-0 z-50 flex items-start justify-end">
       <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" onClick={onClose} aria-hidden />
 
-      <div className="relative h-full w-full max-w-md overflow-y-auto border-l border-white/10 bg-ink shadow-2xl">
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-ink/95 px-5 py-4 backdrop-blur">
+      <div className="relative h-full w-full max-w-md overflow-y-auto border-l border-line bg-ink shadow-2xl">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-ink/95 px-5 py-4 backdrop-blur">
           <div className="flex items-center gap-2">
             <div className="rounded-lg bg-gradient-to-br from-fuchsia-300/25 to-emerald-300/20 p-1.5">
               <Sparkles className="h-4 w-4 text-fuchsia-200" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-white">{label}</h2>
+              <h2 className="text-sm font-semibold text-mist">{label}</h2>
               <p className="text-[11px] text-mist-3">{context.assetName}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             aria-label="Kapat"
-            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-mist"
           >
             <X className="h-4 w-4" />
           </button>

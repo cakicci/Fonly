@@ -38,7 +38,7 @@ export function IncomeForm({ currentIncome }: IncomeFormProps) {
     <div className="glass-card rounded-section p-5 sm:p-6">
       <div className="mb-5">
         <p className="text-sm font-medium text-emerald-200">Gelir bilgisi</p>
-        <h2 className="mt-2 text-2xl font-semibold text-white">Aylık gelirini gir</h2>
+        <h2 className="mt-2 text-2xl font-semibold text-mist">Aylık gelirini gir</h2>
         <p className="mt-2 text-sm leading-6 text-mist-3">
           Girdiğin gelire ve risk profiline göre aylık ayrılabilir tutar hesaplanır.
         </p>
@@ -49,7 +49,7 @@ export function IncomeForm({ currentIncome }: IncomeFormProps) {
           <label className="block text-sm font-medium text-mist-2 mb-2" htmlFor="income-input">
             Aylık net gelir (TL)
           </label>
-          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <div className="flex items-center gap-3 rounded-2xl border border-line bg-white/[0.04] px-4 py-3">
             <WalletCards className="h-5 w-5 text-emerald-200 shrink-0" />
             <input
               id="income-input"
@@ -59,7 +59,7 @@ export function IncomeForm({ currentIncome }: IncomeFormProps) {
               value={income}
               onChange={(e) => { setIncome(e.target.value); setSaved(false); }}
               placeholder="Örn: 30000"
-              className="w-full bg-transparent text-lg font-semibold text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-lg font-semibold text-mist outline-none placeholder:text-mist-3"
             />
             <span className="text-sm text-mist-3 shrink-0">TL</span>
           </div>

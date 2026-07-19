@@ -4,6 +4,9 @@ import { PriceChart } from "@/components/PriceChart";
 import { AnalysisCard } from "@/components/AnalysisCard";
 import { ChartSection } from "@/components/chart/ChartSection";
 import { Tabs } from "@/components/chart/Tabs";
+import { HistoricalWhatIfCalculator } from "@/components/HistoricalWhatIfCalculator";
+import { AssetScoreCard } from "@/components/AssetScoreCard";
+import { computeFonScore } from "@/lib/score/fon";
 import { fetchAllFundReturns, fetchFundDetail } from "@/lib/tefas";
 
 type Params = { kod: string };
@@ -55,13 +58,22 @@ export default async function FonGenelPage({ params }: { params: Params }) {
         unit="₺"
       />
 
+      <AssetScoreCard
+        axes={computeFonScore({
+          getiri3a:       returnRow?.getiri3a ?? null,
+          getiri1y:       returnRow?.getiri1y ?? null,
+          kategoriDerece: detail.kategoriDerece,
+          kategoriFonSay: detail.kategoriFonSay,
+        })}
+      />
+
       <div className="glass-card rounded-section p-6">
-        <h2 className="mb-4 text-lg font-semibold text-white">Dönem Getirileri</h2>
+        <h2 className="mb-4 text-lg font-semibold text-mist">Dönem Getirileri</h2>
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-7">
           {periods.map((p) => {
             const positive = p.value != null && p.value >= 0;
             return (
-              <div key={p.label} className="rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2.5">
+              <div key={p.label} className="rounded-xl border border-line bg-white/[0.025] px-3 py-2.5">
                 <p className="text-[10px] font-medium uppercase tracking-wider text-mist-3">{p.label}</p>
                 <p className={`mt-1 text-sm font-semibold ${
                   p.value == null ? "text-mist-3" :
@@ -83,7 +95,7 @@ export default async function FonGenelPage({ params }: { params: Params }) {
             label: "Altın Karşılaştırma",
             content: (
               <div className="glass-card rounded-section p-6">
-                <h2 className="mb-1 text-lg font-semibold text-white">Gram Altına Göre Performans</h2>
+                <h2 className="mb-1 text-lg font-semibold text-mist">Gram Altına Göre Performans</h2>
                 <p className="mb-5 text-xs text-mist-3">
                   Yüzdesel değişim — {detail.fonUnvan} vs Gram Altın (dönem başı = 0%)
                 </p>
@@ -111,6 +123,8 @@ export default async function FonGenelPage({ params }: { params: Params }) {
           },
         ]}
       />
+
+      <HistoricalWhatIfCalculator slug={slug} assetName={detail.fonUnvan} />
     </>
   );
 }

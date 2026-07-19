@@ -98,14 +98,14 @@ export function Hero() {
       <div className="relative grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
         {/* Sol: başlık + butonlar */}
         <div className="max-w-2xl">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-sm text-emerald-100">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-sm text-[#d1fae5]">
             <Sparkles className="h-4 w-4" />
             Yeni başlayanlar için sade yatırım rehberi
           </div>
           <h1 className="text-4xl font-semibold leading-tight tracking-normal text-white sm:text-5xl lg:text-6xl">
             Finans bilmeden yatırım dünyasını keşfet.
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-7 text-mist-2 sm:text-lg">
+          <p className="mt-5 max-w-xl text-base leading-7 text-white/70 sm:text-lg">
             Fonları ve hisseleri herkesin anlayacağı şekilde analiz et.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -113,7 +113,7 @@ export function Hero() {
               <Target className="h-4 w-4" />
               Risk Testine Başla
             </Link>
-            <Link href="/hisseler" className="btn btn-lg btn-secondary">
+            <Link href="/hisseler" className="btn btn-lg btn-secondary text-white">
               Hisseleri İncele
               <TrendingUp className="h-4 w-4" />
             </Link>
@@ -146,7 +146,7 @@ export function Hero() {
                   >
                     <Icon className="h-5 w-5" />
                   </div>
-                  <p className="text-lg font-semibold text-white">{slide.title}</p>
+                  <p className="text-lg font-semibold text-mist">{slide.title}</p>
                   <p className="mt-2 text-sm leading-6 text-mist-2">{slide.description}</p>
                 </div>
               );
@@ -163,7 +163,7 @@ export function Hero() {
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                   i === current
                     ? "w-5 bg-emerald-300"
-                    : "w-1.5 bg-white/20 hover:bg-white/40"
+                    : "w-1.5 bg-mist-3 hover:bg-mist-2"
                 }`}
               />
             ))}

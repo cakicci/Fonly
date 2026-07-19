@@ -28,7 +28,7 @@ export default async function FonGetirilerPage({ params }: { params: Params }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="glass-card rounded-2xl p-5">
-        <h3 className="mb-4 text-sm font-semibold text-white">Dönem Bazlı Getiri</h3>
+        <h3 className="mb-4 text-sm font-semibold text-mist">Dönem Bazlı Getiri</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -47,7 +47,7 @@ export default async function FonGetirilerPage({ params }: { params: Params }) {
                     : "text-rose-300";
                 return (
                   <tr key={p.label}>
-                    <td className="py-2.5 pr-4 font-medium text-white">{p.label}</td>
+                    <td className="py-2.5 pr-4 font-medium text-mist">{p.label}</td>
                     <td className="py-2.5 pr-4 text-mist-3">{p.description}</td>
                     <td className={`py-2.5 text-right tabular-nums font-semibold ${tone}`}>
                       {fmtPct(p.value)}

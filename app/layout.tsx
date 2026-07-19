@@ -6,6 +6,7 @@ import { AlertBadge } from "@/components/chart/AlertBadge";
 import { GlobalWatchlistDrawer } from "@/components/chart/GlobalWatchlistDrawer";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { RegisterCTA } from "@/components/site/RegisterCTA";
 import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"], display: "swap" });
@@ -47,11 +48,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr">
+    <html lang="tr" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
           <SiteHeader />
           {children}
+          <RegisterCTA />
           <SiteFooter />
           <AlertBadge />
           <GlobalWatchlistDrawer />

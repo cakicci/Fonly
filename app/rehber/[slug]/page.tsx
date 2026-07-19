@@ -21,12 +21,12 @@ export function generateStaticParams() {
 
 // Bölüme özgü accent renkleri
 const ACCENTS = [
-  { border: "border-emerald-200/16", bg: "bg-[linear-gradient(135deg,rgba(45,227,168,0.07),rgba(11,16,38,0.98))]", text: "text-emerald-200", num: "bg-emerald-300/12 text-emerald-300", dot: "bg-emerald-300", takeaway: "border-emerald-200/20 bg-emerald-300/[0.05]", example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
-  { border: "border-rose-200/16",    bg: "bg-[linear-gradient(135deg,rgba(253,164,175,0.07),rgba(11,16,38,0.98))]", text: "text-rose-200",    num: "bg-rose-300/12 text-rose-300",    dot: "bg-rose-300",    takeaway: "border-rose-200/20 bg-rose-300/[0.05]",    example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
-  { border: "border-amber-200/16",   bg: "bg-[linear-gradient(135deg,rgba(251,191,36,0.07),rgba(11,16,38,0.98))]",  text: "text-amber-200",   num: "bg-amber-300/12 text-amber-300",   dot: "bg-amber-300",   takeaway: "border-amber-200/20 bg-amber-300/[0.05]",   example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
-  { border: "border-cyan-200/16",    bg: "bg-[linear-gradient(135deg,rgba(165,243,252,0.07),rgba(11,16,38,0.98))]", text: "text-cyan-200",    num: "bg-cyan-300/12 text-cyan-300",    dot: "bg-cyan-300",    takeaway: "border-cyan-200/20 bg-cyan-300/[0.05]",    example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
-  { border: "border-violet-200/16",  bg: "bg-[linear-gradient(135deg,rgba(196,181,253,0.07),rgba(11,16,38,0.98))]", text: "text-violet-200",  num: "bg-violet-300/12 text-violet-300",  dot: "bg-violet-300",  takeaway: "border-violet-200/20 bg-violet-300/[0.05]",  example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
-  { border: "border-sky-200/16",     bg: "bg-[linear-gradient(135deg,rgba(186,230,253,0.07),rgba(11,16,38,0.98))]", text: "text-sky-200",     num: "bg-sky-300/12 text-sky-300",      dot: "bg-sky-300",     takeaway: "border-sky-200/20 bg-sky-300/[0.05]",      example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
+  { border: "border-emerald-200/16", bg: "bg-[linear-gradient(135deg,rgba(45,227,168,0.07),var(--bg))]", text: "text-emerald-200", num: "bg-emerald-300/12 text-emerald-300", dot: "bg-emerald-300", takeaway: "border-emerald-200/20 bg-emerald-300/[0.05]", example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
+  { border: "border-rose-200/16",    bg: "bg-[linear-gradient(135deg,rgba(253,164,175,0.07),var(--bg))]", text: "text-rose-200",    num: "bg-rose-300/12 text-rose-300",    dot: "bg-rose-300",    takeaway: "border-rose-200/20 bg-rose-300/[0.05]",    example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
+  { border: "border-amber-200/16",   bg: "bg-[linear-gradient(135deg,rgba(251,191,36,0.07),var(--bg))]",  text: "text-amber-200",   num: "bg-amber-300/12 text-amber-300",   dot: "bg-amber-300",   takeaway: "border-amber-200/20 bg-amber-300/[0.05]",   example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
+  { border: "border-cyan-200/16",    bg: "bg-[linear-gradient(135deg,rgba(165,243,252,0.07),var(--bg))]", text: "text-cyan-200",    num: "bg-cyan-300/12 text-cyan-300",    dot: "bg-cyan-300",    takeaway: "border-cyan-200/20 bg-cyan-300/[0.05]",    example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
+  { border: "border-violet-200/16",  bg: "bg-[linear-gradient(135deg,rgba(196,181,253,0.07),var(--bg))]", text: "text-violet-200",  num: "bg-violet-300/12 text-violet-300",  dot: "bg-violet-300",  takeaway: "border-violet-200/20 bg-violet-300/[0.05]",  example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
+  { border: "border-sky-200/16",     bg: "bg-[linear-gradient(135deg,rgba(186,230,253,0.07),var(--bg))]", text: "text-sky-200",     num: "bg-sky-300/12 text-sky-300",      dot: "bg-sky-300",     takeaway: "border-sky-200/20 bg-sky-300/[0.05]",      example: "border-amber-200/16 bg-amber-300/[0.04]", action: "border-cyan-200/18 bg-cyan-300/[0.05] text-cyan-200 hover:bg-cyan-300/[0.09]" },
 ];
 
 export default function RehberChapterPage({ params }: { params: Params }) {
@@ -44,11 +44,11 @@ export default function RehberChapterPage({ params }: { params: Params }) {
 
         {/* Breadcrumb */}
         <nav className="mb-6 flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <Link href="/rehber" className="transition hover:text-white">Yatırım Rehberi</Link>
+          <Link href="/rehber" className="transition hover:text-mist">Yatırım Rehberi</Link>
           <span>/</span>
-          <span className="text-white">{chapter.num}. {chapter.title}</span>
+          <span className="text-mist">{chapter.num}. {chapter.title}</span>
         </nav>
 
         {/* İlerleme göstergesi */}
@@ -77,7 +77,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
               <p className={`text-sm font-medium ${accent.text}`}>
                 Bölüm {chapter.num} / {GUIDE_CHAPTERS.length}
               </p>
-              <h1 className="mt-1 text-2xl font-semibold text-white sm:text-3xl">
+              <h1 className="mt-1 text-2xl font-semibold text-mist sm:text-3xl">
                 {chapter.title}
               </h1>
               <p className="mt-2 text-base text-mist-2">{chapter.subtitle}</p>
@@ -92,7 +92,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
         <div className="space-y-6">
 
           {/* Bu bölümde öğreneceklerin */}
-          <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
+          <div className="rounded-2xl border border-line bg-white/[0.03] p-5">
             <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-mist-3">
               <CheckCircle2 className="h-3.5 w-3.5" />
               Bu bölümde öğreneceklerin
@@ -109,8 +109,8 @@ export default function RehberChapterPage({ params }: { params: Params }) {
 
           {/* Ana içerik bölümleri */}
           {chapter.sections.map((section, sIdx) => (
-            <div key={sIdx} className="rounded-2xl border border-white/8 bg-white/[0.025] p-5">
-              <h2 className="mb-4 text-base font-semibold text-white">{section.heading}</h2>
+            <div key={sIdx} className="rounded-2xl border border-line bg-white/[0.025] p-5">
+              <h2 className="mb-4 text-base font-semibold text-mist">{section.heading}</h2>
               <ul className="space-y-3">
                 {section.items.map((item, iIdx) => (
                   <li key={iIdx} className="flex items-start gap-3 text-sm leading-6 text-mist-2">
@@ -137,7 +137,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
               <Lightbulb className="h-3.5 w-3.5" />
               Aklında kalsın
             </p>
-            <p className="text-base font-semibold leading-7 text-white">
+            <p className="text-base font-semibold leading-7 text-mist">
               {chapter.keyTakeaway}
             </p>
           </div>
@@ -162,25 +162,25 @@ export default function RehberChapterPage({ params }: { params: Params }) {
             {prev ? (
               <Link
                 href={`/rehber/${prev.slug}`}
-                className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4
+                className="flex items-center gap-3 rounded-2xl border border-line bg-white/[0.03] p-4
                            transition hover:bg-white/[0.06]"
               >
                 <ArrowLeft className="h-5 w-5 shrink-0 text-mist-3" />
                 <div className="min-w-0">
                   <p className="text-xs text-mist-3">Önceki bölüm</p>
-                  <p className="mt-0.5 truncate text-sm font-medium text-white">{prev.title}</p>
+                  <p className="mt-0.5 truncate text-sm font-medium text-mist">{prev.title}</p>
                 </div>
               </Link>
             ) : (
               <Link
                 href="/rehber"
-                className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4
+                className="flex items-center gap-3 rounded-2xl border border-line bg-white/[0.03] p-4
                            transition hover:bg-white/[0.06]"
               >
                 <ArrowLeft className="h-5 w-5 shrink-0 text-mist-3" />
                 <div>
                   <p className="text-xs text-mist-3">Geri dön</p>
-                  <p className="mt-0.5 text-sm font-medium text-white">Rehber ana sayfası</p>
+                  <p className="mt-0.5 text-sm font-medium text-mist">Rehber ana sayfası</p>
                 </div>
               </Link>
             )}
@@ -188,12 +188,12 @@ export default function RehberChapterPage({ params }: { params: Params }) {
             {next ? (
               <Link
                 href={`/rehber/${next.slug}`}
-                className="flex items-center justify-between gap-3 rounded-2xl border border-white/8
+                className="flex items-center justify-between gap-3 rounded-2xl border border-line
                            bg-white/[0.03] p-4 transition hover:bg-white/[0.06]"
               >
                 <div className="min-w-0">
                   <p className="text-xs text-mist-3">Sonraki bölüm</p>
-                  <p className="mt-0.5 truncate text-sm font-medium text-white">{next.title}</p>
+                  <p className="mt-0.5 truncate text-sm font-medium text-mist">{next.title}</p>
                 </div>
                 <ArrowRight className="h-5 w-5 shrink-0 text-mist-3" />
               </Link>
@@ -205,7 +205,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
               >
                 <div>
                   <p className="text-xs text-emerald-200/60">Tebrikler, tamamladın!</p>
-                  <p className="mt-0.5 text-sm font-medium text-white">Tüm rehberi gör</p>
+                  <p className="mt-0.5 text-sm font-medium text-mist">Tüm rehberi gör</p>
                 </div>
                 <ArrowRight className="h-5 w-5 shrink-0 text-emerald-200/50" />
               </Link>
@@ -213,7 +213,7 @@ export default function RehberChapterPage({ params }: { params: Params }) {
           </div>
 
           {/* Yasal not */}
-          <div className="rounded-2xl border border-white/6 bg-white/[0.015] p-4 text-center">
+          <div className="rounded-2xl border border-line bg-white/[0.015] p-4 text-center">
             <p className="text-xs leading-5 text-mist-3">
               Bu içerik yalnızca eğitim amaçlıdır, yatırım tavsiyesi değildir.
               Yatırım kararı vermeden önce mali danışmanlık almanız önerilir.

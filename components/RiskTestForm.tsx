@@ -52,21 +52,27 @@ const questions = [
   }
 ];
 
-const riskLabels: Record<string, { label: string; color: string; description: string }> = {
+const riskLabels: Record<string, { label: string; color: string; description: string; scenario: string }> = {
   low: {
     label: "Düşük Risk",
     color: "text-cyan-200",
-    description: "Sakin ilerlemek istiyorsun. Para piyasası ve düşük riskli fonlar daha uygun."
+    description: "Sakin ilerlemek istiyorsun. Para piyasası ve düşük riskli fonlar daha uygun.",
+    scenario:
+      "Somut örnek: 10.000 TL'lik bir yatırımın kötü bir ayda 8.500 TL'ye düşse muhtemelen rahatsız olur, satmayı düşünürsün — bu senin için gayet normal. Bu yüzden büyük dalgalanan araçlardan uzak durman, geceleri daha rahat uyumanı sağlar."
   },
   medium: {
     label: "Orta Risk",
     color: "text-emerald-200",
-    description: "Dengeli bir yaklaşımın var. Karma fonlar ve seçili hisseler uygun olabilir."
+    description: "Dengeli bir yaklaşımın var. Karma fonlar ve seçili hisseler uygun olabilir.",
+    scenario:
+      "Somut örnek: 10.000 TL'lik bir yatırımın kötü bir ayda 8.000 TL'ye düşse endişelenirsin ama muhtemelen satmadan beklersin. Orta düzey dalgalanmalara tahammülün var; ne tamamen güvenliğe ne de tamamen büyümeye kilitlenmen gerekmiyor."
   },
   high: {
     label: "Yüksek Risk",
     color: "text-amber-200",
-    description: "Düşüşlerde bekleyebiliyorsun. Büyüme odaklı fonlar ve hisseler uygun olabilir."
+    description: "Düşüşlerde bekleyebiliyorsun. Büyüme odaklı fonlar ve hisseler uygun olabilir.",
+    scenario:
+      "Somut örnek: 10.000 TL'lik bir yatırımın kötü bir ayda 7.000-7.500 TL'ye düşse bile paniklemeden bekleyebilir, hatta fırsat görebilirsin. Yine de bu parayı yakın zamanda ihtiyaç duymayacağından emin ol — yüksek risk her zaman kazandırmaz."
   }
 };
 
@@ -124,6 +130,9 @@ export function RiskTestForm() {
         <p className="text-sm font-medium text-mist-3">Risk profili sonucun</p>
         <h2 className={`mt-2 text-4xl font-semibold ${info.color}`}>{info.label}</h2>
         <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-mist-2">{info.description}</p>
+        <div className="mx-auto mt-5 max-w-md rounded-2xl border border-line bg-white/[0.03] px-5 py-4 text-left text-sm leading-6 text-mist-2">
+          {info.scenario}
+        </div>
         <button
           onClick={() => router.push("/dashboard")}
           className="btn btn-lg btn-primary mt-8 px-8"
@@ -151,7 +160,7 @@ export function RiskTestForm() {
       </div>
 
       {/* Question */}
-      <h2 className="mb-6 text-xl font-semibold text-white sm:text-2xl">{question.question}</h2>
+      <h2 className="mb-6 text-xl font-semibold text-mist sm:text-2xl">{question.question}</h2>
 
       {/* Options */}
       <div className="space-y-3">
@@ -162,14 +171,14 @@ export function RiskTestForm() {
             onClick={() => setSelectedOption(option.score)}
             className={`flex w-full items-center gap-4 rounded-2xl border px-4 py-4 text-left text-sm transition ${
               selectedOption === option.score
-                ? "border-emerald-200/40 bg-emerald-300/12 text-white"
-                : "border-white/8 bg-white/[0.03] text-mist-2 hover:bg-white/[0.06]"
+                ? "border-emerald-200/40 bg-emerald-300/12 text-mist"
+                : "border-line bg-white/[0.03] text-mist-2 hover:bg-white/[0.06]"
             }`}
           >
             <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-semibold ${
               selectedOption === option.score
-                ? "border-emerald-300 bg-emerald-300 text-ink"
-                : "border-white/20 text-mist-3"
+                ? "border-emerald-300 bg-emerald-300 text-ink-fixed"
+                : "border-line text-mist-3"
             }`}>
               {String.fromCharCode(65 + index)}
             </span>

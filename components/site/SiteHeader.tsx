@@ -5,6 +5,7 @@ import { HeaderSearch } from "./HeaderSearch";
 import { MainNav } from "./MainNav";
 import { SiteSubNav } from "./SiteSubNav";
 import { MobileMenu } from "./MobileMenu";
+import { ThemeToggle } from "./ThemeToggle";
 
 /**
  * Global investing.com tarzı üst bar. Tüm sayfalarda render edilir
@@ -16,7 +17,7 @@ import { MobileMenu } from "./MobileMenu";
  */
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-white/8 bg-ink/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-line bg-ink/85 backdrop-blur-xl">
       <div className="mx-auto flex h-20 max-w-7xl items-center gap-3 px-4 sm:gap-4 sm:px-6 lg:gap-6 lg:px-8">
         <Link
           href="/"
@@ -31,7 +32,7 @@ export function SiteHeader() {
             className="h-[60px] w-[60px] object-contain"
             priority
           />
-          <span className="hidden text-2xl font-semibold tracking-tight text-white sm:inline">
+          <span className="hidden text-2xl font-semibold tracking-tight text-mist sm:inline">
             Fonly
           </span>
         </Link>
@@ -43,6 +44,7 @@ export function SiteHeader() {
         <MainNav />
 
         <div className="flex shrink-0 items-center gap-2">
+          <ThemeToggle />
           <AuthNav />
           <MobileMenu />
         </div>

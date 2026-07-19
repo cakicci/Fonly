@@ -72,7 +72,28 @@
       "Bash(curl *)",
       "Bash(sed -i '/glass-card/{s/ ring-1 ring-white\\\\/8//g; s/ ring-1 ring-white\\\\/10//g; s/ ring-1 ring-emerald-300\\\\/25//g; s/ ring-1 ring-fuchsia-300\\\\/20//g}' components/alerts/AlertsManager.tsx components/billing/ManageSubscription.tsx components/account/SecuritySection.tsx components/account/DangerZone.tsx components/account/ProfileSection.tsx components/chart/TechnicalAISummary.tsx app/hesap/page.tsx \"app/premium/page.tsx\" components/portfolio/PortfolioValueChart.tsx components/portfolio/PortfolioClient.tsx app/premium/dev-checkout/page.tsx components/portfolio/AddLotForm.tsx)",
       "Bash(grep -rn \"glass-card[^\\\\\"\\\\`]*ring-\" --include=\"*.tsx\" app components)",
-      "Bash(grep -v '\\\\${')"
+      "Bash(grep -v '\\\\${')",
+      "WebSearch",
+      "Bash(netstat -ano)",
+      "Bash(taskkill *)",
+      "Bash(disown)",
+      "Bash(npx web-push *)",
+      "Bash(rm -rf .next)",
+      "Bash(grep -rn \"https://\\\\|http://\" lib/market-data.ts lib/tefas.ts lib/yahoo/*.ts lib/news/sources.ts)",
+      "WebFetch(domain:www.tefas.gov.tr)",
+      "WebFetch(domain:finans.truncgil.com)",
+      "WebFetch(domain:www.investing.com)",
+      "WebFetch(domain:query1.finance.yahoo.com)",
+      "WebFetch(domain:www.dunya.com)",
+      "WebFetch(domain:www.aa.com.tr)",
+      "Bash(xargs sed -i -E 's/border-white\\\\/\\(\\\\[[0-9.]+\\\\]|[0-9]+\\)/border-line/g')",
+      "Bash(tasklist //FI \"IMAGENAME eq node.exe\")",
+      "PowerShell(Get-CimInstance *)",
+      "Bash(break)",
+      "Bash(xargs grep -l 'text-white')",
+      "Bash(xargs sed -i -E 's/text-white\\([^/a-zA-Z0-9]\\)/text-mist\\\\1/g')",
+      "Bash(node -e ' *)",
+      "Bash(awk -F: '{print $1\":\"$3}')"
     ]
   }
 }

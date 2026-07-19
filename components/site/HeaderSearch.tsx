@@ -216,7 +216,7 @@ export function HeaderSearch() {
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           placeholder="Hisse, fon, döviz veya altın ara..."
-          className="w-full rounded-2xl border border-white/8 bg-white/[0.04] py-2 pl-9 pr-9 text-sm text-white placeholder:text-mist-3 outline-none transition focus:border-emerald-200/40 focus:bg-white/[0.07]"
+          className="w-full rounded-2xl border border-line bg-white/[0.04] py-2 pl-9 pr-9 text-sm text-mist placeholder:text-mist-3 outline-none transition focus:border-emerald-200/40 focus:bg-white/[0.07]"
           aria-label="Site içi arama"
           autoComplete="off"
         />
@@ -227,14 +227,14 @@ export function HeaderSearch() {
               setQuery("");
               inputRef.current?.focus();
             }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-mist-3 transition hover:bg-white/[0.06] hover:text-white"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-mist-3 transition hover:bg-white/[0.06] hover:text-mist"
             aria-label="Temizle"
           >
             <X className="h-3.5 w-3.5" />
           </button>
         )}
         {!query && (
-          <kbd className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist-3 sm:block">
+          <kbd className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded-md border border-line bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist-3 sm:block">
             Ctrl K
           </kbd>
         )}
@@ -270,8 +270,8 @@ export function HeaderSearch() {
                       onMouseEnter={() => setActiveIdx(idx)}
                       className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm transition ${
                         active
-                          ? "bg-white/[0.06] text-white"
-                          : "text-mist-2 hover:bg-white/[0.04] hover:text-white"
+                          ? "bg-white/[0.06] text-mist"
+                          : "text-mist-2 hover:bg-white/[0.04] hover:text-mist"
                       }`}
                     >
                       <span className="font-medium">{item.primary}</span>

@@ -110,7 +110,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <nav className="overflow-x-auto" aria-label="Zaman dilimi">
-          <div className="inline-flex gap-1 rounded-2xl border border-white/8 bg-white/[0.025] p-1">
+          <div className="inline-flex gap-1 rounded-2xl border border-line bg-white/[0.025] p-1">
             {TF_TABS.map(t => {
               const active = t.key === tf;
               return (
@@ -120,7 +120,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
                   className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-medium transition ${
                     active
                       ? "bg-emerald-300/15 text-emerald-100"
-                      : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
+                      : "text-mist-3 hover:bg-white/[0.04] hover:text-mist"
                   }`}
                 >
                   {t.label}
@@ -133,7 +133,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
         <button
           onClick={downloadCsv}
           disabled={!resp || candlesDesc.length === 0}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-1.5 text-xs font-medium text-mist-2 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white/[0.02] px-3 py-1.5 text-xs font-medium text-mist-2 transition hover:bg-white/[0.05] hover:text-mist disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Download className="h-3.5 w-3.5" />
           CSV İndir
@@ -178,7 +178,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
                       <td className="py-2 pr-4 text-right tabular-nums text-mist-2">{fmtPrice(c.open)}</td>
                       <td className="py-2 pr-4 text-right tabular-nums text-mist-2">{fmtPrice(c.high)}</td>
                       <td className="py-2 pr-4 text-right tabular-nums text-mist-2">{fmtPrice(c.low)}</td>
-                      <td className="py-2 pr-4 text-right tabular-nums font-medium text-white">{fmtPrice(c.close)}</td>
+                      <td className="py-2 pr-4 text-right tabular-nums font-medium text-mist">{fmtPrice(c.close)}</td>
                       <td className={`py-2 pr-4 text-right tabular-nums ${tone}`}>
                         {ch == null ? "—" : `${ch > 0 ? "+" : ""}${ch.toFixed(2)}%`}
                       </td>
@@ -196,7 +196,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className="rounded-lg border border-white/8 bg-white/[0.02] px-3 py-1.5 text-mist-2 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-lg border border-line bg-white/[0.02] px-3 py-1.5 text-mist-2 transition hover:bg-white/[0.05] hover:text-mist disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 ← Önceki
               </button>
@@ -204,7 +204,7 @@ export function HistoricalTable({ slug, assetName }: Props) {
               <button
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1}
-                className="rounded-lg border border-white/8 bg-white/[0.02] px-3 py-1.5 text-mist-2 transition hover:bg-white/[0.05] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="rounded-lg border border-line bg-white/[0.02] px-3 py-1.5 text-mist-2 transition hover:bg-white/[0.05] hover:text-mist disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Sonraki →
               </button>

@@ -52,9 +52,9 @@ export function ChartToolbar({
   const [indMenuOpen, setIndMenuOpen] = useState(false);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.025] p-2">
+    <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-line bg-white/[0.025] p-2">
       {/* Timeframe sekmeleri */}
-      <div className="flex items-center gap-0.5 rounded-xl border border-white/8 bg-white/[0.02] p-0.5">
+      <div className="flex items-center gap-0.5 rounded-xl border border-line bg-white/[0.02] p-0.5">
         {timeframes.map(tf => (
           <button
             key={tf}
@@ -62,7 +62,7 @@ export function ChartToolbar({
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
               timeframe === tf
                 ? "bg-emerald-300/15 text-emerald-100"
-                : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
+                : "text-mist-3 hover:bg-white/[0.04] hover:text-mist"
             }`}
           >
             {TIMEFRAME_LABELS[tf]}
@@ -73,7 +73,7 @@ export function ChartToolbar({
       <span className="hidden h-6 w-px bg-white/8 sm:inline-block" />
 
       {/* Chart type */}
-      <div className="flex items-center gap-0.5 rounded-xl border border-white/8 bg-white/[0.02] p-0.5">
+      <div className="flex items-center gap-0.5 rounded-xl border border-line bg-white/[0.02] p-0.5">
         <ChartTypeButton
           active={chartType === "candle"}
           onClick={() => onChartType("candle")}
@@ -104,10 +104,10 @@ export function ChartToolbar({
         aria-pressed={showVolume}
         className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
           candleDisabled
-            ? "border-white/4 bg-white/[0.01] text-mist-3 cursor-not-allowed"
+            ? "border-line bg-white/[0.01] text-mist-3 cursor-not-allowed"
             : showVolume
               ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
-              : "border-white/8 bg-white/[0.02] text-mist-3 hover:bg-white/[0.05] hover:text-white"
+              : "border-line bg-white/[0.02] text-mist-3 hover:bg-white/[0.05] hover:text-mist"
         }`}
       >
         <BarChart3 className="h-3.5 w-3.5" />
@@ -122,7 +122,7 @@ export function ChartToolbar({
           className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
             indicators.length > 0
               ? "border-cyan-300/35 bg-cyan-300/12 text-cyan-100"
-              : "border-white/8 bg-white/[0.02] text-mist-3 hover:bg-white/[0.05] hover:text-white"
+              : "border-line bg-white/[0.02] text-mist-3 hover:bg-white/[0.05] hover:text-mist"
           }`}
         >
           <TrendingUp className="h-3.5 w-3.5" />
@@ -142,8 +142,8 @@ export function ChartToolbar({
               onClick={() => setIndMenuOpen(false)}
               aria-hidden
             />
-            <div className="absolute right-0 top-full z-40 mt-2 w-56 overflow-hidden rounded-xl border border-white/10 bg-ink/95 shadow-xl backdrop-blur-md">
-              <div className="border-b border-white/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
+            <div className="absolute right-0 top-full z-40 mt-2 w-56 overflow-hidden rounded-xl border border-line bg-ink/95 shadow-xl backdrop-blur-md">
+              <div className="border-b border-line px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
                 Hareketli Ortalama
               </div>
               {INDICATORS.filter(i => i.group === "MA").map(i => (
@@ -154,7 +154,7 @@ export function ChartToolbar({
                   onClick={() => onToggleIndicator(i.key)}
                 />
               ))}
-              <div className="border-y border-white/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
+              <div className="border-y border-line px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-mist-3">
                 Volatilite
               </div>
               {INDICATORS.filter(i => i.group === "Volatility").map(i => (
@@ -174,7 +174,7 @@ export function ChartToolbar({
       <button
         onClick={onToggleFullscreen}
         aria-label={isFullscreen ? "Tam ekrandan çık" : "Tam ekran"}
-        className="ml-auto rounded-xl border border-white/8 bg-white/[0.02] p-2 text-mist-3 transition hover:bg-white/[0.05] hover:text-white"
+        className="ml-auto rounded-xl border border-line bg-white/[0.02] p-2 text-mist-3 transition hover:bg-white/[0.05] hover:text-mist"
       >
         {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
       </button>
@@ -202,7 +202,7 @@ function ChartTypeButton({
           ? "text-mist-3 cursor-not-allowed"
           : active
             ? "bg-emerald-300/15 text-emerald-100"
-            : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
+            : "text-mist-3 hover:bg-white/[0.04] hover:text-mist"
       }`}
     >
       {icon}
@@ -221,14 +221,14 @@ function IndicatorRow({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center justify-between px-3 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.04] hover:text-white"
+      className="flex w-full items-center justify-between px-3 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.04] hover:text-mist"
     >
       {label}
       <span
         className={`h-3.5 w-3.5 rounded border ${
           active
             ? "border-emerald-300 bg-emerald-300/20"
-            : "border-white/15 bg-transparent"
+            : "border-line bg-transparent"
         }`}
       >
         {active && (

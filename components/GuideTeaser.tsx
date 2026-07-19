@@ -5,7 +5,7 @@ import { GUIDE_CHAPTERS, TOTAL_READ_MIN } from "@/data/guide";
 export function GuideTeaser() {
   return (
     <section className="rounded-section border border-cyan-200/14
-                        bg-[linear-gradient(135deg,rgba(165,243,252,0.05),rgba(11,16,38,0.98))] p-5 sm:p-6">
+                        bg-[linear-gradient(135deg,rgba(165,243,252,0.05),var(--bg))] p-5 sm:p-6">
 
       {/* Başlık */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -16,14 +16,14 @@ export function GuideTeaser() {
             </div>
             <p className="text-sm font-medium text-cyan-200">Finans rehberi</p>
           </div>
-          <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
+          <h2 className="mt-3 text-2xl font-semibold text-mist sm:text-3xl">
             Sıfırdan yatırıma:<br className="hidden sm:block" /> adım adım rehber
           </h2>
           <p className="mt-2 max-w-lg text-sm leading-6 text-mist-3">
             Finansal okuryazarlığa yeni başlayanlar için 6 bölümlük, sade Türkçe ile yazılmış ücretsiz yatırım izlencesi.
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-1.5 rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-2 text-xs text-mist-3 self-start sm:self-auto">
+        <div className="flex shrink-0 items-center gap-1.5 rounded-2xl border border-line bg-white/[0.04] px-3 py-2 text-xs text-mist-3 self-start sm:self-auto">
           <Clock className="h-3.5 w-3.5" />
           <span>Toplam ~{TOTAL_READ_MIN} dk okuma</span>
         </div>
@@ -35,7 +35,7 @@ export function GuideTeaser() {
           <Link
             key={chapter.slug}
             href={`/rehber/${chapter.slug}`}
-            className="group relative flex items-start gap-3 rounded-2xl border border-white/8
+            className="group relative flex items-start gap-3 rounded-2xl border border-line
                        bg-white/[0.03] p-4 transition hover:border-cyan-200/25 hover:bg-white/[0.06]"
           >
             {/* Numara */}
@@ -44,7 +44,7 @@ export function GuideTeaser() {
               {chapter.num}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-white">{chapter.title}</p>
+              <p className="text-sm font-semibold text-mist">{chapter.title}</p>
               <p className="mt-0.5 text-xs leading-4 text-mist-3">{chapter.tagline}</p>
               <div className="mt-2 flex items-center gap-1 text-[11px] text-mist-3">
                 <Clock className="h-3 w-3" />
@@ -56,7 +56,7 @@ export function GuideTeaser() {
 
             {/* İlk bölüme "Başla" etiketi */}
             {i === 0 && (
-              <span className="absolute -top-2 -right-2 rounded-full bg-cyan-300 px-2 py-0.5 text-[10px] font-bold text-ink">
+              <span className="absolute -top-2 -right-2 rounded-full bg-cyan-300 px-2 py-0.5 text-[10px] font-bold text-ink-fixed">
                 Buradan başla
               </span>
             )}
@@ -65,7 +65,7 @@ export function GuideTeaser() {
       </div>
 
       {/* Alt CTA */}
-      <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl border border-white/6 bg-white/[0.025] px-4 py-3">
+      <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl border border-line bg-white/[0.025] px-4 py-3">
         <p className="text-sm text-mist-3">
           Tüm bölümleri görmek veya istediğin konudan başlamak için rehber ana sayfasına git.
         </p>

@@ -21,7 +21,7 @@ export async function AuthNav() {
     <div className="flex items-center gap-3">
       <Link
         href="/dashboard"
-        className="hidden items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.04] px-3 py-2 text-sm text-mist-2 transition hover:text-white sm:inline-flex"
+        className="hidden items-center gap-2 rounded-2xl border border-line bg-white/[0.04] px-3 py-2 text-sm text-mist-2 transition hover:text-mist sm:inline-flex"
       >
         <UserRound className="h-4 w-4" />
         {session.user.name ?? session.user.email ?? "Hesabım"}

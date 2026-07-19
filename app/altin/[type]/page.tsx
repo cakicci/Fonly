@@ -4,6 +4,7 @@ import { PriceChart } from "@/components/PriceChart";
 import { AnalysisCard } from "@/components/AnalysisCard";
 import { ChartSection } from "@/components/chart/ChartSection";
 import { Tabs } from "@/components/chart/Tabs";
+import { HistoricalWhatIfCalculator } from "@/components/HistoricalWhatIfCalculator";
 import { GOLD_TYPE_MAP } from "@/data/gold-types";
 
 type Params = { type: string };
@@ -30,14 +31,14 @@ export default function AltinGenelPage({ params }: { params: Params }) {
       label: "Altın Karşılaştırma",
       content: supportsCandle ? (
         <div className="glass-card rounded-section p-6">
-          <h2 className="mb-1 text-lg font-semibold text-white">Dolar/TL Karşılaştırması</h2>
+          <h2 className="mb-1 text-lg font-semibold text-mist">Dolar/TL Karşılaştırması</h2>
           <p className="mb-5 text-xs text-mist-3">
             Yüzdesel değişim — {goldType.name} vs Dolar/TL kuru (dönem başı = 0%)
           </p>
           <PriceChart slug={slug} />
         </div>
       ) : (
-        <p className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 text-sm text-mist-3">
+        <p className="rounded-2xl border border-line bg-white/[0.02] p-6 text-sm text-mist-3">
           {goldType.name} için geçmiş veri kaynağı yok (Yahoo Finance ticker&apos;ı bulunmuyor).
           Sadece anlık fiyat görüntülenebiliyor.
         </p>
@@ -61,7 +62,7 @@ export default function AltinGenelPage({ params }: { params: Params }) {
           unit="₺"
         />
       ) : (
-        <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6">
+        <div className="rounded-2xl border border-line bg-white/[0.02] p-6">
           <p className="text-sm text-mist-3">
             Bu altın türü için profesyonel grafik mevcut değil (Yahoo Finance ticker&apos;ı yok).
             Yukarıdaki anlık fiyat ve günlük değişim güncel verilerdir.
@@ -70,6 +71,8 @@ export default function AltinGenelPage({ params }: { params: Params }) {
       )}
 
       <Tabs defaultKey="comparison" tabs={tabs} />
+
+      {supportsCandle && <HistoricalWhatIfCalculator slug={slug} assetName={goldType.name} />}
     </>
   );
 }

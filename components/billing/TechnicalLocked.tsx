@@ -43,7 +43,7 @@ export function TechnicalLocked({ assetName }: TechnicalLockedProps) {
           </div>
 
           <div className="max-w-md">
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold text-mist">
               Teknik analiz Premium aboneliğe özel
             </h2>
             <p className="mt-2 text-sm text-mist-3">

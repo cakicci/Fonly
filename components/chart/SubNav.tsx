@@ -27,7 +27,7 @@ export function SubNav({ basePath, tabs }: SubNavProps) {
 
   return (
     <nav className="overflow-x-auto" aria-label="Sayfa sekmeleri">
-      <div className="inline-flex min-w-full gap-1 rounded-2xl border border-white/8 bg-white/[0.025] p-1">
+      <div className="inline-flex min-w-full gap-1 rounded-2xl border border-line bg-white/[0.025] p-1">
         {tabs.map(tab => {
           const href = tab.href ? `${basePath}/${tab.href}` : basePath;
           const active = isActive(tab.href);
@@ -38,7 +38,7 @@ export function SubNav({ basePath, tabs }: SubNavProps) {
               className={`shrink-0 whitespace-nowrap rounded-xl px-3 py-1.5 text-xs font-medium transition ${
                 active
                   ? "bg-emerald-300/15 text-emerald-100"
-                  : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
+                  : "text-mist-3 hover:bg-white/[0.04] hover:text-mist"
               }`}
             >
               <span className="inline-flex items-center gap-1">

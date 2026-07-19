@@ -4,6 +4,8 @@ import { PriceChart } from "@/components/PriceChart";
 import { AnalysisCard } from "@/components/AnalysisCard";
 import { ChartSection } from "@/components/chart/ChartSection";
 import { Tabs } from "@/components/chart/Tabs";
+import { HistoricalWhatIfCalculator } from "@/components/HistoricalWhatIfCalculator";
+import { HisseScoreSection } from "@/components/HisseScoreSection";
 import { BIST_TICKERS } from "@/data/bist-tickers";
 
 type Params = { symbol: string };
@@ -35,6 +37,8 @@ export default async function HisseGenelPage({ params }: { params: Params }) {
         unit="₺"
       />
 
+      <HisseScoreSection symbol={symbol} />
+
       <Tabs
         defaultKey="comparison"
         tabs={[
@@ -43,7 +47,7 @@ export default async function HisseGenelPage({ params }: { params: Params }) {
             label: "Altın Karşılaştırma",
             content: (
               <div className="glass-card rounded-section p-6">
-                <h2 className="mb-1 text-lg font-semibold text-white">Gram Altına Göre Performans</h2>
+                <h2 className="mb-1 text-lg font-semibold text-mist">Gram Altına Göre Performans</h2>
                 <p className="mb-5 text-xs text-mist-3">
                   Yüzdesel değişim — {meta.name} vs Gram Altın (dönem başı = 0%)
                 </p>
@@ -61,7 +65,7 @@ export default async function HisseGenelPage({ params }: { params: Params }) {
             label: "Bilgi",
             content: (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-white/6 bg-white/[0.02] p-5">
+                <div className="rounded-2xl border border-line bg-white/[0.02] p-5">
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-mist-3">
                     Gram altın neden karşılaştırılıyor?
                   </p>
@@ -85,6 +89,8 @@ export default async function HisseGenelPage({ params }: { params: Params }) {
           },
         ]}
       />
+
+      <HistoricalWhatIfCalculator slug={slug} assetName={meta.name} />
     </>
   );
 }

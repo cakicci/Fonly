@@ -2,13 +2,31 @@
 
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Search, TrendingDown, TrendingUp } from "lucide-react";
 import type { FundListItem } from "@/app/api/fonlar/route";
 import { RISK_COLORS, RISK_LABELS } from "@/data/stocks";
 import { normalizeTurkish } from "@/lib/tefas";
 import { fmtPercent } from "@/lib/format";
 
-type SortKey = "kod" | "getiri1y" | "getiri1a" | "getiriyb";
+type SortKey = "kod" | "getiri1y" | "getiri3y" | "getiri5y" | "getiri1a" | "getiriyb";
+type RiskFilter = "all" | "low" | "medium" | "high";
+
+const SORT_OPTIONS: { key: SortKey; label: string }[] = [
+  { key: "getiri1y", label: "Sırala: 1 yıllık getiri" },
+  { key: "getiri3y", label: "Sırala: 3 yıllık getiri" },
+  { key: "getiri5y", label: "Sırala: 5 yıllık getiri" },
+  { key: "getiriyb", label: "Sırala: Yılbaşından" },
+  { key: "getiri1a", label: "Sırala: 1 aylık getiri" },
+  { key: "kod",      label: "Sırala: Fon kodu" },
+];
+
+const RISK_OPTIONS: { key: RiskFilter; label: string }[] = [
+  { key: "all",    label: "Tüm risk seviyeleri" },
+  { key: "low",    label: "Düşük risk" },
+  { key: "medium", label: "Orta risk" },
+  { key: "high",   label: "Yüksek risk" },
+];
 
 function LiveDot({ active }: { active: boolean }) {
   return (
@@ -23,7 +41,7 @@ function LiveDot({ active }: { active: boolean }) {
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3">
+    <div className="animate-pulse rounded-2xl border border-line bg-white/[0.025] px-4 py-3">
       <div className="flex items-center justify-between gap-3">
         <div className="space-y-1.5">
           <div className="h-3 w-16 rounded bg-white/8" />
@@ -45,13 +63,35 @@ function fmtPct(value: number | null): string {
 }
 
 export default function FonlarPage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [allFunds, setAllFunds] = useState<FundListItem[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [sortKey, setSortKey] = useState<SortKey>("getiri1y");
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  const [selectedCategory, setSelectedCategory] = useState<string>(() => searchParams.get("kategori") ?? "all");
+  const [selectedRisk, setSelectedRisk] = useState<RiskFilter>(() => {
+    const r = searchParams.get("risk");
+    return r === "low" || r === "medium" || r === "high" ? r : "all";
+  });
+  const [sortKey, setSortKey] = useState<SortKey>(() => {
+    const s = searchParams.get("sirala");
+    return SORT_OPTIONS.some(o => o.key === s) ? (s as SortKey) : "getiri1y";
+  });
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
+
+  // Filtre durumunu URL'e yaz — paylaşılabilir/bookmarklanabilir tarama.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    if (selectedCategory !== "all") params.set("kategori", selectedCategory);
+    if (selectedRisk !== "all") params.set("risk", selectedRisk);
+    if (sortKey !== "getiri1y") params.set("sirala", sortKey);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [query, selectedCategory, selectedRisk, sortKey, pathname, router]);
 
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
@@ -79,6 +119,10 @@ export default function FonlarPage() {
       list = list.filter((f) => f.kategori === selectedCategory);
     }
 
+    if (selectedRisk !== "all") {
+      list = list.filter((f) => f.riskGroup === selectedRisk);
+    }
+
     const q = query.trim();
     if (q) {
       const qNorm = normalizeTurkish(q);
@@ -104,7 +148,7 @@ export default function FonlarPage() {
       });
     }
     return sorted;
-  }, [allFunds, selectedCategory, query, sortKey]);
+  }, [allFunds, selectedCategory, selectedRisk, query, sortKey]);
 
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
@@ -112,20 +156,20 @@ export default function FonlarPage() {
 
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <span className="text-white">Tüm Fonlar</span>
+          <span className="text-mist">Tüm Fonlar</span>
         </nav>
 
         {/* Hero + arama + filtreler */}
-        <div className="rounded-section border border-sky-200/14 bg-[linear-gradient(135deg,rgba(186,230,253,0.07),rgba(11,16,38,0.98))] p-6 sm:p-8">
+        <div className="rounded-section border border-sky-200/14 bg-[linear-gradient(135deg,rgba(186,230,253,0.07),var(--bg))] p-6 sm:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
                 <p className="text-sm font-medium text-sky-200">TEFAS</p>
                 <LiveDot active={!loading} />
               </div>
-              <h1 className="mt-1 text-3xl font-semibold text-white sm:text-4xl">Tüm Yatırım Fonları</h1>
+              <h1 className="mt-1 text-3xl font-semibold text-mist sm:text-4xl">Tüm Yatırım Fonları</h1>
               {!loading && (
                 <p className="mt-1 text-sm text-mist-3">
                   {filtered.length} fon gösteriliyor
@@ -140,14 +184,14 @@ export default function FonlarPage() {
           </div>
 
           {/* Arama */}
-          <div className="mt-5 flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3">
+          <div className="mt-5 flex items-center gap-2 rounded-2xl border border-line bg-white/[0.05] px-4 py-3">
             <Search className="h-4 w-4 shrink-0 text-mist-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Ara... (AAK, garanti portföy, altın)"
-              className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
+              className="w-full bg-transparent text-sm text-mist outline-none placeholder:text-mist-3"
             />
           </div>
 
@@ -156,7 +200,7 @@ export default function FonlarPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition hover:bg-white/[0.08]"
+              className="rounded-xl border border-line bg-white/[0.05] px-3 py-2 text-sm text-mist outline-none transition hover:bg-white/[0.08]"
             >
               <option value="all">Tüm kategoriler</option>
               {categories.map((c) => (
@@ -165,14 +209,23 @@ export default function FonlarPage() {
             </select>
 
             <select
+              value={selectedRisk}
+              onChange={(e) => setSelectedRisk(e.target.value as RiskFilter)}
+              className="rounded-xl border border-line bg-white/[0.05] px-3 py-2 text-sm text-mist outline-none transition hover:bg-white/[0.08]"
+            >
+              {RISK_OPTIONS.map((r) => (
+                <option key={r.key} value={r.key}>{r.label}</option>
+              ))}
+            </select>
+
+            <select
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value as SortKey)}
-              className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white outline-none transition hover:bg-white/[0.08]"
+              className="rounded-xl border border-line bg-white/[0.05] px-3 py-2 text-sm text-mist outline-none transition hover:bg-white/[0.08]"
             >
-              <option value="getiri1y">Sırala: 1 yıllık getiri</option>
-              <option value="getiriyb">Sırala: Yılbaşından</option>
-              <option value="getiri1a">Sırala: 1 aylık getiri</option>
-              <option value="kod">Sırala: Fon kodu</option>
+              {SORT_OPTIONS.map((s) => (
+                <option key={s.key} value={s.key}>{s.label}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -196,12 +249,12 @@ export default function FonlarPage() {
                 <Link
                   key={fund.kod}
                   href={`/fon/${fund.kod.toLowerCase()}`}
-                  className="animate-enter group flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 transition hover:border-white/16 hover:bg-white/[0.05]"
+                  className="animate-enter group flex items-center justify-between gap-3 rounded-2xl border border-line bg-white/[0.025] px-4 py-3 transition hover:border-line hover:bg-white/[0.05]"
                   style={{ "--enter-index": Math.min(i, 12) } as CSSProperties}
                 >
                   {/* Sol: kod + ad + badge */}
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-white">{fund.kod}</p>
+                    <p className="text-sm font-semibold text-mist">{fund.kod}</p>
                     <p className="mt-0.5 truncate text-xs text-mist-3" title={fund.ad}>{fund.ad}</p>
                     <div className="mt-1.5 flex flex-wrap gap-1">
                       {fund.riskGroup && (
@@ -212,7 +265,7 @@ export default function FonlarPage() {
                           )}
                         </span>
                       )}
-                      <span className="inline-flex items-center rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist-3">
+                      <span className="inline-flex items-center rounded-md border border-line bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-mist-3">
                         {fund.kategori.replace(" Şemsiye Fonu", "")}
                       </span>
                     </div>
@@ -228,6 +281,8 @@ export default function FonlarPage() {
                     </p>
                     <p className="mt-0.5 flex items-center justify-end gap-0.5 text-[10px] font-medium text-mist-3">
                       {sortKey === "getiri1y" || sortKey === "kod" ? "1 yıl" :
+                       sortKey === "getiri3y" ? "3 yıl" :
+                       sortKey === "getiri5y" ? "5 yıl" :
                        sortKey === "getiriyb" ? "YBI" :
                        "1 ay"}
                       {primary !== null && (
@@ -247,7 +302,7 @@ export default function FonlarPage() {
         <div className="pt-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-2.5 text-sm text-mist-3 transition hover:bg-white/[0.06] hover:text-white"
+            className="inline-flex items-center gap-2 rounded-2xl border border-line bg-white/[0.03] px-4 py-2.5 text-sm text-mist-3 transition hover:bg-white/[0.06] hover:text-mist"
           >
             <ArrowLeft className="h-4 w-4" />
             Ana sayfaya dön

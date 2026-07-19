@@ -44,17 +44,17 @@ export function WatchlistDrawer({
       <aside
         role="dialog"
         aria-label="İzleme listesi"
-        className="fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-white/10 bg-ink shadow-2xl"
+        className="fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-line bg-ink shadow-2xl"
       >
-        <header className="flex items-center justify-between border-b border-white/8 px-5 py-4">
+        <header className="flex items-center justify-between border-b border-line px-5 py-4">
           <div className="flex items-center gap-2">
             <Star className="h-4 w-4 fill-amber-300 text-amber-300" />
-            <h2 className="text-lg font-semibold text-white">İzleme Listesi</h2>
+            <h2 className="text-lg font-semibold text-mist">İzleme Listesi</h2>
           </div>
           <button
             onClick={onClose}
             aria-label="Kapat"
-            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-mist"
           >
             <X className="h-4 w-4" />
           </button>
@@ -64,8 +64,9 @@ export function WatchlistDrawer({
           {!session?.user?.id ? (
             <EmptyState
               title="Giriş yapmalısın"
-              hint="İzleme listesi kullanıcılara özel — listenin DB'de saklanması için giriş yap."
+              hint="İzleme listesi kullanıcılara özel."
               cta={{ href: "/login", label: "Giriş yap", onClick: onClose }}
+              secondaryCta={{ href: "/register", label: "Kayıt ol", onClick: onClose }}
             />
           ) : items.length === 0 ? (
             <EmptyState
@@ -85,9 +86,9 @@ export function WatchlistDrawer({
                 return (
                   <li
                     key={slug}
-                    className="group flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2.5 transition hover:bg-white/[0.05]"
+                    className="group flex items-center justify-between rounded-xl border border-line bg-white/[0.025] px-3 py-2.5 transition hover:bg-white/[0.05]"
                   >
-                    <Link href={href} onClick={onClose} className="flex-1 truncate text-sm font-medium text-white">
+                    <Link href={href} onClick={onClose} className="flex-1 truncate text-sm font-medium text-mist">
                       <span className="text-xs text-mist-3 uppercase tracking-wider mr-2">{type}</span>
                       {code.toUpperCase()}
                     </Link>
@@ -110,16 +111,17 @@ export function WatchlistDrawer({
 }
 
 function EmptyState({
-  title, hint, cta,
+  title, hint, cta, secondaryCta,
 }: {
   title: string;
   hint: string;
   cta?: { href: string; label: string; onClick?: () => void };
+  secondaryCta?: { href: string; label: string; onClick?: () => void };
 }) {
   return (
     <div className="flex h-full flex-col items-center justify-center px-6 py-10 text-center">
       <Star className="mb-4 h-10 w-10 text-mist-3" />
-      <p className="text-base font-medium text-white">{title}</p>
+      <p className="text-base font-medium text-mist">{title}</p>
       <p className="mt-2 text-sm leading-relaxed text-mist-3">{hint}</p>
       {cta && (
         <Link
@@ -128,6 +130,15 @@ function EmptyState({
           className="btn btn-sm btn-primary mt-5 shadow-glow"
         >
           {cta.label}
+        </Link>
+      )}
+      {secondaryCta && (
+        <Link
+          href={secondaryCta.href}
+          onClick={secondaryCta.onClick}
+          className="btn btn-sm btn-secondary mt-2.5"
+        >
+          {secondaryCta.label}
         </Link>
       )}
     </div>

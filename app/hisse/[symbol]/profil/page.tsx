@@ -20,7 +20,7 @@ export default async function HisseProfilPage({ params }: { params: Params }) {
           <AlertTriangle className="h-4 w-4 text-rose-200" />
         </div>
         <div>
-          <h2 className="text-sm font-semibold text-white">Profil bulunamadı</h2>
+          <h2 className="text-sm font-semibold text-mist">Profil bulunamadı</h2>
           <p className="mt-1 text-sm text-mist-3">
             Yahoo Finance {symbol} için profil verisi sunmuyor.
           </p>

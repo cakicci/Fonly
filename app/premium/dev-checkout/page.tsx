@@ -52,7 +52,7 @@ export default function DevCheckoutPage() {
           <Sparkles className="h-3.5 w-3.5" />
           Dev ödeme simülasyonu
         </div>
-        <h1 className="text-xl font-semibold text-white">Ödemeyi onayla</h1>
+        <h1 className="text-xl font-semibold text-mist">Ödemeyi onayla</h1>
         <p className="mt-2 text-sm leading-relaxed text-mist-3">
           Bu, gerçek bir ödeme değildir. Geliştirme ortamında abonelik akışını uçtan uca
           test etmek için kullanılır. Onayladığında FonlyPro aboneliğin aktive edilir.

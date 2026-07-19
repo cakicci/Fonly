@@ -27,6 +27,24 @@ model User {
   portfolioLots PortfolioLot[]
   goals         Goal[]
   passwordResetTokens PasswordResetToken[]
+  pushSubscriptions   PushSubscription[]
+  otherAssets         OtherAsset[]
+}
+
+/// Tarayıcı push aboneliği (Web Push API). Bir kullanıcı birden çok cihaz/
+/// tarayıcıdan abone olabilir — her biri ayrı satır. Alarm tetiklendiğinde
+/// lib/chart/alerts.ts bu tabloyu okuyup her endpoint'e bildirim gönderir.
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 /// Şifre sıfırlama token'ı. Kullanıcı "şifremi unuttum" derse üretilir.
@@ -61,6 +79,23 @@ model Goal {
   @@index([userId])
 }
 
+/// Net değer hesabına giren portföy-dışı kalem — Premium'a özel ("net worth").
+/// kind = "asset" (ev, nakit, mevduat...) toplama eklenir, "liability" (kredi,
+/// kredi kartı borcu...) çıkarılır. value her zaman güncel TL karşılığıdır —
+/// kullanıcı manuel günceller, canlı fiyatlama yok (portföy pozisyonlarının aksine).
+model OtherAsset {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  name      String
+  kind      String   @default("asset") // "asset" | "liability"
+  value     Float
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
 /// Portföy işlemi (alım VEYA satım kaydı). Her satır bir işlemdir.
 /// `/portfoy` sayfası slug'a göre gruplayıp ortalama maliyet yöntemiyle
 /// pozisyon + gerçekleşen/gerçekleşmemiş K/Z hesaplar (lib/portfolio/aggregate.ts):
@@ -75,11 +110,16 @@ model PortfolioLot {
   unitCost  Float           // birim fiyat (TL) — alışta maliyet, satışta satış fiyatı
   boughtAt  DateTime @default(now()) // işlem tarihi (satışta satış tarihi)
   note      String?
+  /// true ise "deneme portföyü" işlemidir — gerçek para değildir, gerçek
+  /// portföy özetine/dashboard'a/e-posta özetlerine ASLA dahil edilmez.
+  /// Tüm sorgular bunu açıkça filtrelemeli (bkz. lib/portfolio/aggregate.ts kullanan route'lar).
+  isDemo    Boolean  @default(false)
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([userId, isDemo])
 }
 
 /// Premium abonelik. AI özellikleri ve gelecekteki premium-only feature'lar için.
@@ -122,7 +162,10 @@ model PriceAlert {
   id          Int       @id @default(autoincrement())
   userId      String
   slug        String
-  condition   String    // "above" | "below"
+  /// "price" (varsayılan, mevcut davranış) | "percent_change" (günlük % değişim)
+  triggerType String    @default("price")
+  condition   String    // "above" | "below" — percent_change'de yön anlamına gelir
+  /// price: mutlak TL seviyesi. percent_change: yüzde puan eşiği (örn. 5 = %5).
   threshold   Float
   active      Boolean   @default(true)
   triggeredAt DateTime?

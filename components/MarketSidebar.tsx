@@ -81,7 +81,7 @@ function Row({
     <>
       <div className="flex items-center gap-1.5 min-w-0">
         {flag && <span className="text-xs shrink-0">{flag}</span>}
-        <span className={`truncate text-sm ${highlight ? "font-medium text-white" : "text-mist-2"}`}>
+        <span className={`truncate text-sm ${highlight ? "font-medium text-mist" : "text-mist-2"}`}>
           {label}
         </span>
       </div>
@@ -92,7 +92,7 @@ function Row({
             {badge}
           </span>
         )}
-        <FlashPrice value={rawValue} className="text-sm font-semibold text-white">
+        <FlashPrice value={rawValue} className="text-sm font-semibold text-mist">
           {value}
         </FlashPrice>
       </div>
@@ -159,12 +159,12 @@ export function MarketSidebar() {
             <p className="text-sm text-mist-3">Piyasa özeti</p>
             {!isLoading && <LiveDot />}
           </div>
-          <h2 className="mt-1 text-xl font-semibold text-white">Bugün ne oluyor?</h2>
+          <h2 className="mt-1 text-xl font-semibold text-mist">Bugün ne oluyor?</h2>
         </div>
       </div>
 
       {/* ── Döviz ── */}
-      <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+      <div className="rounded-2xl border border-line bg-white/[0.03] p-4">
         <GroupLabel icon={CircleDollarSign} label="Döviz" color="text-cyan-200" />
         <div className="mt-1 divide-y divide-white/6">
           {isLoading
@@ -267,7 +267,7 @@ export function MarketSidebar() {
       </div>
 
       {/* ── Günün İpucu ── */}
-      <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
+      <div className="rounded-2xl border border-line bg-white/[0.025] p-4">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-mist-3">
           <Lightbulb className="h-3.5 w-3.5 text-yellow-300/70" />
           Günün ipucu

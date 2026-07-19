@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Info } from "lucide-react";
 import type { FundamentalsResponse, IncomeYear, KeyStatistics } from "@/lib/yahoo/fundamentals";
+import { TermTooltip } from "@/components/TermTooltip";
+import type { GlossaryKey } from "@/data/glossary";
 
 interface FinancialsSectionProps {
   data: FundamentalsResponse;
@@ -57,7 +59,7 @@ export function FinancialsSection({ data }: FinancialsSectionProps) {
   return (
     <div className="flex flex-col gap-4">
       <nav className="overflow-x-auto" aria-label="Finansal sekmeler">
-        <div className="inline-flex min-w-full gap-1 rounded-2xl border border-white/8 bg-white/[0.025] p-1">
+        <div className="inline-flex min-w-full gap-1 rounded-2xl border border-line bg-white/[0.025] p-1">
           {TABS.map(t => {
             const active = t.key === tab;
             return (
@@ -67,7 +69,7 @@ export function FinancialsSection({ data }: FinancialsSectionProps) {
                 className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-medium transition ${
                   active
                     ? "bg-emerald-300/15 text-emerald-100"
-                    : "text-mist-3 hover:bg-white/[0.04] hover:text-white"
+                    : "text-mist-3 hover:bg-white/[0.04] hover:text-mist"
                 }`}
               >
                 {t.label}
@@ -132,7 +134,7 @@ function IncomeTable({ years }: { years: IncomeYear[] }) {
           <tbody className="divide-y divide-white/5">
             {INCOME_ROWS.map(row => (
               <tr key={row.label}>
-                <td className={`py-2.5 pr-4 ${row.bold ? "font-semibold text-white" : "text-mist-3"}`}>
+                <td className={`py-2.5 pr-4 ${row.bold ? "font-semibold text-mist" : "text-mist-3"}`}>
                   {row.label}
                 </td>
                 {years.map(y => {
@@ -141,7 +143,7 @@ function IncomeTable({ years }: { years: IncomeYear[] }) {
                     <td
                       key={y.endDate}
                       className={`py-2.5 pl-3 text-right tabular-nums ${
-                        row.bold ? "font-semibold text-white" : "text-mist-2"
+                        row.bold ? "font-semibold text-mist" : "text-mist-2"
                       }`}
                     >
                       {fmtMoney(v)}
@@ -165,6 +167,8 @@ interface RatioRow {
   label: string;
   value: (s: KeyStatistics) => number | null;
   fmt:   Fmt;
+  /** Sözlük anahtarı — verilirse etiketin yanında (i) açıklama ikonu gösterilir. */
+  term?: GlossaryKey;
 }
 
 interface RatioSection {
@@ -176,32 +180,32 @@ const RATIO_SECTIONS: RatioSection[] = [
   {
     title: "Değerleme",
     rows: [
-      { label: "Piyasa Değeri",       value: s => s.marketCap,           fmt: "money" },
-      { label: "Firma Değeri (EV)",   value: s => s.enterpriseValue,     fmt: "money" },
-      { label: "F/K (TTM)",           value: s => s.trailingPE,          fmt: "num"   },
-      { label: "İleri F/K",           value: s => s.forwardPE,           fmt: "num"   },
-      { label: "PEG Oranı",           value: s => s.pegRatio,            fmt: "num"   },
-      { label: "PD/DD",               value: s => s.priceToBook,         fmt: "num"   },
-      { label: "FD/Satışlar",         value: s => s.enterpriseToRevenue, fmt: "num"   },
-      { label: "FD/FAVÖK",            value: s => s.enterpriseToEbitda,  fmt: "num"   },
-      { label: "Hisse Başı Kâr (TTM)",value: s => s.trailingEps,         fmt: "num"   },
-      { label: "Defter Değeri / Hisse", value: s => s.bookValue,         fmt: "num"   },
-      { label: "Beta",                value: s => s.beta,                fmt: "num"   },
+      { label: "Piyasa Değeri",       value: s => s.marketCap,           fmt: "money", term: "piyasaDegeri" },
+      { label: "Firma Değeri (EV)",   value: s => s.enterpriseValue,     fmt: "money", term: "firmaDegeri" },
+      { label: "F/K (TTM)",           value: s => s.trailingPE,          fmt: "num",   term: "fk" },
+      { label: "İleri F/K",           value: s => s.forwardPE,           fmt: "num",   term: "fk" },
+      { label: "PEG Oranı",           value: s => s.pegRatio,            fmt: "num",   term: "peg" },
+      { label: "PD/DD",               value: s => s.priceToBook,         fmt: "num",   term: "pddd" },
+      { label: "FD/Satışlar",         value: s => s.enterpriseToRevenue, fmt: "num",   term: "fdSatislar" },
+      { label: "FD/FAVÖK",            value: s => s.enterpriseToEbitda,  fmt: "num",   term: "fdFavok" },
+      { label: "Hisse Başı Kâr (TTM)",value: s => s.trailingEps,         fmt: "num",   term: "hisseBasiKar" },
+      { label: "Defter Değeri / Hisse", value: s => s.bookValue,         fmt: "num",   term: "defterDegeri" },
+      { label: "Beta",                value: s => s.beta,                fmt: "num",   term: "beta" },
     ],
   },
   {
     title: "Kârlılık & Büyüme",
     rows: [
-      { label: "Brüt Marj",           value: s => s.grossMargins,        fmt: "pct"   },
-      { label: "Faaliyet Marjı",      value: s => s.operatingMargins,    fmt: "pct"   },
-      { label: "Net Kâr Marjı",       value: s => s.profitMargins,       fmt: "pct"   },
-      { label: "FAVÖK Marjı",         value: s => s.ebitdaMargins,       fmt: "pct"   },
-      { label: "Özkaynak Kârlılığı",  value: s => s.returnOnEquity,      fmt: "pct"   },
-      { label: "Aktif Kârlılığı",     value: s => s.returnOnAssets,      fmt: "pct"   },
-      { label: "Hasılat Büyümesi (Y)",value: s => s.revenueGrowth,       fmt: "pct"   },
-      { label: "Kâr Büyümesi (Y)",    value: s => s.earningsGrowth,      fmt: "pct"   },
-      { label: "Hasılat Büyümesi (Ç)",value: s => s.revenueQuarterlyGrowth,  fmt: "pct" },
-      { label: "Kâr Büyümesi (Ç)",    value: s => s.earningsQuarterlyGrowth, fmt: "pct" },
+      { label: "Brüt Marj",           value: s => s.grossMargins,        fmt: "pct",   term: "brutMarj" },
+      { label: "Faaliyet Marjı",      value: s => s.operatingMargins,    fmt: "pct",   term: "faaliyetMarji" },
+      { label: "Net Kâr Marjı",       value: s => s.profitMargins,       fmt: "pct",   term: "netKarMarji" },
+      { label: "FAVÖK Marjı",         value: s => s.ebitdaMargins,       fmt: "pct",   term: "favokMarji" },
+      { label: "Özkaynak Kârlılığı",  value: s => s.returnOnEquity,      fmt: "pct",   term: "ozkaynakKarliligi" },
+      { label: "Aktif Kârlılığı",     value: s => s.returnOnAssets,      fmt: "pct",   term: "aktifKarliligi" },
+      { label: "Hasılat Büyümesi (Y)",value: s => s.revenueGrowth,       fmt: "pct",   term: "hasilatBuyumesi" },
+      { label: "Kâr Büyümesi (Y)",    value: s => s.earningsGrowth,      fmt: "pct",   term: "karBuyumesi" },
+      { label: "Hasılat Büyümesi (Ç)",value: s => s.revenueQuarterlyGrowth,  fmt: "pct", term: "hasilatBuyumesi" },
+      { label: "Kâr Büyümesi (Ç)",    value: s => s.earningsQuarterlyGrowth, fmt: "pct", term: "karBuyumesi" },
     ],
   },
   {
@@ -209,20 +213,20 @@ const RATIO_SECTIONS: RatioSection[] = [
     rows: [
       { label: "Toplam Nakit",        value: s => s.totalCash,           fmt: "money" },
       { label: "Toplam Borç",         value: s => s.totalDebt,           fmt: "money" },
-      { label: "Borç / Özkaynak",     value: s => s.debtToEquity,        fmt: "num"   },
-      { label: "Cari Oran",           value: s => s.currentRatio,        fmt: "num"   },
-      { label: "Asit-Test Oranı",     value: s => s.quickRatio,          fmt: "num"   },
-      { label: "Serbest Nakit Akışı (TTM)",   value: s => s.freeCashflow,      fmt: "money" },
-      { label: "İşletme Nakit Akışı (TTM)",   value: s => s.operatingCashflow, fmt: "money" },
+      { label: "Borç / Özkaynak",     value: s => s.debtToEquity,        fmt: "num",   term: "borcOzkaynak" },
+      { label: "Cari Oran",           value: s => s.currentRatio,        fmt: "num",   term: "cariOran" },
+      { label: "Asit-Test Oranı",     value: s => s.quickRatio,          fmt: "num",   term: "asitTestOrani" },
+      { label: "Serbest Nakit Akışı (TTM)",   value: s => s.freeCashflow,      fmt: "money", term: "serbestNakitAkisi" },
+      { label: "İşletme Nakit Akışı (TTM)",   value: s => s.operatingCashflow, fmt: "money", term: "isletmeNakitAkisi" },
       { label: "Dolaşımdaki Hisse",   value: s => s.sharesOutstanding,   fmt: "money" },
     ],
   },
   {
     title: "Temettü",
     rows: [
-      { label: "Temettü Verimi",      value: s => s.dividendYield,       fmt: "pct"   },
-      { label: "5 Yıllık Ort. Verim", value: s => s.fiveYearAvgDividendYield, fmt: "pct" },
-      { label: "Dağıtım Oranı",       value: s => s.payoutRatio,         fmt: "pct"   },
+      { label: "Temettü Verimi",      value: s => s.dividendYield,       fmt: "pct",   term: "temettuVerimi" },
+      { label: "5 Yıllık Ort. Verim", value: s => s.fiveYearAvgDividendYield, fmt: "pct", term: "temettuVerimi" },
+      { label: "Dağıtım Oranı",       value: s => s.payoutRatio,         fmt: "pct",   term: "dagitimOrani" },
     ],
   },
 ];
@@ -242,15 +246,17 @@ function RatiosGrid({ stats }: { stats: KeyStatistics }) {
     <div className="grid gap-4 lg:grid-cols-2">
       {RATIO_SECTIONS.map(sec => (
         <div key={sec.title} className="glass-card rounded-2xl p-5">
-          <h3 className="mb-4 text-sm font-semibold text-white">{sec.title}</h3>
+          <h3 className="mb-4 text-sm font-semibold text-mist">{sec.title}</h3>
           <dl className="space-y-2">
             {sec.rows.map(r => (
               <div
                 key={r.label}
-                className="flex items-baseline justify-between gap-3 border-b border-white/[0.04] pb-2 last:border-0 last:pb-0"
+                className="flex items-baseline justify-between gap-3 border-b border-line pb-2 last:border-0 last:pb-0"
               >
-                <dt className="text-sm text-mist-3">{r.label}</dt>
-                <dd className="text-sm font-medium tabular-nums text-white">
+                <dt className="text-sm text-mist-3">
+                  <TermTooltip term={r.term}>{r.label}</TermTooltip>
+                </dt>
+                <dd className="text-sm font-medium tabular-nums text-mist">
                   {formatStat(r.value(stats), r.fmt)}
                 </dd>
               </div>
@@ -272,21 +278,21 @@ function BalanceSheetStub() {
           <Info className="h-4 w-4 text-amber-200" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-base font-semibold text-white">
+          <h3 className="text-base font-semibold text-mist">
             Bilanço ve Nakit Akışı Detayı
           </h3>
           <p className="text-sm leading-6 text-mist-2">
             Yahoo Finance, Türk hisseleri için detaylı bilanço ve nakit akışı
             kalemlerini sağlamıyor — yalnızca özet veriler (toplam nakit, toplam
             borç, serbest nakit akışı vb.) ulaşılabiliyor; bu özetler{" "}
-            <span className="font-medium text-white">Anahtar Oranlar</span> sekmesinde gösteriliyor.
+            <span className="font-medium text-mist">Anahtar Oranlar</span> sekmesinde gösteriliyor.
           </p>
           <p className="text-sm leading-6 text-mist-3">
             Tam dönen/duran varlık, kısa/uzun vadeli yükümlülük ve işletme/yatırım/finansman
             faaliyetlerinden nakit akışı kalemleri, ileride KAP entegrasyonuyla
             eklenecek.
           </p>
-          <span className="inline-flex items-center rounded-full border border-white/8 bg-white/[0.025] px-3 py-1 text-[11px] text-mist-3">
+          <span className="inline-flex items-center rounded-full border border-line bg-white/[0.025] px-3 py-1 text-[11px] text-mist-3">
             Yol haritası: Faz 4.5 — KAP / İş Yatırım entegrasyonu
           </span>
         </div>

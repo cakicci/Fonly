@@ -71,14 +71,14 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
   const hasLive = liveFunds.length > 0;
 
   return (
-    <div className="rounded-section border border-white/8 bg-white/[0.025] p-5 sm:p-6">
+    <div className="rounded-section border border-line bg-white/[0.025] p-5 sm:p-6">
       <div className="mb-6 flex items-start gap-4">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/8">
           <Icon className={`h-5 w-5 ${rec.color}`} />
         </div>
         <div>
           <p className="text-sm font-medium text-emerald-200">Kişisel öneriler</p>
-          <h2 className="mt-1 text-xl font-semibold text-white sm:text-2xl">{rec.title}</h2>
+          <h2 className="mt-1 text-xl font-semibold text-mist sm:text-2xl">{rec.title}</h2>
           <p className="mt-2 text-sm leading-6 text-mist-2">{rec.description}</p>
         </div>
       </div>
@@ -93,11 +93,11 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
               <Link
                 key={fund.kod}
                 href={`/fon/${fund.kod}`}
-                className="group flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/[0.04] p-4 transition hover:border-emerald-300/30"
+                className="group flex items-center justify-between gap-3 rounded-2xl border border-line bg-white/[0.04] p-4 transition hover:border-emerald-300/30"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-white">{fund.kod}</span>
+                    <span className="text-sm font-semibold text-mist">{fund.kod}</span>
                     <ArrowUpRight className="h-3.5 w-3.5 text-mist-3 transition group-hover:text-emerald-200" />
                   </div>
                   <p className="mt-1 truncate text-xs text-mist-3">{fund.ad}</p>
@@ -124,11 +124,11 @@ export function PersonalRecommendations({ riskProfile, liveFunds = [] }: Persona
           {rec.funds.map((fund) => (
             <div
               key={fund.name}
-              className="rounded-2xl border border-white/8 bg-white/[0.04] p-4"
+              className="rounded-2xl border border-line bg-white/[0.04] p-4"
             >
               <div className="mb-2 flex items-center gap-2">
                 <TrendingUp className={`h-4 w-4 ${rec.color}`} />
-                <span className="text-sm font-semibold text-white">{fund.name}</span>
+                <span className="text-sm font-semibold text-mist">{fund.name}</span>
               </div>
               <p className="text-xs leading-5 text-mist-3">{fund.reason}</p>
             </div>

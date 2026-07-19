@@ -23,9 +23,9 @@ export default function TakvimPage() {
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <nav className="mb-6 flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <span className="text-white">Ekonomik Takvim</span>
+          <span className="text-mist">Ekonomik Takvim</span>
         </nav>
 
         <div className="mb-6">
@@ -33,7 +33,7 @@ export default function TakvimPage() {
             <CalendarDays className="h-4 w-4" />
             Ekonomik Takvim
           </p>
-          <h1 className="mt-2 text-3xl font-semibold text-white">
+          <h1 className="mt-2 text-3xl font-semibold text-mist">
             Bu hafta piyasaları ne bekliyor?
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-mist-2">
@@ -52,7 +52,7 @@ export default function TakvimPage() {
           />
         </div>
 
-        <div className="mt-4 flex items-start gap-2 rounded-2xl border border-white/6 bg-white/[0.015] p-4">
+        <div className="mt-4 flex items-start gap-2 rounded-2xl border border-line bg-white/[0.015] p-4">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-mist-3" />
           <p className="text-xs leading-5 text-mist-3">
             Takvim verileri{" "}

@@ -12,7 +12,7 @@ export function Sidebar() {
     <aside className="glass-card sticky top-6 rounded-panel p-5 lg:max-h-[calc(100vh-3rem)]">
       <div className="mb-5">
         <p className="text-sm text-mist-3">Piyasa özeti</p>
-        <h2 className="mt-1 text-xl font-semibold text-white">Bugün ne oluyor?</h2>
+        <h2 className="mt-1 text-xl font-semibold text-mist">Bugün ne oluyor?</h2>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
         {markets.map((market) => {
@@ -22,7 +22,7 @@ export function Sidebar() {
           return (
             <div
               key={market.name}
-              className="rounded-2xl border border-white/8 bg-white/[0.04] p-4 transition hover:border-emerald-200/24 hover:bg-white/[0.06]"
+              className="rounded-2xl border border-line bg-white/[0.04] p-4 transition hover:border-emerald-200/24 hover:bg-white/[0.06]"
             >
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -41,7 +41,7 @@ export function Sidebar() {
                   {market.change}
                 </span>
               </div>
-              <p className="mt-3 text-2xl font-semibold text-white">{market.value}</p>
+              <p className="mt-3 text-2xl font-semibold text-mist">{market.value}</p>
             </div>
           );
         })}

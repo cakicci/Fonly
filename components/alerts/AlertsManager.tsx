@@ -8,6 +8,7 @@ import { assetDisplayName, assetHref } from "@/lib/portfolio/asset";
 interface Alert {
   id: number;
   slug: string;
+  triggerType: "price" | "percent_change" | string;
   condition: "above" | "below";
   threshold: number;
   active: boolean;
@@ -92,7 +93,7 @@ export function AlertsManager() {
         </p>
         <Link
           href="/doviz"
-          className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist-2 hover:bg-white/[0.08]"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-line bg-white/[0.04] px-4 py-2 text-xs font-medium text-mist-2 hover:bg-white/[0.08]"
         >
           Piyasalara göz at →
         </Link>
@@ -107,14 +108,23 @@ export function AlertsManager() {
           <BellRing className="h-4 w-4 shrink-0 text-cyan-200/70" />
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <Link href={assetHref(a.slug)} className="truncate text-sm font-medium text-white hover:text-emerald-200">
+              <Link href={assetHref(a.slug)} className="truncate text-sm font-medium text-mist hover:text-emerald-200">
                 {assetDisplayName(a.slug)}
               </Link>
               {statusBadge(a)}
             </div>
             <p className="mt-0.5 text-xs text-mist-3">
-              Fiyat {a.condition === "above" ? "şu değerin üzerine çıkınca" : "şu değerin altına inince"}:{" "}
-              <span className="tabular-nums text-mist-2">{a.threshold}</span>
+              {a.triggerType === "percent_change" ? (
+                <>
+                  Günlük değişim {a.condition === "above" ? "şu kadar yükselince" : "şu kadar düşünce"}:{" "}
+                  <span className="tabular-nums text-mist-2">%{a.threshold}</span>
+                </>
+              ) : (
+                <>
+                  Fiyat {a.condition === "above" ? "şu değerin üzerine çıkınca" : "şu değerin altına inince"}:{" "}
+                  <span className="tabular-nums text-mist-2">{a.threshold}</span>
+                </>
+              )}
             </p>
           </div>
           <button

@@ -30,7 +30,7 @@ export default function Home() {
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>
                 <p className="text-sm font-medium text-emerald-200">Yatırım tarzını seç</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+                <h2 className="mt-2 text-2xl font-semibold text-mist sm:text-3xl">
                   Karar vermeyi kolaylaştıran kategoriler
                 </h2>
               </div>
@@ -44,7 +44,7 @@ export default function Home() {
           <section id="funds" className="section-card">
             <div className="mb-6">
               <p className="text-sm font-medium text-emerald-200">Popüler fonlar</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+              <h2 className="mt-2 text-2xl font-semibold text-mist sm:text-3xl">
                 Hazır sepetleri sade dille incele
               </h2>
             </div>
@@ -59,7 +59,7 @@ export default function Home() {
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>
                 <p className="text-sm font-medium text-cyan-200">BIST hisseleri</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+                <h2 className="mt-2 text-2xl font-semibold text-mist sm:text-3xl">
                   Geçmiş artışı altınla karşılaştır
                 </h2>
               </div>
@@ -82,13 +82,13 @@ export default function Home() {
             <div className="absolute right-8 top-6 h-32 w-32 rounded-full bg-cyan-300/12 blur-3xl" />
             <div className="relative grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
               <div>
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-300 text-ink">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-300 text-ink-fixed">
                   <Target className="h-6 w-6" />
                 </div>
                 <h2 className="text-2xl font-semibold text-white sm:text-3xl">
                   Sana uygun risk profilini keşfet
                 </h2>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-mist-2">
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/70">
                   Birkaç basit soruyla ne kadar dalgalanma seni rahatsız eder, paranı ne kadar süre ayırabilirsin ve hangi seçenekler daha uygun olabilir birlikte anlayalım.
                 </p>
               </div>

@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Bell, Loader2, X } from "lucide-react";
+import { Bell, Loader2, Lock, X } from "lucide-react";
+import { UpgradeModal } from "@/components/billing/UpgradeModal";
 
 export interface PriceAlertModalProps {
   open:           boolean;
@@ -21,6 +22,9 @@ export function PriceAlertModal({
   open, onClose, slug, currentPrice = 0, unit = "", assetName,
 }: PriceAlertModalProps) {
   const { data: session, status } = useSession();
+  const isPremium    = session?.user?.isPremium === true;
+  const authLoading  = status === "loading";
+  const [triggerType, setTriggerType] = useState<"price" | "percent_change">("price");
   const [condition, setCondition] = useState<"above" | "below">("above");
   const [threshold, setThreshold] = useState<string>(
     currentPrice > 0 ? currentPrice.toString() : ""
@@ -28,15 +32,26 @@ export function PriceAlertModal({
   const [busy, setBusy]       = useState(false);
   const [error, setError]     = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
+      setTriggerType("price");
       setThreshold(currentPrice > 0 ? currentPrice.toFixed(2) : "");
       setCondition("above");
       setError(null);
       setSuccess(false);
     }
   }, [open, currentPrice]);
+
+  function changeTriggerType(t: "price" | "percent_change") {
+    if (t === "percent_change" && !isPremium && !authLoading) {
+      setUpgradeOpen(true);
+      return;
+    }
+    setTriggerType(t);
+    setThreshold(t === "price" && currentPrice > 0 ? currentPrice.toFixed(2) : t === "percent_change" ? "5" : "");
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -53,7 +68,7 @@ export function PriceAlertModal({
 
     const thresholdNum = parseFloat(threshold.replace(",", "."));
     if (!Number.isFinite(thresholdNum) || thresholdNum <= 0) {
-      setError("Geçerli bir fiyat gir");
+      setError(triggerType === "price" ? "Geçerli bir fiyat gir" : "Geçerli bir yüzde gir");
       return;
     }
 
@@ -62,7 +77,7 @@ export function PriceAlertModal({
       const res = await fetch("/api/alerts", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ slug, condition, threshold: thresholdNum }),
+        body:    JSON.stringify({ slug, triggerType, condition, threshold: thresholdNum }),
       });
       if (!res.ok) {
         const json = await res.json().catch(() => null);
@@ -86,18 +101,18 @@ export function PriceAlertModal({
       aria-label="Fiyat alarmı"
     >
       <div
-        className="w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-ink shadow-2xl"
+        className="w-full max-w-md overflow-hidden rounded-2xl border border-line bg-ink shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between border-b border-white/8 px-5 py-4">
+        <header className="flex items-center justify-between border-b border-line px-5 py-4">
           <div className="flex items-center gap-2">
             <Bell className="h-4 w-4 text-amber-300" />
-            <h2 className="text-base font-semibold text-white">Fiyat Alarmı</h2>
+            <h2 className="text-base font-semibold text-mist">Fiyat Alarmı</h2>
           </div>
           <button
             onClick={onClose}
             aria-label="Kapat"
-            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-1.5 text-mist-3 transition hover:bg-white/5 hover:text-mist"
           >
             <X className="h-4 w-4" />
           </button>
@@ -120,9 +135,41 @@ export function PriceAlertModal({
           <form onSubmit={onSubmit} className="space-y-4 p-5">
             <div>
               <p className="mb-1 text-xs text-mist-3">Varlık</p>
-              <p className="rounded-lg border border-white/8 bg-white/[0.025] px-3 py-2 text-sm text-white">
+              <p className="rounded-lg border border-line bg-white/[0.025] px-3 py-2 text-sm text-mist">
                 {assetName}
               </p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs font-medium text-mist-3">Tetikleyici</p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => changeTriggerType("price")}
+                  className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
+                    triggerType === "price"
+                      ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
+                      : "border-line bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
+                  }`}
+                >
+                  Fiyat eşiği
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeTriggerType("percent_change")}
+                  title={!isPremium && !authLoading ? "Premium özellik — yükseltmek için tıkla" : undefined}
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-sm font-medium transition ${
+                    triggerType === "percent_change"
+                      ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
+                      : !isPremium && !authLoading
+                        ? "border-line bg-white/[0.04] text-mist-3 hover:border-fuchsia-300/25 hover:bg-fuchsia-300/8 hover:text-fuchsia-200"
+                        : "border-line bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
+                  }`}
+                >
+                  Günlük % değişim
+                  {!isPremium && !authLoading && <Lock className="h-3 w-3 opacity-70" />}
+                </button>
+              </div>
             </div>
 
             <div>
@@ -134,10 +181,10 @@ export function PriceAlertModal({
                   className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
                     condition === "above"
                       ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
-                      : "border-white/10 bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
+                      : "border-line bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
                   }`}
                 >
-                  ↗ Bunun üstüne çıktığında
+                  {triggerType === "price" ? "↗ Bunun üstüne çıktığında" : "↗ Bu kadar yükseldiğinde"}
                 </button>
                 <button
                   type="button"
@@ -145,33 +192,38 @@ export function PriceAlertModal({
                   className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
                     condition === "below"
                       ? "border-rose-300/35 bg-rose-300/12 text-rose-100"
-                      : "border-white/10 bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
+                      : "border-line bg-white/[0.04] text-mist-3 hover:bg-white/[0.07]"
                   }`}
                 >
-                  ↘ Bunun altına düştüğünde
+                  {triggerType === "price" ? "↘ Bunun altına düştüğünde" : "↘ Bu kadar düştüğünde"}
                 </button>
               </div>
             </div>
 
             <div>
               <label className="mb-1 block text-xs font-medium text-mist-3">
-                Hedef fiyat
+                {triggerType === "price" ? "Hedef fiyat" : "Yüzde eşiği"}
               </label>
-              <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2">
+              <div className="flex items-center gap-2 rounded-xl border border-line bg-white/[0.04] px-3 py-2">
                 <input
                   type="number"
                   step="any"
                   inputMode="decimal"
                   value={threshold}
                   onChange={(e) => setThreshold(e.target.value)}
-                  placeholder="0.00"
-                  className="w-full bg-transparent text-sm text-white outline-none placeholder:text-mist-3"
+                  placeholder={triggerType === "price" ? "0.00" : "5"}
+                  className="w-full bg-transparent text-sm text-mist outline-none placeholder:text-mist-3"
                 />
-                {unit && <span className="text-xs text-mist-3">{unit}</span>}
+                <span className="text-xs text-mist-3">{triggerType === "price" ? unit : "%"}</span>
               </div>
-              {currentPrice > 0 && (
+              {triggerType === "price" && currentPrice > 0 && (
                 <p className="mt-1.5 text-[11px] text-mist-3">
                   Şu anki fiyat: <span className="text-mist-2">{currentPrice.toFixed(2)} {unit}</span>
+                </p>
+              )}
+              {triggerType === "percent_change" && (
+                <p className="mt-1.5 text-[11px] text-mist-3">
+                  Örn. %5 ve &quot;yükseldiğinde&quot; seçersen, fiyat bugün içinde %5 veya daha fazla artınca haber veririz.
                 </p>
               )}
             </div>
@@ -187,7 +239,7 @@ export function PriceAlertModal({
                 type="button"
                 onClick={onClose}
                 disabled={busy}
-                className="flex-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-mist-2 transition hover:bg-white/[0.07] hover:text-white"
+                className="flex-1 rounded-xl border border-line bg-white/[0.04] px-4 py-2.5 text-sm font-medium text-mist-2 transition hover:bg-white/[0.07] hover:text-mist"
               >
                 İptal
               </button>
@@ -203,6 +255,12 @@ export function PriceAlertModal({
           </form>
         )}
       </div>
+      {upgradeOpen && (
+        <UpgradeModal
+          feature="Yüzde değişim alarmı"
+          onClose={() => setUpgradeOpen(false)}
+        />
+      )}
     </div>
   );
 }

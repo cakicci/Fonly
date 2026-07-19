@@ -52,11 +52,11 @@ export function ProfileSection({ initialName, email }: ProfileSectionProps) {
   return (
     <form onSubmit={save} className="glass-card rounded-2xl p-6">
       <div className="flex items-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-300/30 to-cyan-300/20 text-xl font-semibold text-white">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-300/30 to-cyan-300/20 text-xl font-semibold text-mist">
           {initials(name || email)}
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm font-medium text-white">{name || "—"}</p>
+          <p className="truncate text-sm font-medium text-mist">{name || "—"}</p>
           <p className="truncate text-xs text-mist-3">{email}</p>
         </div>
       </div>
@@ -71,7 +71,7 @@ export function ProfileSection({ initialName, email }: ProfileSectionProps) {
               setSaved(false);
             }}
             maxLength={80}
-            className="mt-1 w-full rounded-xl border border-white/10 bg-ink px-3 py-2 text-sm text-white outline-none focus:border-emerald-300/40"
+            className="mt-1 w-full rounded-xl border border-line bg-ink px-3 py-2 text-sm text-mist outline-none focus:border-emerald-300/40"
           />
         </label>
 
@@ -80,7 +80,7 @@ export function ProfileSection({ initialName, email }: ProfileSectionProps) {
           <input
             value={email}
             disabled
-            className="mt-1 w-full cursor-not-allowed rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-sm text-mist-3"
+            className="mt-1 w-full cursor-not-allowed rounded-xl border border-line bg-white/[0.02] px-3 py-2 text-sm text-mist-3"
           />
           <span className="mt-1 block text-[11px] text-mist-3">
             E-posta değişikliği şimdilik desteklenmiyor.

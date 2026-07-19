@@ -13,17 +13,22 @@ export interface SubNavTab {
    * Faz 0 için: AI sekmesi yok, ileride eklenirse buradan işaretlenir.
    */
   premium?: boolean;
+  /**
+   * Teknik/tablo ağırlıklı, jargon içeren sekme mi? true ise "Basit görünüm"de
+   * (varsayılan) gizlenir, "Gelişmiş görünüm" açılınca görünür (bkz. SubNavWithToggle).
+   */
+  advanced?: boolean;
 }
 
 export const HISSE_SUBNAV: SubNavTab[] = [
   { href: "",            label: "Genel" },
   { href: "grafik",      label: "Grafik" },
-  { href: "teknik",      label: "Teknik" },
-  { href: "finansallar", label: "Finansallar" },
+  { href: "teknik",      label: "Teknik",      advanced: true },
+  { href: "finansallar", label: "Finansallar", advanced: true },
   { href: "profil",      label: "Profil" },
-  { href: "sahiplik",    label: "Sahiplik" },
-  { href: "temettu",     label: "Temettü" },
-  { href: "bolunmeler",  label: "Bölünmeler" },
+  { href: "sahiplik",    label: "Sahiplik",    advanced: true },
+  { href: "temettu",     label: "Temettü",     advanced: true },
+  { href: "bolunmeler",  label: "Bölünmeler",  advanced: true },
   { href: "haberler",    label: "Haberler" },
   { href: "tarihsel",    label: "Tarihsel" },
 ];
@@ -31,7 +36,7 @@ export const HISSE_SUBNAV: SubNavTab[] = [
 export const DOVIZ_SUBNAV: SubNavTab[] = [
   { href: "",         label: "Genel" },
   { href: "grafik",   label: "Grafik" },
-  { href: "teknik",   label: "Teknik" },
+  { href: "teknik",   label: "Teknik", advanced: true },
   { href: "haberler", label: "Haberler" },
   { href: "tarihsel", label: "Tarihsel" },
 ];
@@ -39,7 +44,7 @@ export const DOVIZ_SUBNAV: SubNavTab[] = [
 export const ALTIN_SUBNAV: SubNavTab[] = [
   { href: "",         label: "Genel" },
   { href: "grafik",   label: "Grafik" },
-  { href: "teknik",   label: "Teknik" },
+  { href: "teknik",   label: "Teknik", advanced: true },
   { href: "haberler", label: "Haberler" },
   { href: "tarihsel", label: "Tarihsel" },
 ];
@@ -50,7 +55,7 @@ export const ALTIN_SUBNAV: SubNavTab[] = [
 export const FON_SUBNAV: SubNavTab[] = [
   { href: "",          label: "Genel" },
   { href: "grafik",    label: "Grafik" },
-  { href: "teknik",    label: "Teknik" },
+  { href: "teknik",    label: "Teknik", advanced: true },
   { href: "getiriler", label: "Getiriler" },
   { href: "haberler",  label: "Haberler" },
   { href: "tarihsel",  label: "Tarihsel" },

@@ -29,7 +29,7 @@ export function SplitsSection({ splits }: Props) {
   if (splits.length === 0) {
     return (
       <div className="glass-card rounded-2xl p-8 text-center">
-        <p className="text-sm font-medium text-white">Bu hisse için kayıtlı bölünme yok</p>
+        <p className="text-sm font-medium text-mist">Bu hisse için kayıtlı bölünme yok</p>
         <p className="mt-1 text-xs text-mist-3">
           Yahoo Finance geçmişte stock split / bedelsiz işlemi tespit etmedi.
         </p>
@@ -42,7 +42,7 @@ export function SplitsSection({ splits }: Props) {
       <div className="glass-card rounded-2xl p-5">
         <div className="mb-4 flex items-center gap-2">
           <GitBranch className="h-4 w-4 text-emerald-200" />
-          <h3 className="text-sm font-semibold text-white">
+          <h3 className="text-sm font-semibold text-mist">
             Bölünme Geçmişi ({splits.length})
           </h3>
         </div>
@@ -59,7 +59,7 @@ export function SplitsSection({ splits }: Props) {
               {[...splits].reverse().map(s => (
                 <tr key={s.epoch}>
                   <td className="py-3 pr-4 whitespace-nowrap text-mist-2">{fmtDateTr(s.date)}</td>
-                  <td className="py-3 pr-4 whitespace-nowrap font-medium text-white">{s.ratio}</td>
+                  <td className="py-3 pr-4 whitespace-nowrap font-medium text-mist">{s.ratio}</td>
                   <td className="py-3 text-mist-3">{describeSplit(s)}</td>
                 </tr>
               ))}

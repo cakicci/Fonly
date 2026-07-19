@@ -45,7 +45,7 @@ export function BlurredStockCard({ categoryTitle, index }: BlurredStockCardProps
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold text-emerald-200">{fakeSymbol}</p>
-                <h3 className="mt-1 text-xl font-semibold text-white">{fakeName}</h3>
+                <h3 className="mt-1 text-xl font-semibold text-mist">{fakeName}</h3>
               </div>
               <span className="inline-flex shrink-0 items-center gap-1 rounded-xl border border-fuchsia-200/25 bg-fuchsia-300/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-fuchsia-100">
                 <Sparkles className="h-3 w-3" />
@@ -54,15 +54,15 @@ export function BlurredStockCard({ categoryTitle, index }: BlurredStockCardProps
             </div>
 
             <div className="mt-3 flex flex-wrap gap-1.5">
-              <span className="inline-flex items-center rounded-lg border border-white/15 bg-white/8 px-2 py-0.5 text-[11px] font-medium text-white/40">
+              <span className="inline-flex items-center rounded-lg border border-line bg-white/8 px-2 py-0.5 text-[11px] font-medium text-white/40">
                 XXXXXX
               </span>
-              <span className="inline-flex items-center rounded-lg border border-white/15 bg-white/8 px-2 py-0.5 text-[11px] font-medium text-white/40">
+              <span className="inline-flex items-center rounded-lg border border-line bg-white/8 px-2 py-0.5 text-[11px] font-medium text-white/40">
                 XXXXXXX
               </span>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-white/8 bg-white/4 p-3">
+            <div className="mt-5 rounded-2xl border border-line bg-white/4 p-3">
               <div className="h-3 w-3/4 rounded bg-white/10" />
               <div className="mt-2 h-3 w-5/6 rounded bg-white/8" />
               <div className="mt-2 h-3 w-2/3 rounded bg-white/8" />
@@ -83,8 +83,8 @@ export function BlurredStockCard({ categoryTitle, index }: BlurredStockCardProps
               <Sparkles className="h-3 w-3" />
               Premium
             </div>
-            <p className="text-sm font-medium text-white">AI&apos;ın seçtiği hisseyi gör</p>
-            <span className="rounded-xl bg-gradient-to-r from-fuchsia-300 to-emerald-300 px-3 py-1.5 text-xs font-semibold text-ink transition group-hover:from-fuchsia-200 group-hover:to-emerald-200">
+            <p className="text-sm font-medium text-mist">AI&apos;ın seçtiği hisseyi gör</p>
+            <span className="rounded-xl bg-gradient-to-r from-fuchsia-300 to-emerald-300 px-3 py-1.5 text-xs font-semibold text-ink-fixed transition group-hover:from-fuchsia-200 group-hover:to-emerald-200">
               Premium&apos;a yükselt →
             </span>
           </div>

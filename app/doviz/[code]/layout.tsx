@@ -4,7 +4,8 @@ import { ReactNode } from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { AssetHeader } from "@/components/chart/AssetHeader";
 import { AssetHeaderActions } from "@/components/chart/AssetHeaderActions";
-import { SubNav } from "@/components/chart/SubNav";
+import { SubNavWithToggle } from "@/components/chart/SubNavWithToggle";
+import { MicroLessonCard } from "@/components/MicroLessonCard";
 import { CURRENCY_MAP } from "@/data/currencies";
 import { fetchTruncgilToday, getTruncgilAsset } from "@/lib/market-data";
 import { fmtAsset, fmtPercent } from "@/lib/format";
@@ -42,11 +43,11 @@ export default async function DovizLayout({
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
         <nav className="flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <Link href="/doviz" className="transition hover:text-white">Döviz</Link>
+          <Link href="/doviz" className="transition hover:text-mist">Döviz</Link>
           <span>/</span>
-          <span className="text-white">{currency.shortName}</span>
+          <span className="text-mist">{currency.shortName}</span>
         </nav>
 
         <AssetHeader
@@ -78,7 +79,7 @@ export default async function DovizLayout({
                 <ArrowDownRight className="h-3 w-3" />
                 Alış
               </p>
-              <p className="mt-0.5 text-base font-semibold text-white">
+              <p className="mt-0.5 text-base font-semibold text-mist">
                 {fmtAsset(displayBuying, "currency")} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
@@ -87,20 +88,27 @@ export default async function DovizLayout({
                 <ArrowUpRight className="h-3 w-3" />
                 Satış
               </p>
-              <p className="mt-0.5 text-base font-semibold text-white">
+              <p className="mt-0.5 text-base font-semibold text-mist">
                 {fmtAsset(displaySelling, "currency")} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
             {spreadPct != null && (
-              <div className="rounded-xl border border-white/8 bg-white/[0.025] px-4 py-3">
+              <div className="rounded-xl border border-line bg-white/[0.025] px-4 py-3">
                 <p className="text-[10px] font-medium uppercase tracking-wider text-mist-3">Makas</p>
-                <p className="mt-0.5 text-base font-semibold text-white">%{fmtPercent(spreadPct)}</p>
+                <p className="mt-0.5 text-base font-semibold text-mist">%{fmtPercent(spreadPct)}</p>
               </div>
             )}
           </div>
         )}
 
-        <SubNav basePath={`/doviz/${code}`} tabs={DOVIZ_SUBNAV} />
+        <MicroLessonCard
+          id="doviz"
+          title="Döviz kuru nasıl okunur?"
+          body="Buradaki fiyat, o para biriminden 1 birimin kaç Türk Lirası ettiğini gösterir (örn. 1 Dolar = 47 TL). Kur yükseldiğinde TL değer kaybetmiş, düştüğünde TL değer kazanmış demektir."
+          guideHref="/rehber/3"
+        />
+
+        <SubNavWithToggle basePath={`/doviz/${code}`} tabs={DOVIZ_SUBNAV} />
 
         {children}
       </div>

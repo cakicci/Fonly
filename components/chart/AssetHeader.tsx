@@ -63,7 +63,7 @@ export function AssetHeader({
   const flashCls = useFlashClass(displayPrice);
 
   return (
-    <div className="rounded-section border border-white/10 bg-[linear-gradient(135deg,rgba(45,227,168,0.06),rgba(11,16,38,0.95))] p-6">
+    <div className="rounded-section border border-line bg-[linear-gradient(135deg,rgba(45,227,168,0.06),var(--bg))] p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -86,10 +86,10 @@ export function AssetHeader({
             {badges}
           </div>
 
-          <h1 className="mt-2 text-2xl font-semibold leading-snug text-white">{name}</h1>
+          <h1 className="mt-2 text-2xl font-semibold leading-snug text-mist">{name}</h1>
 
           <div className="mt-4 flex items-end gap-3">
-            <p className="text-4xl font-semibold text-white">
+            <p className="text-4xl font-semibold text-mist">
               <span
                 className={`inline-block rounded-md px-1.5 transition-colors duration-300 ${flashCls}`}
               >

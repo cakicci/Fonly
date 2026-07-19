@@ -2,11 +2,15 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Loader2, Trash2, TrendingUp, RefreshCw } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Loader2, Trash2, TrendingUp, RefreshCw, FlaskConical, Download, Lock } from "lucide-react";
 import type { Position, PortfolioSummary } from "@/lib/portfolio/aggregate";
 import { assetDisplayName, assetHref, assetTypeOf, ASSET_TYPE_LABELS } from "@/lib/portfolio/asset";
 import { AddLotForm } from "./AddLotForm";
 import { PortfolioValueChart } from "./PortfolioValueChart";
+import { SectorBreakdown } from "./SectorBreakdown";
+import { UpgradeModal } from "@/components/billing/UpgradeModal";
 
 interface Lot {
   id: number;
@@ -41,16 +45,34 @@ function pnlColor(n: number | null | undefined): string {
   return "text-mist-2";
 }
 
+type Mode = "real" | "demo";
+
 export function PortfolioClient() {
+  const searchParams = useSearchParams();
+  const { data: session, status: authStatus } = useSession();
+  const isPremium = session?.user?.isPremium === true;
+  const authLoading = authStatus === "loading";
+  const [mode, setMode] = useState<Mode>(() => (searchParams.get("mode") === "demo" ? "demo" : "real"));
   const [data, setData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [clearingDemo, setClearingDemo] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
-  const load = useCallback(async () => {
+  function onExportClick() {
+    if (!isPremium && !authLoading) {
+      setUpgradeOpen(true);
+      return;
+    }
+    window.location.href = "/api/portfolio/export";
+  }
+
+  const load = useCallback(async (currentMode: Mode) => {
+    setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/portfolio", { cache: "no-store" });
+      const res = await fetch(`/api/portfolio${currentMode === "demo" ? "?demo=1" : ""}`, { cache: "no-store" });
       if (!res.ok) {
         setError("Portföy yüklenemedi.");
         return;
@@ -64,16 +86,27 @@ export function PortfolioClient() {
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    load(mode);
+  }, [load, mode]);
 
   async function removeLot(id: number) {
     setDeletingId(id);
     try {
       const res = await fetch(`/api/portfolio?id=${id}`, { method: "DELETE" });
-      if (res.ok) await load();
+      if (res.ok) await load(mode);
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  async function clearDemo() {
+    if (!data) return;
+    setClearingDemo(true);
+    try {
+      await Promise.all(data.lots.map((l) => fetch(`/api/portfolio?id=${l.id}`, { method: "DELETE" })));
+      await load(mode);
+    } finally {
+      setClearingDemo(false);
     }
   }
 
@@ -97,6 +130,52 @@ export function PortfolioClient() {
 
   return (
     <div className="space-y-6">
+      {/* Gerçek / Deneme mod anahtarı */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="inline-flex rounded-2xl border border-line bg-white/[0.03] p-1">
+          <button
+            type="button"
+            onClick={() => setMode("real")}
+            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+              mode === "real" ? "bg-emerald-300/15 text-emerald-100" : "text-mist-3 hover:text-mist"
+            }`}
+          >
+            Gerçek Portföy
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("demo")}
+            className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium transition ${
+              mode === "demo" ? "bg-fuchsia-300/15 text-fuchsia-100" : "text-mist-3 hover:text-mist"
+            }`}
+          >
+            <FlaskConical className="h-3.5 w-3.5" />
+            Deneme Portföyü
+          </button>
+        </div>
+        {mode === "demo" && !empty && (
+          <button
+            type="button"
+            onClick={clearDemo}
+            disabled={clearingDemo}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white/[0.03] px-3 py-2 text-xs font-medium text-mist-2 transition hover:bg-white/[0.07] disabled:opacity-50"
+          >
+            {clearingDemo ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+            Deneme verilerini temizle
+          </button>
+        )}
+      </div>
+
+      {mode === "demo" && (
+        <div className="flex items-start gap-3 rounded-2xl border border-fuchsia-300/20 bg-fuchsia-300/[0.05] px-4 py-3">
+          <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-fuchsia-200" />
+          <p className="text-xs leading-relaxed text-mist-2">
+            Bu deneme portföyü gerçek para içermez ve dashboard&apos;daki gerçek portföy özetini,
+            hedeflerini veya haftalık özet e-postanı hiç etkilemez — arayüzü risk almadan öğrenmek için kullan.
+          </p>
+        </div>
+      )}
+
       {error && <p className="rounded-xl bg-rose-300/10 p-3 text-sm text-rose-200">{error}</p>}
 
       {/* Özet */}
@@ -122,7 +201,10 @@ export function PortfolioClient() {
       )}
 
       {/* Değer grafiği */}
-      {!empty && <PortfolioValueChart />}
+      {!empty && <PortfolioValueChart demo={mode === "demo"} />}
+
+      {/* Sektör dağılımı — yalnızca gerçek portföyde (hisse pozisyonu varsa) */}
+      {!empty && mode === "real" && <SectorBreakdown />}
 
       {summary && summary.missingPrices > 0 && (
         <p className="text-xs text-amber-200/80">
@@ -131,14 +213,30 @@ export function PortfolioClient() {
       )}
 
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">Pozisyonlar</h2>
-        <button
-          onClick={load}
-          className="inline-flex items-center gap-1.5 text-xs text-mist-3 hover:text-mist-2"
-        >
-          <RefreshCw className="h-3.5 w-3.5" /> Yenile
-        </button>
+        <h2 className="text-lg font-semibold text-mist">Pozisyonlar</h2>
+        <div className="flex items-center gap-3">
+          {mode === "real" && !empty && (
+            <button
+              onClick={onExportClick}
+              title={!isPremium && !authLoading ? "Premium özellik — yükseltmek için tıkla" : "CSV indir"}
+              className="inline-flex items-center gap-1.5 text-xs text-mist-3 hover:text-mist-2"
+            >
+              <Download className="h-3.5 w-3.5" /> CSV indir
+              {!isPremium && !authLoading && <Lock className="h-3 w-3 opacity-70" />}
+            </button>
+          )}
+          <button
+            onClick={() => load(mode)}
+            className="inline-flex items-center gap-1.5 text-xs text-mist-3 hover:text-mist-2"
+          >
+            <RefreshCw className="h-3.5 w-3.5" /> Yenile
+          </button>
+        </div>
       </div>
+
+      {upgradeOpen && (
+        <UpgradeModal feature="Portföy CSV dışa aktarma" onClose={() => setUpgradeOpen(false)} />
+      )}
 
       {/* Pozisyonlar */}
       {empty ? (
@@ -151,7 +249,7 @@ export function PortfolioClient() {
         <div className="glass-card overflow-x-auto rounded-2xl">
           <table className="w-full min-w-[640px] text-sm">
             <thead>
-              <tr className="border-b border-white/8 text-left text-xs text-mist-3">
+              <tr className="border-b border-line text-left text-xs text-mist-3">
                 <th className="px-4 py-3 font-medium">Varlık</th>
                 <th className="px-4 py-3 text-right font-medium">Adet</th>
                 <th className="px-4 py-3 text-right font-medium">Ort. maliyet</th>
@@ -162,9 +260,9 @@ export function PortfolioClient() {
             </thead>
             <tbody>
               {openPositions.map((p) => (
-                <tr key={p.slug} className="border-b border-white/5 last:border-0">
+                <tr key={p.slug} className="border-b border-line last:border-0">
                   <td className="px-4 py-3">
-                    <Link href={assetHref(p.slug)} className="font-medium text-white hover:text-emerald-200">
+                    <Link href={assetHref(p.slug)} className="font-medium text-mist hover:text-emerald-200">
                       {assetDisplayName(p.slug)}
                     </Link>
                     <span className="ml-2 rounded-full bg-white/[0.06] px-2 py-0.5 text-[10px] text-mist-3">
@@ -174,7 +272,7 @@ export function PortfolioClient() {
                   <td className="px-4 py-3 text-right tabular-nums text-mist-2">{tl(p.quantity)}</td>
                   <td className="px-4 py-3 text-right tabular-nums text-mist-2">{tl(p.avgCost)} ₺</td>
                   <td className="px-4 py-3 text-right tabular-nums text-mist-2">{tl(p.price)} ₺</td>
-                  <td className="px-4 py-3 text-right tabular-nums text-white">{tl(p.value)} ₺</td>
+                  <td className="px-4 py-3 text-right tabular-nums text-mist">{tl(p.value)} ₺</td>
                   <td className={`px-4 py-3 text-right tabular-nums ${pnlColor(p.pnl)}`}>
                     <div>{tl(p.pnl)} ₺</div>
                     <div className="text-xs">{pct(p.pnlPct)}</div>
@@ -189,14 +287,14 @@ export function PortfolioClient() {
       {/* Kapanan pozisyonlar — gerçekleşen K/Z */}
       {closedPositions.length > 0 && (
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-white">Kapanan pozisyonlar</h2>
+          <h2 className="mb-3 text-lg font-semibold text-mist">Kapanan pozisyonlar</h2>
           <div className="space-y-2">
             {closedPositions.map((p) => (
               <div
                 key={p.slug}
-                className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.02] px-4 py-2.5 text-sm"
+                className="flex items-center justify-between rounded-xl border border-line bg-white/[0.02] px-4 py-2.5 text-sm"
               >
-                <Link href={assetHref(p.slug)} className="font-medium text-white hover:text-emerald-200">
+                <Link href={assetHref(p.slug)} className="font-medium text-mist hover:text-emerald-200">
                   {assetDisplayName(p.slug)}
                 </Link>
                 <span className={`tabular-nums ${pnlColor(p.realizedPnl)}`}>
@@ -209,17 +307,22 @@ export function PortfolioClient() {
       )}
 
       {/* İşlem ekle */}
-      <AddLotForm onAdded={load} />
+      <AddLotForm
+        onAdded={() => load(mode)}
+        openPositions={mode === "real" ? openPositions : []}
+        portfolioValue={mode === "real" ? (summary?.value ?? 0) : 0}
+        isDemo={mode === "demo"}
+      />
 
       {/* İşlem kayıtları */}
       {!empty && (
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-white">İşlem kayıtları</h2>
+          <h2 className="mb-3 text-lg font-semibold text-mist">İşlem kayıtları</h2>
           <div className="space-y-2">
             {lots.map((lot) => (
               <div
                 key={lot.id}
-                className="flex items-center justify-between rounded-xl border border-white/8 bg-white/[0.02] px-4 py-2.5 text-sm"
+                className="flex items-center justify-between rounded-xl border border-line bg-white/[0.02] px-4 py-2.5 text-sm"
               >
                 <div className="min-w-0">
                   <span
@@ -231,7 +334,7 @@ export function PortfolioClient() {
                   >
                     {lot.side === "sell" ? "Satış" : "Alış"}
                   </span>
-                  <span className="font-medium text-white">{assetDisplayName(lot.slug)}</span>
+                  <span className="font-medium text-mist">{assetDisplayName(lot.slug)}</span>
                   <span className="ml-2 text-mist-3">
                     {tl(lot.quantity)} × {tl(lot.unitCost)} ₺
                   </span>
@@ -274,7 +377,7 @@ function SummaryCard({
   return (
     <div className="glass-card rounded-2xl p-4">
       <p className="text-xs text-mist-3">{label}</p>
-      <p className={`mt-1 text-xl font-semibold ${color ?? "text-white"}`}>{value}</p>
+      <p className={`mt-1 text-xl font-semibold ${color ?? "text-mist"}`}>{value}</p>
       {sub && <p className={`text-xs ${color ?? "text-mist-3"}`}>{sub}</p>}
     </div>
   );

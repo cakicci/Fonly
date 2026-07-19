@@ -39,7 +39,7 @@ export function AnalyzedStockCard({ stock }: { stock: AnalyzedStock }) {
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-emerald-200">{stock.symbol}</p>
-            <h3 className="mt-1 truncate text-xl font-semibold text-white">{stock.name}</h3>
+            <h3 className="mt-1 truncate text-xl font-semibold text-mist">{stock.name}</h3>
           </div>
           {stock.isWellKnown ? (
             <span className="inline-flex shrink-0 items-center gap-1 rounded-xl border border-cyan-200/25 bg-cyan-300/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-cyan-100">
@@ -77,7 +77,7 @@ export function AnalyzedStockCard({ stock }: { stock: AnalyzedStock }) {
         )}
 
         {/* Footer: kaynak + tarih */}
-        <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/8 pt-3 text-[11px] text-mist-3">
+        <div className="mt-5 flex items-center justify-between gap-3 border-t border-line pt-3 text-[11px] text-mist-3">
           <span>{isAI ? "AI analizi" : "Hazır içerik"}</span>
           <span>Güncelleme: {formatRelative(stock.analyzedAt)}</span>
         </div>

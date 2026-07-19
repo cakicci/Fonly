@@ -29,7 +29,7 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
       {profile.longBusinessSummary && (
         <div className="glass-card rounded-2xl p-6">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h3 className="text-sm font-semibold text-white">Şirket Hakkında</h3>
+            <h3 className="text-sm font-semibold text-mist">Şirket Hakkında</h3>
             <AIButton
               type="company-explainer"
               context={{
@@ -53,7 +53,7 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
 
       {/* İletişim kartı */}
       <div className="glass-card rounded-2xl p-6">
-        <h3 className="mb-4 text-sm font-semibold text-white">İletişim ve Adres</h3>
+        <h3 className="mb-4 text-sm font-semibold text-mist">İletişim ve Adres</h3>
         <dl className="grid gap-3 sm:grid-cols-2">
           <ContactRow icon={<MapPin   className="h-3.5 w-3.5" />} label="Adres"      value={profile.address} />
           <ContactRow icon={<Globe   className="h-3.5 w-3.5" />}
@@ -68,7 +68,7 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
       {/* Yönetim tablosu */}
       {profile.officers.length > 0 && (
         <div className="glass-card rounded-2xl p-5">
-          <h3 className="mb-4 text-sm font-semibold text-white">Üst Yönetim</h3>
+          <h3 className="mb-4 text-sm font-semibold text-mist">Üst Yönetim</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -81,7 +81,7 @@ export function CompanyProfileSection({ profile, companyName }: Props) {
               <tbody className="divide-y divide-white/5">
                 {profile.officers.map((o, i) => (
                   <tr key={`${o.name}-${i}`}>
-                    <td className="py-2.5 pr-4 font-medium text-white">{o.name}</td>
+                    <td className="py-2.5 pr-4 font-medium text-mist">{o.name}</td>
                     <td className="py-2.5 pr-4 text-mist-2">{o.title}</td>
                     <td className="py-2.5 text-right tabular-nums text-mist-3">
                       {o.age != null ? o.age : "—"}
@@ -112,7 +112,7 @@ function FactCell({
         {icon}
         {label}
       </div>
-      <p className="text-sm font-medium text-white">{value ?? "—"}</p>
+      <p className="text-sm font-medium text-mist">{value ?? "—"}</p>
     </div>
   );
 }
@@ -126,7 +126,7 @@ function ContactRow({
   href?: string | null;
 }) {
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-white/[0.04] bg-white/[0.015] p-3">
+    <div className="flex items-start gap-3 rounded-xl border border-line bg-white/[0.015] p-3">
       <div className="mt-0.5 rounded-md bg-white/[0.04] p-1.5 text-mist-3">{icon}</div>
       <div className="min-w-0 flex-1">
         <p className="text-[11px] font-medium uppercase tracking-wider text-mist-3">{label}</p>

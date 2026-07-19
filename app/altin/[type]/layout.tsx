@@ -4,7 +4,8 @@ import { ReactNode } from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { AssetHeader } from "@/components/chart/AssetHeader";
 import { AssetHeaderActions } from "@/components/chart/AssetHeaderActions";
-import { SubNav } from "@/components/chart/SubNav";
+import { SubNavWithToggle } from "@/components/chart/SubNavWithToggle";
+import { MicroLessonCard } from "@/components/MicroLessonCard";
 import {
   GOLD_TYPE_MAP,
   GOLD_TYPES,
@@ -44,15 +45,15 @@ export default async function AltinLayout({
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
         <nav className="flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <Link href="/altin" className="transition hover:text-white">Altın</Link>
+          <Link href="/altin" className="transition hover:text-mist">Altın</Link>
           <span>/</span>
-          <span className="text-white">{goldType.name}</span>
+          <span className="text-mist">{goldType.name}</span>
         </nav>
 
         <AssetHeader
-          tag={goldType.category === "gumus" ? "🥈" : "🥇"}
+          tag={goldType.nameShort}
           market={GOLD_CATEGORY_LABELS[goldType.category]}
           name={goldType.name}
           price={avg}
@@ -76,7 +77,7 @@ export default async function AltinLayout({
                 <ArrowDownRight className="h-3 w-3" />
                 Alış
               </p>
-              <p className="mt-0.5 text-base font-semibold text-white">
+              <p className="mt-0.5 text-base font-semibold text-mist">
                 {fmtAsset(buying, goldKind)} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
@@ -85,14 +86,14 @@ export default async function AltinLayout({
                 <ArrowUpRight className="h-3 w-3" />
                 Satış
               </p>
-              <p className="mt-0.5 text-base font-semibold text-white">
+              <p className="mt-0.5 text-base font-semibold text-mist">
                 {fmtAsset(selling, goldKind)} <span className="text-xs font-normal text-mist-3">TL</span>
               </p>
             </div>
             {spreadPct != null && (
-              <div className="rounded-xl border border-white/8 bg-white/[0.025] px-4 py-3">
+              <div className="rounded-xl border border-line bg-white/[0.025] px-4 py-3">
                 <p className="text-[10px] font-medium uppercase tracking-wider text-mist-3">Makas</p>
-                <p className="mt-0.5 text-base font-semibold text-white">%{fmtPercent(spreadPct)}</p>
+                <p className="mt-0.5 text-base font-semibold text-mist">%{fmtPercent(spreadPct)}</p>
               </div>
             )}
           </div>
@@ -107,7 +108,7 @@ export default async function AltinLayout({
               className={`rounded-xl border px-4 py-2 text-sm font-medium transition ${
                 g.type === goldType.type
                   ? "border-amber-300/40 bg-amber-300/12 text-amber-200"
-                  : "border-white/8 text-mist-3 hover:border-white/20 hover:text-white"
+                  : "border-line text-mist-3 hover:border-line hover:text-mist"
               }`}
             >
               {g.nameShort}
@@ -115,7 +116,14 @@ export default async function AltinLayout({
           ))}
         </div>
 
-        <SubNav basePath={`/altin/${goldType.type}`} tabs={ALTIN_SUBNAV} />
+        <MicroLessonCard
+          id="altin"
+          title="Altın türleri arasındaki fark ne?"
+          body="Gram altın, saf ağırlığına göre fiyatlanır. Çeyrek/yarım/tam altın basılı sikkelerdir ve işçilik farkı yüzünden gram fiyatının tam katı olmayabilir. Ayar altın (14/18 ayar) ise içindeki saf altın oranını belirtir."
+          guideHref="/rehber/3"
+        />
+
+        <SubNavWithToggle basePath={`/altin/${goldType.type}`} tabs={ALTIN_SUBNAV} />
 
         {children}
       </div>

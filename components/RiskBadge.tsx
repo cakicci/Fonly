@@ -1,3 +1,5 @@
+import { TermTooltip } from "@/components/TermTooltip";
+
 const riskLabels: Record<string, { label: string; className: string }> = {
   low: {
     label: "Düşük Risk",
@@ -24,5 +26,9 @@ export function RiskBadge({ riskProfile }: RiskBadgeProps) {
 
   const { label, className } = riskLabels[riskProfile];
 
-  return <h2 className={`mt-2 text-2xl font-semibold ${className}`}>{label}</h2>;
+  return (
+    <h2 className={`mt-2 text-2xl font-semibold ${className}`}>
+      <TermTooltip term="riskProfili">{label}</TermTooltip>
+    </h2>
+  );
 }

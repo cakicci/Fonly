@@ -51,7 +51,7 @@ export function CategoryTeaserCard({ hiddenCount, categoryTitle }: CategoryTease
               <Sparkles className="h-3 w-3" />
               Premium
             </div>
-            <h3 className="mt-3 text-xl font-semibold text-white">
+            <h3 className="mt-3 text-xl font-semibold text-mist">
               +{hiddenCount} hisse daha
             </h3>
             <p className="mt-2 text-sm leading-6 text-mist-2">
@@ -62,7 +62,7 @@ export function CategoryTeaserCard({ hiddenCount, categoryTitle }: CategoryTease
 
           {/* CTA */}
           <div className="relative mt-6">
-            <span className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-fuchsia-300 to-emerald-300 px-3 py-2 text-xs font-semibold text-ink transition group-hover:from-fuchsia-200 group-hover:to-emerald-200">
+            <span className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-fuchsia-300 to-emerald-300 px-3 py-2 text-xs font-semibold text-ink-fixed transition group-hover:from-fuchsia-200 group-hover:to-emerald-200">
               Premium&apos;a yükselt →
             </span>
           </div>

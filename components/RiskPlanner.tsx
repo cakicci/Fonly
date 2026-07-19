@@ -47,7 +47,7 @@ export function RiskPlanner() {
       <div className="mb-6 flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
         <div>
           <p className="text-sm font-medium text-emerald-200">Risk ve bütçe rehberi</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold text-mist sm:text-3xl">
             Gelirine göre ne kadar ayırmak mantıklı?
           </h2>
         </div>
@@ -57,11 +57,11 @@ export function RiskPlanner() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="rounded-card border border-white/8 bg-white/[0.04] p-5">
+        <div className="rounded-card border border-line bg-white/[0.04] p-5">
           <label className="text-sm font-medium text-mist-2" htmlFor="income">
             Aylık gelirini seç
           </label>
-          <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+          <div className="mt-4 flex items-center gap-3 rounded-2xl border border-line bg-white/[0.04] px-4 py-3">
             <WalletCards className="h-5 w-5 text-emerald-200" />
             <input
               id="income"
@@ -70,7 +70,7 @@ export function RiskPlanner() {
               step={1000}
               value={income}
               onChange={(event) => setIncome(Number(event.target.value) || 0)}
-              className="w-full bg-transparent text-lg font-semibold text-white outline-none"
+              className="w-full bg-transparent text-lg font-semibold text-mist outline-none"
             />
             <span className="text-sm text-mist-3">TL</span>
           </div>
@@ -85,8 +85,8 @@ export function RiskPlanner() {
                   onClick={() => setRisk(key)}
                   className={`flex min-h-12 items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${
                     risk === key
-                      ? "border-emerald-200/40 bg-emerald-300/12 text-white"
-                      : "border-white/8 bg-white/[0.03] text-mist-2 hover:bg-white/[0.06]"
+                      ? "border-emerald-200/40 bg-emerald-300/12 text-mist"
+                      : "border-line bg-white/[0.03] text-mist-2 hover:bg-white/[0.06]"
                   }`}
                 >
                   <span className="text-sm font-semibold">{riskProfiles[key].label}</span>
@@ -104,19 +104,19 @@ export function RiskPlanner() {
             </div>
             <div>
               <p className="text-sm text-mist-3">Seçilen profil</p>
-              <h3 className="mt-1 text-2xl font-semibold text-white">{profile.label}</h3>
+              <h3 className="mt-1 text-2xl font-semibold text-mist">{profile.label}</h3>
             </div>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/8 bg-white/[0.05] p-4">
+            <div className="rounded-2xl border border-line bg-white/[0.05] p-4">
               <p className="text-xs text-mist-3">Aylık ayrılabilecek örnek tutar</p>
               <p className="mt-2 text-3xl font-semibold text-emerald-200">{formatLira(suggestedAmount)}</p>
               <p className="mt-2 text-xs leading-5 text-mist-3">
                 Gelirin yaklaşık %{Math.round(profile.monthlyShare * 100)} kadarı.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.05] p-4">
+            <div className="rounded-2xl border border-line bg-white/[0.05] p-4">
               <p className="text-xs text-mist-3">Önce kenarda durması iyi olan para</p>
               <p className="mt-2 text-3xl font-semibold text-cyan-200">{formatLira(safetyAmount)}</p>
               <p className="mt-2 text-xs leading-5 text-mist-3">

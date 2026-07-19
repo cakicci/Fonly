@@ -14,14 +14,18 @@ import { normalizeAssetSlug } from "@/lib/portfolio/asset";
  * DELETE → ?id= ile lot sil
  */
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ message: "Giriş gerekli." }, { status: 401 });
   }
 
+  // ?demo=1 → deneme portföyü (isDemo=true). Varsayılan: gerçek portföy (isDemo=false).
+  // İkisi ASLA karışmaz — deneme işlemleri gerçek özet/dashboard/e-postaya sızmaz.
+  const isDemo = new URL(request.url).searchParams.get("demo") === "1";
+
   const lots = await prisma.portfolioLot.findMany({
-    where: { userId: session.user.id },
+    where: { userId: session.user.id, isDemo },
     orderBy: { boughtAt: "desc" },
   });
 
@@ -43,6 +47,8 @@ const lotSchema = z.object({
   unitCost: z.number().nonnegative("Fiyat negatif olamaz.").finite(),
   boughtAt: z.string().datetime().optional(),
   note: z.string().trim().max(200).optional(),
+  // Deneme portföyü işlemi mi? true ise gerçek K/Z'ye hiç dahil edilmez.
+  isDemo: z.boolean().default(false),
 });
 
 export async function POST(request: Request) {
@@ -66,9 +72,10 @@ export async function POST(request: Request) {
   }
 
   // Satış: eldekinden fazlası satılamaz — mevcut net pozisyonu hesapla.
+  // Gerçek ve deneme pozisyonları birbirinden bağımsız (isDemo aynı olmalı).
   if (parsed.data.side === "sell") {
     const existing = await prisma.portfolioLot.findMany({
-      where: { userId: session.user.id, slug },
+      where: { userId: session.user.id, slug, isDemo: parsed.data.isDemo },
       select: { side: true, quantity: true },
     });
     const held = existing.reduce(
@@ -92,6 +99,7 @@ export async function POST(request: Request) {
       unitCost: parsed.data.unitCost,
       boughtAt: parsed.data.boughtAt ? new Date(parsed.data.boughtAt) : undefined,
       note: parsed.data.note,
+      isDemo: parsed.data.isDemo,
     },
   });
 

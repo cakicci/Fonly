@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { AssetHeader } from "@/components/chart/AssetHeader";
 import { AssetHeaderActions } from "@/components/chart/AssetHeaderActions";
-import { SubNav } from "@/components/chart/SubNav";
+import { SubNavWithToggle } from "@/components/chart/SubNavWithToggle";
+import { MicroLessonCard } from "@/components/MicroLessonCard";
 import { BIST_TICKERS } from "@/data/bist-tickers";
 import { fetchYahooChart } from "@/lib/market-data";
 import { HISSE_SUBNAV } from "@/lib/chart/subnav";
@@ -45,11 +46,11 @@ export default async function HisseLayout({
     <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl space-y-5">
         <nav className="flex items-center gap-2 text-sm text-mist-3">
-          <Link href="/" className="transition hover:text-white">Ana Sayfa</Link>
+          <Link href="/" className="transition hover:text-mist">Ana Sayfa</Link>
           <span>/</span>
-          <Link href="/hisseler" className="transition hover:text-white">Hisseler</Link>
+          <Link href="/hisseler" className="transition hover:text-mist">Hisseler</Link>
           <span>/</span>
-          <span className="text-white">{symbol}</span>
+          <span className="text-mist">{symbol}</span>
         </nav>
 
         <AssetHeader
@@ -71,7 +72,14 @@ export default async function HisseLayout({
           }
         />
 
-        <SubNav basePath={`/hisse/${symbol}`} tabs={HISSE_SUBNAV} />
+        <MicroLessonCard
+          id="hisse"
+          title="Hisse senedi nedir?"
+          body="Bir hisse senedi aldığında, o şirketin küçük bir ortağı olursun. Şirket değer kazanırsa hissenin fiyatı da genelde yükselir; bazı şirketler kârının bir kısmını ortaklarına temettü olarak dağıtır."
+          guideHref="/rehber/3"
+        />
+
+        <SubNavWithToggle basePath={`/hisse/${symbol}`} tabs={HISSE_SUBNAV} />
 
         {children}
       </div>

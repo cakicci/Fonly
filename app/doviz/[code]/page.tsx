@@ -4,6 +4,7 @@ import { PriceChart } from "@/components/PriceChart";
 import { AnalysisCard } from "@/components/AnalysisCard";
 import { ChartSection } from "@/components/chart/ChartSection";
 import { Tabs } from "@/components/chart/Tabs";
+import { HistoricalWhatIfCalculator } from "@/components/HistoricalWhatIfCalculator";
 import { CURRENCY_MAP } from "@/data/currencies";
 import { supportsCandleForSlug } from "@/lib/chart/ohlc";
 
@@ -44,7 +45,7 @@ export default function DovizGenelPage({ params }: { params: Params }) {
             label: "Altın Karşılaştırma",
             content: (
               <div className="glass-card rounded-section p-6">
-                <h2 className="mb-1 text-lg font-semibold text-white">Gram Altına Göre Performans</h2>
+                <h2 className="mb-1 text-lg font-semibold text-mist">Gram Altına Göre Performans</h2>
                 <p className="mb-5 text-xs text-mist-3">
                   Yüzdesel değişim — {currency.shortName} vs Gram Altın (dönem başı = 0%)
                 </p>
@@ -59,6 +60,8 @@ export default function DovizGenelPage({ params }: { params: Params }) {
           },
         ]}
       />
+
+      <HistoricalWhatIfCalculator slug={slug} assetName={currency.name} />
     </>
   );
 }
